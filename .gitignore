@@ -1,0 +1,6 @@
+src/.vs/
+src/Domain/obj/
+src/Domain/bin/
+src/packages/
+src/UnitTests/obj/
+src/UnitTests/bin/
