@@ -1,7 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System.Data.Entity.Infrastructure;
+using Caliburn.Micro;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using Domain.Abstract;
+using Domain.Concrete;
+using Domain.DbContext;
 using Server.ViewModels;
 
 namespace Server.Bootstrapper
@@ -11,10 +15,12 @@ namespace Server.Bootstrapper
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container
-              .Register(Component.For<IWindsorContainer>().Instance(container).LifeStyle.Singleton)
-              .Register(Component.For<AppViewModel>().LifeStyle.Singleton)
-              .Register(Component.For<IWindowManager>().ImplementedBy<WindowManager>().LifeStyle.Singleton)
-              .Register(Component.For<IEventAggregator>().ImplementedBy<EventAggregator>().LifeStyle.Singleton);
+                .Register(Component.For<IWindsorContainer>().Instance(container).LifeStyle.Singleton)
+                .Register(Component.For<AppViewModel>().LifeStyle.Singleton)
+                .Register(Component.For<IWindowManager>().ImplementedBy<WindowManager>().LifeStyle.Singleton)
+                .Register(Component.For<IEventAggregator>().ImplementedBy<EventAggregator>().LifeStyle.Singleton)
+                .Register(Component.For<IUnitOfWork>().ImplementedBy<UnitOfWork>().LifeStyle.Singleton)               //TODO LifeStyle.Singleton ??
+                .Register(Component.For<CisDbContext>().ImplementedBy<CisDbContext>().LifeStyle.Singleton);           //TODO LifeStyle.Singleton ??
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Windows;
 using Caliburn.Micro;
+using Domain.Abstract;
+using Domain.DbContext;
+using Domain.Entities;
 
 namespace Server.ViewModels
 {
@@ -8,6 +10,7 @@ namespace Server.ViewModels
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IWindowManager _windowManager;
+        private readonly IUnitOfWork _unitOfWork;
 
 
         public IDisposable DispouseOrderStatusProcess { get; set; }
@@ -15,10 +18,10 @@ namespace Server.ViewModels
 
 
 
-        public AppViewModel( IEventAggregator events, IWindowManager windowManager)//IEventAggregator events, ColorViewModel colorModel, IWindowManager windowManager, GreenViewModel greenViewModel
+        public AppViewModel(IEventAggregator events, IWindowManager windowManager, IUnitOfWork unitOfWork)
         {
             _windowManager = windowManager;
-
+            _unitOfWork = unitOfWork;
             _eventAggregator = events;
             events.Subscribe(this);
         }
@@ -28,19 +31,29 @@ namespace Server.ViewModels
 
 
 
-        public void NewWindow()
+        public async void NewWindow()
         {
-            var dialogViewModel= new DialogViewModel();
-            var result= _windowManager.ShowDialog(dialogViewModel);
+            //var dialogViewModel= new DialogViewModel();
+            //var result= _windowManager.ShowDialog(dialogViewModel);
 
-            if (result != null && result.Value)
-            {
-                MessageBox.Show("Ok");
-            }
-            else
-            {
-                MessageBox.Show("Cancel");
-            }
+            //if (result != null && result.Value)
+            //{
+            //    MessageBox.Show("Ok");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Cancel");
+            //}
+
+            // _unitOfWork.StationRepository.Insert(new Station { Description = "hhhhh", EcpCode = 100, Name = "iuyit" });
+            var stations= _unitOfWork.StationRepository.Get();
+
+            _unitOfWork.OperativeScheduleRepository.Insert(new OperativeSchedule {NumberOfTrain = 11, ArrivalTime = DateTime.Now});
+            await _unitOfWork.SaveAsync();
+
+            // var operativeSh= _unitOfWork.OperativeScheduleRepository.Get();
+
+
         }
 
 
