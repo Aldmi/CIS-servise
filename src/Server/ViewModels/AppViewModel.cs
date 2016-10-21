@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Caliburn.Micro;
 using Domain.Abstract;
 using Domain.DbContext;
@@ -46,13 +48,11 @@ namespace Server.ViewModels
             //}
 
             // _unitOfWork.StationRepository.Insert(new Station { Description = "hhhhh", EcpCode = 100, Name = "iuyit" });
-            var stations= _unitOfWork.StationRepository.Get();
-
-            _unitOfWork.OperativeScheduleRepository.Insert(new OperativeSchedule {NumberOfTrain = 11, ArrivalTime = DateTime.Now});
+            var stations= _unitOfWork.StationRepository.Get().OrderBy(x=>x.Id).ToList();
+            _unitOfWork.OperativeScheduleRepository.Insert(new OperativeSchedule { NumberOfTrain = 12, ArrivalTime = DateTime.Now, DepartureTime = DateTime.Today, RouteName = "Маршрут 3", DispatchStation = stations[2], StationOfDestination = stations[3], ListWithoutStops = new List<Station>(stations)});
             await _unitOfWork.SaveAsync();
 
-            // var operativeSh= _unitOfWork.OperativeScheduleRepository.Get();
-
+             var operativeSh= _unitOfWork.OperativeScheduleRepository.Get().ToList();
 
         }
 

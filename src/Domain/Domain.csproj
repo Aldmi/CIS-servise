@@ -88,6 +88,14 @@
     <Compile Include="Migrations\201610211012112_ChangeAttributeInOperativeSchedule_test4.Designer.cs">
       <DependentUpon>201610211012112_ChangeAttributeInOperativeSchedule_test4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610211216511_ChangeAttributeInOperativeSchedule_test5.cs" />
+    <Compile Include="Migrations\201610211216511_ChangeAttributeInOperativeSchedule_test5.Designer.cs">
+      <DependentUpon>201610211216511_ChangeAttributeInOperativeSchedule_test5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610211303424_ChangeAttributeInOperativeSchedule_test6.cs" />
+    <Compile Include="Migrations\201610211303424_ChangeAttributeInOperativeSchedule_test6.Designer.cs">
+      <DependentUpon>201610211303424_ChangeAttributeInOperativeSchedule_test6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -112,6 +120,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610211012112_ChangeAttributeInOperativeSchedule_test4.resx">
       <DependentUpon>201610211012112_ChangeAttributeInOperativeSchedule_test4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211216511_ChangeAttributeInOperativeSchedule_test5.resx">
+      <DependentUpon>201610211216511_ChangeAttributeInOperativeSchedule_test5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211303424_ChangeAttributeInOperativeSchedule_test6.resx">
+      <DependentUpon>201610211303424_ChangeAttributeInOperativeSchedule_test6.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

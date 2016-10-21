@@ -20,6 +20,7 @@ namespace Domain.Concrete
         {
             Context = context;
             DbSet = context.Set<TEntity>();
+
         }
 
 

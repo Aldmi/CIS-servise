@@ -7,7 +7,7 @@ namespace Domain.DbContext
     {
         public CisDbContext() : base("CisDbContext")
         {
-            //Database.SetInitializer(new DropCreateDatabaseAlways<CisDbContext>());
+            // Database.SetInitializer(new DropCreateDatabaseAlways<CisDbContext>());
         }
 
 
@@ -30,13 +30,27 @@ namespace Domain.DbContext
            .WithMany(p => p.ListOfStops)
            .Map(m =>
               {
-                 // Ссылка на промежуточную таблицу
-                 m.ToTable("OperativeSchedulesListOfStops");
+                  // Ссылка на промежуточную таблицу
+                  m.ToTable("OperativeSchedulesListOfStops");
 
-                 // Настройка внешних ключей промежуточной таблицы
-                 m.MapLeftKey("OperativeSchedulesId");
-                 m.MapRightKey("StationId");
-            });
+                  // Настройка внешних ключей промежуточной таблицы
+                  m.MapLeftKey("OperativeSchedulesId");
+                  m.MapRightKey("StationId");
+              });
+
+
+            modelBuilder.Entity<Station>()
+           .HasMany(c => c.OperativeSchedulesListWithoutStops)
+           .WithMany(p => p.ListWithoutStops)
+           .Map(m =>
+           {
+               // Ссылка на промежуточную таблицу
+               m.ToTable("OperativeSchedulesListWithoutStops");
+
+               // Настройка внешних ключей промежуточной таблицы
+               m.MapLeftKey("StationId");
+               m.MapRightKey("OperativeSchedulesId");
+           });
         }
     }
 }
