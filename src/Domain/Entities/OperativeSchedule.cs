@@ -23,10 +23,10 @@ namespace Domain.Entities
         public string RouteName { get; set; }                 //Станция отправления и станция назначения, а также фирменное название поезда, если есть.
 
         //[Required]
-        public Station DispatchStation { get; set; }            //Станция отправления
+        public virtual Station DispatchStation { get; set; }            //Станция отправления
 
         //[Required]
-        public Station StationOfDestination { get; set; }       //Станция назначения
+        public virtual Station StationOfDestination { get; set; }       //Станция назначения
 
         [Column(TypeName = "datetime2")]
         [Required]
@@ -36,8 +36,8 @@ namespace Domain.Entities
         [Required]
         public DateTime DepartureTime { get; set; }             //Время отправления поезда со станции
 
-        public List<Station> ListOfStops { get; set; }          //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
+        public virtual ICollection<Station> ListOfStops { get; set; }          //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
 
-        public List<Station> ListWithoutStops { get; set; }     //Список станций которые поезд
+        public virtual ICollection<Station> ListWithoutStops { get; set; }     //Список станций которые поезд
     }
 }

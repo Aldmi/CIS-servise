@@ -60,98 +60,35 @@
     <Compile Include="Entities\RailwayStation.cs" />
     <Compile Include="Entities\RegulatorySchedule.cs" />
     <Compile Include="Entities\Station.cs" />
-    <Compile Include="Migrations\201610210618373_InitialCreate.cs" />
-    <Compile Include="Migrations\201610210618373_InitialCreate.Designer.cs">
-      <DependentUpon>201610210618373_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201610221730154_Test1.cs" />
+    <Compile Include="Migrations\201610221730154_Test1.Designer.cs">
+      <DependentUpon>201610221730154_Test1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610210627373_InitalTwo.cs" />
-    <Compile Include="Migrations\201610210627373_InitalTwo.Designer.cs">
-      <DependentUpon>201610210627373_InitalTwo.cs</DependentUpon>
+    <Compile Include="Migrations\201610221808251_AddOperativeSchedule.cs" />
+    <Compile Include="Migrations\201610221808251_AddOperativeSchedule.Designer.cs">
+      <DependentUpon>201610221808251_AddOperativeSchedule.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610210630399_AddDispatchStationProperties.cs" />
-    <Compile Include="Migrations\201610210630399_AddDispatchStationProperties.Designer.cs">
-      <DependentUpon>201610210630399_AddDispatchStationProperties.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610210635521_Add_ListOfStops_in_OperativeSchedule.cs" />
-    <Compile Include="Migrations\201610210635521_Add_ListOfStops_in_OperativeSchedule.Designer.cs">
-      <DependentUpon>201610210635521_Add_ListOfStops_in_OperativeSchedule.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610210912475_ChangeAttributeInOperativeSchedule_test2.cs" />
-    <Compile Include="Migrations\201610210912475_ChangeAttributeInOperativeSchedule_test2.Designer.cs">
-      <DependentUpon>201610210912475_ChangeAttributeInOperativeSchedule_test2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610210921094_ChangeAttributeInOperativeSchedule_test3.cs" />
-    <Compile Include="Migrations\201610210921094_ChangeAttributeInOperativeSchedule_test3.Designer.cs">
-      <DependentUpon>201610210921094_ChangeAttributeInOperativeSchedule_test3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610211012112_ChangeAttributeInOperativeSchedule_test4.cs" />
-    <Compile Include="Migrations\201610211012112_ChangeAttributeInOperativeSchedule_test4.Designer.cs">
-      <DependentUpon>201610211012112_ChangeAttributeInOperativeSchedule_test4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610211216511_ChangeAttributeInOperativeSchedule_test5.cs" />
-    <Compile Include="Migrations\201610211216511_ChangeAttributeInOperativeSchedule_test5.Designer.cs">
-      <DependentUpon>201610211216511_ChangeAttributeInOperativeSchedule_test5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610211303424_ChangeAttributeInOperativeSchedule_test6.cs" />
-    <Compile Include="Migrations\201610211303424_ChangeAttributeInOperativeSchedule_test6.Designer.cs">
-      <DependentUpon>201610211303424_ChangeAttributeInOperativeSchedule_test6.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610220744045_AddRailwayStationInReposutory.cs" />
-    <Compile Include="Migrations\201610220744045_AddRailwayStationInReposutory.Designer.cs">
-      <DependentUpon>201610220744045_AddRailwayStationInReposutory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610221403186_ChangeAllStationName.cs" />
-    <Compile Include="Migrations\201610221403186_ChangeAllStationName.Designer.cs">
-      <DependentUpon>201610221403186_ChangeAllStationName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610221421427_ChangeManyToManyLinqRailwaystationOnStation.cs" />
-    <Compile Include="Migrations\201610221421427_ChangeManyToManyLinqRailwaystationOnStation.Designer.cs">
-      <DependentUpon>201610221421427_ChangeManyToManyLinqRailwaystationOnStation.cs</DependentUpon>
+    <Compile Include="Migrations\201610221821139_AddInfoAndDiagnosticTables.cs" />
+    <Compile Include="Migrations\201610221821139_AddInfoAndDiagnosticTables.Designer.cs">
+      <DependentUpon>201610221821139_AddInfoAndDiagnosticTables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610210618373_InitialCreate.resx">
-      <DependentUpon>201610210618373_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610210627373_InitalTwo.resx">
-      <DependentUpon>201610210627373_InitalTwo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610210630399_AddDispatchStationProperties.resx">
-      <DependentUpon>201610210630399_AddDispatchStationProperties.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610210635521_Add_ListOfStops_in_OperativeSchedule.resx">
-      <DependentUpon>201610210635521_Add_ListOfStops_in_OperativeSchedule.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610210912475_ChangeAttributeInOperativeSchedule_test2.resx">
-      <DependentUpon>201610210912475_ChangeAttributeInOperativeSchedule_test2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610210921094_ChangeAttributeInOperativeSchedule_test3.resx">
-      <DependentUpon>201610210921094_ChangeAttributeInOperativeSchedule_test3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610211012112_ChangeAttributeInOperativeSchedule_test4.resx">
-      <DependentUpon>201610211012112_ChangeAttributeInOperativeSchedule_test4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610211216511_ChangeAttributeInOperativeSchedule_test5.resx">
-      <DependentUpon>201610211216511_ChangeAttributeInOperativeSchedule_test5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610211303424_ChangeAttributeInOperativeSchedule_test6.resx">
-      <DependentUpon>201610211303424_ChangeAttributeInOperativeSchedule_test6.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610220744045_AddRailwayStationInReposutory.resx">
-      <DependentUpon>201610220744045_AddRailwayStationInReposutory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610221403186_ChangeAllStationName.resx">
-      <DependentUpon>201610221403186_ChangeAllStationName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610221421427_ChangeManyToManyLinqRailwaystationOnStation.resx">
-      <DependentUpon>201610221421427_ChangeManyToManyLinqRailwaystationOnStation.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201610221730154_Test1.resx">
+      <DependentUpon>201610221730154_Test1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610221808251_AddOperativeSchedule.resx">
+      <DependentUpon>201610221808251_AddOperativeSchedule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610221821139_AddInfoAndDiagnosticTables.resx">
+      <DependentUpon>201610221821139_AddInfoAndDiagnosticTables.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

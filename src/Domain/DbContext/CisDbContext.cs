@@ -7,7 +7,7 @@ namespace Domain.DbContext
     {
         public CisDbContext() : base("CisDbContext")
         {
-            // Database.SetInitializer(new DropCreateDatabaseAlways<CisDbContext>());
+             //Database.SetInitializer(new DropCreateDatabaseAlways<CisDbContext>());
         }
 
 
@@ -20,6 +20,8 @@ namespace Domain.DbContext
         public DbSet<OperativeSchedule> OperativeSchedules { get; set; }
 
         public DbSet<RailwayStation> RailwayStations { get; set; }
+
+        public DbSet<Info> Infos { get; set; }
 
         #endregion
 
@@ -54,20 +56,6 @@ namespace Domain.DbContext
                m.MapLeftKey("StationId");
                m.MapRightKey("OperativeSchedulesId");
            });
-
-
-           // modelBuilder.Entity<Station>()
-           //.HasMany(c => c.RailwayStations)
-           //.WithMany(p => p.Stations)
-           //.Map(m =>
-           //{
-           //    // Ссылка на промежуточную таблицу
-           //    m.ToTable("RailwayStationsAllStations");
-
-           //    // Настройка внешних ключей промежуточной таблицы
-           //    m.MapLeftKey("StationId");
-           //    m.MapRightKey("RailwayStationId");
-           //});
         }
     }
 }

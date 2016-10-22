@@ -18,10 +18,10 @@ namespace Domain.Entities
 
         public string Description { get; set; }
 
-        public List<OperativeSchedule> OperativeSchedulesListOfStops { get; set; }        //Многие ко многим с OperativeSchedule.ListOfStops
+        public virtual ICollection<OperativeSchedule> OperativeSchedulesListOfStops { get; set; }        //Многие ко многим с OperativeSchedule.ListOfStops
 
-        public List<OperativeSchedule> OperativeSchedulesListWithoutStops { get; set; }   //Многие ко многим с OperativeSchedule.ListWithoutStops 
+        public virtual ICollection<OperativeSchedule> OperativeSchedulesListWithoutStops { get; set; }   //Многие ко многим с OperativeSchedule.ListWithoutStops 
 
-        public List<RailwayStation> RailwayStations { get; set; }                         //Многие ко многим с RailwayStation (для вывода всех станций по вокзалу) 
+        public virtual ICollection<RailwayStation> RailwayStations { get; set; }                         //Многие ко многим с RailwayStation (для вывода всех станций по вокзалу) 
     }
 }
