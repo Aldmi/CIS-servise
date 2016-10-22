@@ -43,7 +43,7 @@ namespace Domain.Concrete
         }
 
 
-        public virtual IEnumerable<TEntity> Search(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
+        public virtual IQueryable<TEntity> Search(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
             IQueryable<TEntity> query = Get();
 
@@ -58,7 +58,7 @@ namespace Domain.Concrete
                 query = query.Include(includeProperty);
             }
 
-            return orderBy?.Invoke(query).ToList() ?? query.ToList();
+            return orderBy?.Invoke(query) ?? query;
         }
 
 

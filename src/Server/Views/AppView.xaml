@@ -7,13 +7,15 @@
                      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:micro="http://www.caliburnproject.org"
-                     Title="AppView"
-                     Width="1000"
-                     Height="1000"
-                     d:DataContext="{d:DesignInstance Type=vm:AppViewModel,
+                     xmlns:viewModels="clr-namespace:Server.ViewModels"
+                     Title="ЦИС"
+                     d:DataContext="{d:DesignInstance Type=viewModels:AppViewModel,
                                                       IsDesignTimeCreatable=True}"
                      micro:Bind.AtDesignTime="True"
                      mc:Ignorable="d">
+
+
+
 
 
     <Grid>
@@ -25,24 +27,74 @@
 
         <fluent:Ribbon Grid.Row="0">
             <!--  Backstage  -->
-            <fluent:Ribbon.Menu>
+            <!--<fluent:Ribbon.Menu>
                 <fluent:Backstage />
-            </fluent:Ribbon.Menu>
+            </fluent:Ribbon.Menu>-->
             <!--  Tabs  -->
-            <fluent:RibbonTabItem Header="Tab">
-                <fluent:RibbonGroupBox Header="Group">
-                    <fluent:Button micro:Message.Attach="[Event Click] = [Action NewWindow]" Header="NewWindow" />
-
-                    <fluent:Button Name="buttonGray"
-                                   Header="Grey"
-                                   Icon="Images\Gray.png"
-                                   LargeIcon="Images\GrayLarge.png" />
+            <fluent:RibbonTabItem Header="ВОКЗАЛЫ">
+                <fluent:RibbonGroupBox>
+                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation1]"
+                                   Header="ВОКЗАЛ 1"
+                                   LargeIcon="../Components/Images/train_icon.png"
+                                   Size="Large" />
                 </fluent:RibbonGroupBox>
+
+                <fluent:RibbonGroupBox>
+                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation2]"
+                                   Header="ВОКЗАЛ 2"
+                                   LargeIcon="../Components/Images/train_icon.png"
+                                   Size="Large" />
+                </fluent:RibbonGroupBox>
+
+                <fluent:RibbonGroupBox>
+                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation3]"
+                                   Header="ВОКЗАЛ 3"
+                                   LargeIcon="../Components/Images/train_icon.png"
+                                   Size="Large" />
+                </fluent:RibbonGroupBox>
+
+                <fluent:RibbonGroupBox>
+                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation4]"
+                                   Header="ВОКЗАЛ 4"
+                                   LargeIcon="../Components/Images/train_icon.png"
+                                   Size="Large" />
+                </fluent:RibbonGroupBox>
+
+                <fluent:RibbonGroupBox>
+                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation5]"
+                                   Header="ВОКЗАЛ 5"
+                                   LargeIcon="../Components/Images/train_icon.png"
+                                   Size="Large" />
+                </fluent:RibbonGroupBox>
+
+                <fluent:RibbonGroupBox>
+                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation6]"
+                                   Header="ВОКЗАЛ 6"
+                                   LargeIcon="../Components/Images/train_icon.png"
+                                   Size="Large" />
+                </fluent:RibbonGroupBox>
+
+                <fluent:RibbonGroupBox>
+                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation7]"
+                                   Header="ВОКЗАЛ 7"
+                                   LargeIcon="../Components/Images/train_icon.png"
+                                   Size="Large" />
+                </fluent:RibbonGroupBox>
+
+                <fluent:RibbonGroupBox>
+                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation8]"
+                                   Header="ВОКЗАЛ 8"
+                                   LargeIcon="../Components/Images/train_icon.png"
+                                   Size="Large" />
+                </fluent:RibbonGroupBox>
+
             </fluent:RibbonTabItem>
         </fluent:Ribbon>
 
 
-        <Button Grid.Row="1" Content="Жми" />
+        <Label Grid.Row="1"
+               HorizontalAlignment="Center"
+               Content=" ТУТ БУДЕТ ОБЩАЯ ИНФОРМАЦИЯ ПО ВОКЗАЛАМ" />
 
 
     </Grid>

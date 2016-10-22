@@ -5,9 +5,10 @@ namespace Domain.Abstract
 {
     public interface IUnitOfWork
     {
-        IRepository<Station> StationRepository { get; }
-        IRepository<RegulatorySchedule> RegulatoryScheduleRepository { get; }
-        IRepository<OperativeSchedule> OperativeScheduleRepository { get; }
+        IRepository<Station> StationRepository { get; }                                 //Станции
+        IRepository<RegulatorySchedule> RegulatoryScheduleRepository { get; }           //Регулярное расписание
+        IRepository<OperativeSchedule> OperativeScheduleRepository { get; }             //Оперативное расписание
+        IRepository<RailwayStation> RailwayStationRepository { get; }                   //Вокзалы
 
         Task<int> SaveAsync();
     }

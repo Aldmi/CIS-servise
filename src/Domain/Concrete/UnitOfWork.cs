@@ -12,6 +12,7 @@ namespace Domain.Concrete
         private GenericRepository<Station> _stationRepository;
         private GenericRepository<RegulatorySchedule> _regulatoryScheduleRepository;
         private GenericRepository<OperativeSchedule> _operativeScheduleRepository;
+        private GenericRepository<RailwayStation> _railwayStationRepository;
 
 
         public UnitOfWork(CisDbContext context)
@@ -24,6 +25,8 @@ namespace Domain.Concrete
         public IRepository<Station> StationRepository => _stationRepository ?? (_stationRepository = new GenericRepository<Station>(_context));
         public IRepository<RegulatorySchedule> RegulatoryScheduleRepository => _regulatoryScheduleRepository ?? (_regulatoryScheduleRepository = new GenericRepository<RegulatorySchedule>(_context));
         public IRepository<OperativeSchedule> OperativeScheduleRepository => _operativeScheduleRepository ?? (_operativeScheduleRepository = new GenericRepository<OperativeSchedule>(_context));
+        public IRepository<RailwayStation> RailwayStationRepository => _railwayStationRepository ?? (_railwayStationRepository = new GenericRepository<RailwayStation>(_context));
+
 
 
         public async Task<int> SaveAsync()

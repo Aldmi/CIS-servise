@@ -124,8 +124,6 @@ E:\Dropbox\C#\Project C#\CIS\Server\obj\Debug\Server.csproj.GenerateResource.Cac
 E:\Dropbox\C#\Project C#\CIS\Server\obj\Debug\Server.exe
 E:\Dropbox\C#\Project C#\CIS\Server\obj\Debug\Server.pdb
 D:\Git\CIS\src\Server\bin\Debug\Server.exe.config
-D:\Git\CIS\src\Server\obj\Debug\Server.exe
-D:\Git\CIS\src\Server\obj\Debug\Server.pdb
 D:\Git\CIS\src\Server\bin\Debug\Server.exe
 D:\Git\CIS\src\Server\bin\Debug\Server.pdb
 D:\Git\CIS\src\Server\bin\Debug\Caliburn.Micro.dll
@@ -157,15 +155,19 @@ D:\Git\CIS\src\Server\bin\Debug\System.Reactive.Core.xml
 D:\Git\CIS\src\Server\bin\Debug\System.Reactive.Interfaces.xml
 D:\Git\CIS\src\Server\bin\Debug\System.Reactive.Linq.xml
 D:\Git\CIS\src\Server\obj\Debug\Server.csprojResolveAssemblyReference.cache
-D:\Git\CIS\src\Server\obj\Debug\Views\AppView.baml
 D:\Git\CIS\src\Server\obj\Debug\Views\DialogView.baml
 D:\Git\CIS\src\Server\obj\Debug\Views\AppView.g.cs
 D:\Git\CIS\src\Server\obj\Debug\Views\DialogView.g.cs
+D:\Git\CIS\src\Server\obj\Debug\Views\RailwayStationEditView.g.cs
 D:\Git\CIS\src\Server\obj\Debug\App.g.cs
 D:\Git\CIS\src\Server\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\Git\CIS\src\Server\obj\Debug\Server_MarkupCompile.cache
 D:\Git\CIS\src\Server\obj\Debug\Server_MarkupCompile.lref
 D:\Git\CIS\src\Server\obj\Debug\App.baml
+D:\Git\CIS\src\Server\obj\Debug\Views\AppView.baml
+D:\Git\CIS\src\Server\obj\Debug\Views\RailwayStationEditView.baml
 D:\Git\CIS\src\Server\obj\Debug\Server.g.resources
 D:\Git\CIS\src\Server\obj\Debug\Server.Properties.Resources.resources
 D:\Git\CIS\src\Server\obj\Debug\Server.csproj.GenerateResource.Cache
+D:\Git\CIS\src\Server\obj\Debug\Server.exe
+D:\Git\CIS\src\Server\obj\Debug\Server.pdb

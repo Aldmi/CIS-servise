@@ -13,7 +13,7 @@ namespace Domain.Abstract
 
         IQueryable<TEntity> Get();
 
-        IEnumerable<TEntity> Search(
+        IQueryable<TEntity> Search(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "");
