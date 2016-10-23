@@ -8,7 +8,65 @@
         mc:Ignorable="d">
 
     <Window.Resources>
-        <utils:EnumMatchToBooleanConverter x:Key="enumConverter" />
+        <utils:EnumMatchToBooleanConverter x:Key="EnumConverter" />
+
+        <Style x:Key="RadioButtonStyle" TargetType="{x:Type RadioButton}">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="BorderThickness" Value="5" />
+            <Setter Property="BorderBrush" Value="Blue" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="FontSize" Value="20" />
+        </Style>
+
+
+        <Style x:Key="DataGridHeaderStyle" TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Height" Value="55" />
+            <Setter Property="FontSize" Value="17" />
+            <Setter Property="FontWeight" Value="Black" />
+        </Style>
+
+
+        <Style x:Key="DataGridStyle" TargetType="{x:Type DataGrid}">
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="GridLinesVisibility" Value="Horizontal" />
+            <Setter Property="AlternatingRowBackground" Value="LightBlue" />
+            <Setter Property="RowBackground" Value="Bisque" />
+            <Setter Property="AutoGenerateColumns" Value="False" />
+
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+        <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
+
+            <Setter Property="FontSize" Value="15" />
+
+            <!--<Style.Triggers>
+                <Trigger Property="IsEditing" Value="True">
+                    <Setter Property="BorderBrush" Value="Red" />
+                    <Setter Property="BorderThickness" Value="2" />
+                </Trigger>
+            </Style.Triggers>-->
+        </Style>
+
+
+        <Style x:Key="GridViewColumnHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Background" Value="DarkGoldenrod" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Padding" Value="5" />
+        </Style>
+
     </Window.Resources>
 
 
@@ -16,58 +74,174 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0"
-                    Margin="10"
-                    Orientation="Horizontal">
+        <GroupBox Margin="10"
+                  BorderBrush="DodgerBlue"
+                  BorderThickness="10"
+                  FontSize="20"
+                  Header="Таблица для отображения"
+                  Padding="20">
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
 
-            <RadioButton Margin="10"
-                         BorderBrush="Blue"
-                         BorderThickness="5"
-                         Content="Оперативное расписание"
-                         GroupName="group 0"
-                         IsChecked="{Binding Path=CurrentOption,
-                                             Mode=TwoWay,
-                                             Converter={StaticResource enumConverter},
-                                             ConverterParameter=OperativeSchedule}"
-                         Padding="5" />
+                <RadioButton Name="OperativeSchedule"
+                             Content="Оперативное расписание"
+                             GroupName="group 0"
+                             IsChecked="{Binding Path=CurrentOption,
+                                                 Mode=TwoWay,
+                                                 Converter={StaticResource EnumConverter},
+                                                 ConverterParameter=OperativeSchedule}"
+                             Style="{StaticResource RadioButtonStyle}" />
 
-            <RadioButton Margin="10"
-                         BorderBrush="Blue"
-                         BorderThickness="5"
-                         Content="Нормативное расписание"
-                         GroupName="group 0"
-                         IsChecked="{Binding Path=CurrentOption,
-                                             Mode=TwoWay,
-                                             Converter={StaticResource enumConverter},
-                                             ConverterParameter=RegulatorySchedule}"
-                         Padding="5" />
+                <RadioButton Name="RegulatorySchedule"
+                             Content="Нормативное расписание"
+                             GroupName="group 0"
+                             IsChecked="{Binding Path=CurrentOption,
+                                                 Mode=TwoWay,
+                                                 Converter={StaticResource EnumConverter},
+                                                 ConverterParameter=RegulatorySchedule}"
+                             Style="{StaticResource RadioButtonStyle}" />
 
-            <RadioButton Margin="10"
-                         BorderBrush="Blue"
-                         BorderThickness="5"
-                         Content="Информация"
-                         GroupName="group 0"
-                         IsChecked="{Binding Path=CurrentOption,
-                                             Mode=TwoWay,
-                                             Converter={StaticResource enumConverter},
-                                             ConverterParameter=Info}"
-                         Padding="5" />
+                <RadioButton Name="Info"
+                             Content="Информация"
+                             GroupName="group 0"
+                             IsChecked="{Binding Path=CurrentOption,
+                                                 Mode=TwoWay,
+                                                 Converter={StaticResource EnumConverter},
+                                                 ConverterParameter=Info}"
+                             Style="{StaticResource RadioButtonStyle}" />
 
-            <RadioButton Margin="10"
-                         BorderBrush="Blue"
-                         BorderThickness="5"
-                         Content="Диагностика"
-                         GroupName="group 0"
-                         IsChecked="{Binding Path=CurrentOption,
-                                             Mode=TwoWay,
-                                             Converter={StaticResource enumConverter},
-                                             ConverterParameter=Diagnostic}"
-                         Padding="5" />
+                <RadioButton Name="Diagnostic"
+                             Content="Диагностика"
+                             GroupName="group 0"
+                             IsChecked="{Binding Path=CurrentOption,
+                                                 Mode=TwoWay,
+                                                 Converter={StaticResource EnumConverter},
+                                                 ConverterParameter=Diagnostic}"
+                             Style="{StaticResource RadioButtonStyle}" />
+
+                <RadioButton Name="Station"
+                             Content="Станции"
+                             GroupName="group 0"
+                             IsChecked="{Binding Path=CurrentOption,
+                                                 Mode=TwoWay,
+                                                 Converter={StaticResource EnumConverter},
+                                                 ConverterParameter=Station}"
+                             Style="{StaticResource RadioButtonStyle}" />
+            </StackPanel>
+        </GroupBox>
 
 
-        </StackPanel>
+        <DataGrid Name="StationsTable"
+                  Grid.Row="1"
+                  CellStyle="{StaticResource DataGridCellStyle}"
+                  ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
+                  IsEnabled="{Binding ElementName=Stations,
+                                      Path=IsChecked,
+                                      Mode=OneWay}"
+                  ItemsSource="{Binding Path=Stations}"
+                  Style="{StaticResource DataGridStyle}">
+
+            <!--  RailwayStations.Stations  -->
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="Auto"
+                                    Binding="{Binding Path=Id}"
+                                    Header="Id"
+                                    IsReadOnly="True" />
+
+                <DataGridTextColumn Width="Auto"
+                                    Binding="{Binding Path=Name}"
+                                    Header="Название" />
+
+                <DataGridTextColumn Width="Auto"
+                                    Binding="{Binding Path=EcpCode}"
+                                    Header="EcpCode" />
+
+                <DataGridTextColumn Width="Auto"
+                                    Binding="{Binding Path=Description}"
+                                    Header="Описание" />
+
+                <DataGridTemplateColumn Header="Вокзалы" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+
+                            <Expander Margin="1"
+                                      BorderBrush="Bisque"
+                                      BorderThickness="2"
+                                      Padding="1">
+                                <ListView ItemsSource="{Binding Path=RailwayStations, Mode=OneWay}" Padding="5">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridView.Columns>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Path=Name}"
+                                                                Header="Название вокзала"
+                                                                HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
+                                            </GridView.Columns>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </Expander>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+
+
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <Border Margin="10"
+                            BorderBrush="SteelBlue"
+                            BorderThickness="2"
+                            CornerRadius="5"
+                            Padding="10">
+                        <TextBlock MaxWidth="350"
+                                   FontSize="10"
+                                   Text="{Binding Path=Id}"
+                                   TextWrapping="Wrap" />
+                    </Border>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
+
+
+
+        <DataGrid Name="OperativeSchedulesTable"
+                  Grid.Row="2"
+                  AlternatingRowBackground="Gray"
+                  AutoGenerateColumns="False"
+                  CellStyle="{StaticResource DataGridCellStyle}"
+                  IsEnabled="{Binding ElementName=RegulatorySchedule,
+                                      Path=IsChecked,
+                                      Mode=OneWay}"
+                  ItemsSource="{Binding Path=Stations}"
+                  RowBackground="Bisque"
+                  Style="{StaticResource DataGridStyle}">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="Auto"
+                                    Binding="{Binding Path=Id}"
+                                    Header="Id"
+                                    IsReadOnly="True" />
+
+                <DataGridTextColumn Width="Auto"
+                                    Binding="{Binding Path=Name}"
+                                    Header="Название 111" />
+
+                <DataGridTextColumn Width="Auto"
+                                    Binding="{Binding Path=EcpCode}"
+                                    Header="EcpCode 111" />
+
+                <DataGridTextColumn Width="Auto"
+                                    Binding="{Binding Path=Description}"
+                                    Header="Описание 111" />
+
+
+            </DataGrid.Columns>
+        </DataGrid>
 
 
 

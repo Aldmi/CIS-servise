@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 using Domain.Abstract;
 using Domain.DbContext;
@@ -36,10 +37,19 @@ namespace Server.ViewModels
 
         public async void RailwayStation1()
         {
-            //string railwayStationName = "Вокзал 3";
-            //var railwayStation = _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName).Include(r => r.Stations).First();
-            //var editViewModel = new RailwayStationEditViewModel(_unitOfWork, railwayStation);
-            //_windowManager.ShowWindow(editViewModel);
+            const string railwayStationName = "Вокзал 3";
+            var railwayStation = _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName).Include(r => r.Stations).First();
+            if (railwayStation != null)
+            {
+                var editViewModel = new RailwayStationEditViewModel(_unitOfWork, railwayStation);
+                _windowManager.ShowWindow(editViewModel);
+            }
+            else
+            {
+                MessageBox.Show("Вокзала с именеем {0} не найденно", railwayStationName);
+            }
+
+
 
 
 
@@ -62,10 +72,10 @@ namespace Server.ViewModels
             //    MessageBox.Show("Cancel");
             //}
 
-            var stations = _unitOfWork.StationRepository.Get().OrderBy(x => x.Id).ToList();
+            //var stations = _unitOfWork.StationRepository.Get().OrderBy(x => x.Id).ToList();
 
             //Добавление
-            //_unitOfWork.RailwayStationRepository.Insert(new RailwayStation { Name = "Вокзал 1", Stations = new List<Station>(stations.Skip(3)) });
+            //_unitOfWork.RailwayStationRepository.Insert(new RailwayStation { Name = "Вокзал 3", Stations = new List<Station>(stations.Skip(0)) });
             //await _unitOfWork.SaveAsync();
 
 
@@ -83,12 +93,12 @@ namespace Server.ViewModels
 
 
             //Обновление
-            var rs = _unitOfWork.RailwayStationRepository.GetById(2);  //_unitOfWork.RailwayStationRepository.Get().OrderBy(x => x.Id).ToList().First();
-            rs.Stations.Clear();
-            rs.Stations = stations.Skip(0).Take(4).ToList();
-            rs.Name = "gfdgd";
-            _unitOfWork.RailwayStationRepository.Update(rs);
-            await _unitOfWork.SaveAsync();
+            //var rs = _unitOfWork.RailwayStationRepository.GetById(2);  //_unitOfWork.RailwayStationRepository.Get().OrderBy(x => x.Id).ToList().First();
+            //rs.Stations.Clear();
+            //rs.Stations = stations.Skip(0).Take(4).ToList();
+            //rs.Name = "gfdgd";
+            //_unitOfWork.RailwayStationRepository.Update(rs);
+            //await _unitOfWork.SaveAsync();
 
 
             //удаление

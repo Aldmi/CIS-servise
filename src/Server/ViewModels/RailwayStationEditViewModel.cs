@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Data;
 using Caliburn.Micro;
 using Domain.Abstract;
 using Domain.Entities;
@@ -10,7 +13,8 @@ namespace Server.ViewModels
         OperativeSchedule,
         RegulatorySchedule,
         Diagnostic,
-        Info
+        Info,
+        Station
     }
 
 
@@ -21,6 +25,8 @@ namespace Server.ViewModels
 
         public RailwayStation RailwayStations { get; private set; }
 
+        public ICollection<Station> Stations { get; set; }
+
         public Options CurrentOption { get; set; }
 
         public RailwayStationEditViewModel(IUnitOfWork unitOfWork, RailwayStation railwayStation)
@@ -28,7 +34,9 @@ namespace Server.ViewModels
             _unitOfWork = unitOfWork;
             RailwayStations = railwayStation;
 
-            CurrentOption= Options.Diagnostic;
+            Stations = new List<Station>( railwayStation.Stations);
+
+            CurrentOption = Options.Station;
         }
     }
 }

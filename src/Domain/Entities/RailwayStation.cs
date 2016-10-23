@@ -17,7 +17,7 @@ namespace Domain.Entities
 
         public virtual ICollection<Station> Stations { get; set; }                              // многие ко многим с Station. (список возможных станций этого вокзала)
 
-        public virtual ICollection<OperativeSchedule> OperativeSchedules { get; set; }          // один ко многим с  OperativeSchedule. (одна запись в расписании принаджежит только 1 вокзалу)
+        public virtual ICollection<OperativeSchedule> OperativeSchedules { get; set; }         // один ко многим с  OperativeSchedule. (одна запись в расписании принаджежит только 1 вокзалу)
 
         //public List<RegulatorySchedule> RegulatorySchedules { get; set; }                    // один ко многим с RegulatorySchedules. (одна запись в расписании принаджежит только 1 вокзалу)
 
