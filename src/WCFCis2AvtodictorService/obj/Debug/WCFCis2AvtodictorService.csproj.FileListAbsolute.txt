@@ -1,0 +1,12 @@
+D:\Git\CIS\src\WCFCis2AvtodictorService\bin\Debug\WCFCis2AvtodictorService.dll.config
+D:\Git\CIS\src\WCFCis2AvtodictorService\bin\Debug\WCFCis2AvtodictorService.dll
+D:\Git\CIS\src\WCFCis2AvtodictorService\bin\Debug\WCFCis2AvtodictorService.pdb
+D:\Git\CIS\src\WCFCis2AvtodictorService\bin\Debug\Domain.dll
+D:\Git\CIS\src\WCFCis2AvtodictorService\bin\Debug\WCFCis2AvtodictorContract.dll
+D:\Git\CIS\src\WCFCis2AvtodictorService\bin\Debug\EntityFramework.dll
+D:\Git\CIS\src\WCFCis2AvtodictorService\bin\Debug\Domain.pdb
+D:\Git\CIS\src\WCFCis2AvtodictorService\bin\Debug\WCFCis2AvtodictorContract.pdb
+D:\Git\CIS\src\WCFCis2AvtodictorService\bin\Debug\EntityFramework.xml
+D:\Git\CIS\src\WCFCis2AvtodictorService\obj\Debug\WCFCis2AvtodictorService.csprojResolveAssemblyReference.cache
+D:\Git\CIS\src\WCFCis2AvtodictorService\obj\Debug\WCFCis2AvtodictorService.dll
+D:\Git\CIS\src\WCFCis2AvtodictorService\obj\Debug\WCFCis2AvtodictorService.pdb

@@ -183,6 +183,14 @@
       <Project>{04a093c7-370e-497c-a70e-474379229f84}</Project>
       <Name>Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WCFCis2AvtodictorContract\WCFCis2AvtodictorContract.csproj">
+      <Project>{57ca03dc-052f-445f-a708-edcd02d22e3f}</Project>
+      <Name>WCFCis2AvtodictorContract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WCFCis2AvtodictorService\WCFCis2AvtodictorService.csproj">
+      <Project>{1cb4e738-3872-4bfd-82c7-af301872342d}</Project>
+      <Name>WCFCis2AvtodictorService</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Components\Images\train_icon.png" />

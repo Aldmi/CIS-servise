@@ -7,6 +7,8 @@ using Caliburn.Micro;
 using Domain.Abstract;
 using Domain.DbContext;
 using Domain.Entities;
+using WCFCis2AvtodictorContract.Contract;
+using WCFCis2AvtodictorService;
 
 namespace Server.ViewModels
 {
@@ -15,6 +17,8 @@ namespace Server.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly IWindowManager _windowManager;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IServerContract _autoDictorServise;
+
 
 
         public IDisposable DispouseOrderStatusProcess { get; set; }
@@ -22,12 +26,13 @@ namespace Server.ViewModels
 
 
 
-        public AppViewModel(IEventAggregator events, IWindowManager windowManager, IUnitOfWork unitOfWork)
+        public AppViewModel(IEventAggregator events, IWindowManager windowManager, IUnitOfWork unitOfWork, IServerContract autoDictorServise)
         {
             _windowManager = windowManager;
             _unitOfWork = unitOfWork;
             _eventAggregator = events;
-            events.Subscribe(this);
+            //events.Subscribe(this);
+            _autoDictorServise = autoDictorServise;
         }
 
 
@@ -38,23 +43,25 @@ namespace Server.ViewModels
         public async void RailwayStation1()
         {
             const string railwayStationName = "Вокзал 3";
-            var railwayStation = _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName).Include(r => r.Stations).First();
+            var railwayStation = _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName).Include(r=> r.Stations).Include(op=> op.OperativeSchedules).First();
             if (railwayStation != null)
             {
                 var editViewModel = new RailwayStationEditViewModel(_unitOfWork, railwayStation);
-                _windowManager.ShowWindow(editViewModel);
+                var result = _windowManager.ShowDialog(editViewModel);
+
+                if (result != null && result.Value)
+                {
+                   // MessageBox.Show("Ok");
+                }
+                else
+                {
+                   // MessageBox.Show("Cancel");
+                }
             }
             else
             {
                 MessageBox.Show("Вокзала с именеем {0} не найденно", railwayStationName);
             }
-
-
-
-
-
-
-
 
 
 
@@ -72,9 +79,22 @@ namespace Server.ViewModels
             //    MessageBox.Show("Cancel");
             //}
 
-            //var stations = _unitOfWork.StationRepository.Get().OrderBy(x => x.Id).ToList();
 
-            //Добавление
+
+
+
+
+
+            var stations = _unitOfWork.StationRepository.Get().OrderBy(x => x.Id).ToList();
+
+
+            //заполнение таблицы оперативного расписания
+            //_unitOfWork.OperativeScheduleRepository.Insert(new OperativeSchedule {ArrivalTime = DateTime.Today, DepartureTime = DateTime.Now, RouteName = "Маршрут 2", NumberOfTrain = 2, DispatchStation = stations[2], StationOfDestination = stations[7], ListOfStops = stations.Skip(4).Take(2).ToList(), ListWithoutStops = stations.Skip(3).Take(6).ToList() });
+            //await _unitOfWork.SaveAsync();
+
+
+
+            //Добавление станции
             //_unitOfWork.RailwayStationRepository.Insert(new RailwayStation { Name = "Вокзал 3", Stations = new List<Station>(stations.Skip(0)) });
             //await _unitOfWork.SaveAsync();
 
@@ -93,10 +113,9 @@ namespace Server.ViewModels
 
 
             //Обновление
-            //var rs = _unitOfWork.RailwayStationRepository.GetById(2);  //_unitOfWork.RailwayStationRepository.Get().OrderBy(x => x.Id).ToList().First();
-            //rs.Stations.Clear();
-            //rs.Stations = stations.Skip(0).Take(4).ToList();
-            //rs.Name = "gfdgd";
+            //var rs = _unitOfWork.RailwayStationRepository.GetById(4);  //_unitOfWork.RailwayStationRepository.Get().OrderBy(x => x.Id).ToList().First();
+            //rs.OperativeSchedules.Clear();
+            //rs.OperativeSchedules = _unitOfWork.OperativeScheduleRepository.Get().ToList();
             //_unitOfWork.RailwayStationRepository.Update(rs);
             //await _unitOfWork.SaveAsync();
 

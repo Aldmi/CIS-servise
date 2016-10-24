@@ -219,3 +219,7 @@ D:\Temp\CIS_test\src\Server\obj\Debug\Views\RailwayStationEditView.baml
 D:\Temp\CIS_test\src\Server\obj\Debug\Server.g.resources
 D:\Temp\CIS_test\src\Server\obj\Debug\Server.Properties.Resources.resources
 D:\Temp\CIS_test\src\Server\obj\Debug\Server.csproj.GenerateResource.Cache
+D:\Git\CIS\src\Server\bin\Debug\WCFCis2AvtodictorContract.dll
+D:\Git\CIS\src\Server\bin\Debug\WCFCis2AvtodictorService.dll
+D:\Git\CIS\src\Server\bin\Debug\WCFCis2AvtodictorContract.pdb
+D:\Git\CIS\src\Server\bin\Debug\WCFCis2AvtodictorService.pdb
