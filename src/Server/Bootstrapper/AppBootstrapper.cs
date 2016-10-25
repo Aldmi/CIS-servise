@@ -1,8 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using Caliburn.Micro;
 using Castle.Windsor;
+using Castle.Facilities.WcfIntegration;
+using Server.HostWCF;
 using Server.ViewModels;
+using WCFCis2AvtodictorContract.Contract;
+using Component = Castle.MicroKernel.Registration.Component;
 
 namespace Server.Bootstrapper
 {
@@ -17,7 +22,7 @@ namespace Server.Bootstrapper
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            DisplayRootViewFor<AppViewModel>();
+            DisplayRootViewFor<AppViewModel>();                            //Вызов конструктора начального окна
         }
 
 
@@ -39,6 +44,9 @@ namespace Server.Bootstrapper
                     ? _container.Resolve(key, service)
                     : base.GetInstance(service, key);
         }
+
+
+
     }
 
 }

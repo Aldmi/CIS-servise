@@ -7,8 +7,12 @@ using Caliburn.Micro;
 using Domain.Abstract;
 using Domain.DbContext;
 using Domain.Entities;
+using System.ServiceModel;
+using Castle.Facilities.WcfIntegration;
+using Server.HostWCF;
 using WCFCis2AvtodictorContract.Contract;
-using WCFCis2AvtodictorService;
+
+
 
 namespace Server.ViewModels
 {
@@ -17,7 +21,7 @@ namespace Server.ViewModels
         private readonly IEventAggregator _eventAggregator;
         private readonly IWindowManager _windowManager;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IServerContract _autoDictorServise;
+        private readonly ServiceHostBase _serviceHost;
 
 
 
@@ -32,7 +36,8 @@ namespace Server.ViewModels
             _unitOfWork = unitOfWork;
             _eventAggregator = events;
             //events.Subscribe(this);
-            _autoDictorServise = autoDictorServise;
+
+            _serviceHost = new DefaultServiceHostFactory().CreateServiceHost("CisServiceResolver", new Uri[0]);
         }
 
 
@@ -42,20 +47,32 @@ namespace Server.ViewModels
 
         public async void RailwayStation1()
         {
+            //----DEBUG-------------------------------------------------------
+            //station.Name был равен Name1
+            //var station = _unitOfWork.StationRepository.Get().First();
+            ////поменяли в локальной коллекции без Update в БД
+            //station.Name = "NEWname";
+            ////сделали запрос чтобы к БД (хочу предыдущее состояние)
+            //_unitOfWork.StationRepository.UndoChanges();
+            //station = _unitOfWork.StationRepository.Get().First();
+            //// но station.Name уже "NEWname";
+            //var c = 5 + 5;
+            //----DEBUG--------------------------------------------------------
+
             const string railwayStationName = "Вокзал 3";
-            var railwayStation = _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName).Include(r=> r.Stations).Include(op=> op.OperativeSchedules).First();
-            if (railwayStation != null)
+            var railwayStation = await _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName).Include(r => r.Stations).Include(op => op.OperativeSchedules).FirstOrDefaultAsync();
+            if(railwayStation != null)
             {
                 var editViewModel = new RailwayStationEditViewModel(_unitOfWork, railwayStation);
                 var result = _windowManager.ShowDialog(editViewModel);
 
-                if (result != null && result.Value)
+                if(result != null && result.Value)
                 {
-                   // MessageBox.Show("Ok");
+                    // MessageBox.Show("Ok");
                 }
                 else
                 {
-                   // MessageBox.Show("Cancel");
+                    // MessageBox.Show("Cancel");
                 }
             }
             else
@@ -85,7 +102,7 @@ namespace Server.ViewModels
 
 
 
-            var stations = _unitOfWork.StationRepository.Get().OrderBy(x => x.Id).ToList();
+            //var stations = _unitOfWork.StationRepository.Get().OrderBy(x => x.Id).ToList();
 
 
             //заполнение таблицы оперативного расписания
@@ -127,13 +144,27 @@ namespace Server.ViewModels
         }
 
 
-
-
+        protected override void OnInitialize()
+        {
+            try
+            {
+                _serviceHost?.Open();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                base.OnInitialize();
+            }
+        }
 
 
         protected override void OnDeactivate(bool close)
         {
-            _eventAggregator.Unsubscribe(this);
+            _eventAggregator?.Unsubscribe(this);
+            _serviceHost?.Close();
             base.OnDeactivate(close);
         }
     }

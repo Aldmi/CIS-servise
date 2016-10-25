@@ -10,7 +10,7 @@ namespace WCFCis2AvtodictorContract.Contract
         [OperationContract]
         ICollection<StationsData> GetStations(int count);
 
-        [OperationContract]
-        ICollection<OperativeScheduleData> GetOperativeSchedules(int count);
+        //[OperationContract]
+        //ICollection<OperativeScheduleData> GetOperativeSchedules(int count);
     }
 }

@@ -35,8 +35,8 @@ namespace Server.ViewModels
         public RailwayStationEditViewModel(IUnitOfWork unitOfWork, RailwayStation railwayStation)
         {
             _unitOfWork = unitOfWork;
-
             RailwayStation = railwayStation;
+
             Stations = new ObservableCollection<Station>(RailwayStation.Stations.ToList());
             OperativeSchedules = new ObservableCollection<OperativeSchedule>(RailwayStation.OperativeSchedules);
         }
@@ -58,6 +58,7 @@ namespace Server.ViewModels
 
         public void Clouse()
         {
+            _unitOfWork.UndoChanges();
             TryClose(false);
         }
 

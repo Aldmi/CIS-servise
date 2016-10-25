@@ -1,4 +1,5 @@
-﻿using System.Data.Entity.Infrastructure;
+﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 using Domain.Abstract;
 using Domain.DbContext;
@@ -38,6 +39,29 @@ namespace Domain.Concrete
         {
             return await _context.SaveChangesAsync();
         }
+
+
+        public void UndoChanges()
+        {
+            foreach(var entry in _context.ChangeTracker.Entries())
+            {
+                switch(entry.State)
+                {
+                    case EntityState.Modified:
+                        entry.State = EntityState.Unchanged;
+                        break;
+
+                    case EntityState.Deleted:
+                        entry.Reload();
+                        break;
+
+                    case EntityState.Added:
+                        entry.State = EntityState.Detached;
+                        break;
+                }
+            }
+        }
+
 
         public void Dispose()
         {

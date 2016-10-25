@@ -19,8 +19,8 @@ namespace Domain.Abstract
 
 
 
-
-
         Task<int> SaveAsync();
+
+        void UndoChanges();
     }
 }

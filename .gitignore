@@ -4,3 +4,5 @@ src/Domain/bin/
 src/packages/
 src/UnitTests/obj/
 src/UnitTests/bin/
+src/Server/obj/
+src/Server/bin/
