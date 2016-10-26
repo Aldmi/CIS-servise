@@ -44,7 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contract\IServerContract.cs" />
+    <Compile Include="DataContract\DiagnosticData.cs" />
+    <Compile Include="DataContract\InfoData.cs" />
     <Compile Include="DataContract\OperativeScheduleData.cs" />
+    <Compile Include="DataContract\RailwayStationData.cs" />
+    <Compile Include="DataContract\RegulatoryScheduleData.cs" />
     <Compile Include="DataContract\StationsData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

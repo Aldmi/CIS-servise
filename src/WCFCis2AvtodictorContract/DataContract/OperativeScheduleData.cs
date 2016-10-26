@@ -28,8 +28,10 @@ namespace WCFCis2AvtodictorContract.DataContract
         [DataMember]
         public DateTime DepartureTime { get; set; }                                 //Время отправления поезда со станции
 
-        //public ICollection<StationsData> ListOfStops { get; set; }                //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
+        [DataMember]
+        public ICollection<StationsData> ListOfStops { get; set; }                  //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
 
-        //public ICollection<StationsData> ListWithoutStops { get; set; }           //Список станций которые поезд
+        [DataMember]
+        public ICollection<StationsData> ListWithoutStops { get; set; }             //Список станций которые поезд
     }
 }

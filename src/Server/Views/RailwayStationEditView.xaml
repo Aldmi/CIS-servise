@@ -3,10 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:fluent="urn:fluent-ribbon"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:Server.Views"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:utils="clr-namespace:Server.Utils"
         xmlns:vm="clr-namespace:Server.ViewModels"
+        xmlns:wpfExtensions="clr-namespace:Server.WPFExtensions"
         Name="EditView"
         mc:Ignorable="d">
 
@@ -329,7 +331,7 @@
                                       BorderBrush="Bisque"
                                       BorderThickness="2"
                                       Padding="1">
-                                <ListView ItemsSource="{Binding Path=ListOfStops, Mode=OneWay}" Padding="5">
+                                <ListView ItemsSource="{Binding Path=ListOfStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="5">
                                     <ListView.View>
                                         <GridView>
                                             <GridView.Columns>
@@ -343,6 +345,62 @@
                             </Expander>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
+
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ListView Name="ListBox1"
+                                      Margin="5"
+                                      IsSelected="True"
+                                      ItemsSource="{Binding ElementName=EditView,
+                                                            Path=DataContext.Stations,
+                                                            Mode=OneWay}"
+                                      SelectionMode="Extended">
+
+                                <i:Interaction.Behaviors>
+                                    <wpfExtensions:MultiSelectionBehavior SelectedItems="{Binding Path=ListOfStops, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </i:Interaction.Behaviors>
+
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListViewItem}">
+                                        <Setter Property="Margin" Value="5" />
+                                        <Setter Property="Padding" Value="5" />
+                                        <Setter Property="Background" Value="LightSteelBlue" />
+
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                    <Border x:Name="brd"
+                                                            Background="{TemplateBinding Background}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <CheckBox Margin="{TemplateBinding Padding}"
+                                                                      Focusable="False"
+                                                                      Foreground="{TemplateBinding Foreground}"
+                                                                      IsChecked="{Binding Path=IsSelected,
+                                                                                          RelativeSource={RelativeSource TemplatedParent},
+                                                                                          Mode=TwoWay}" />
+
+                                                            <TextBox Text="{Binding Path=Name}" />
+                                                        </StackPanel>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter Property="Background" Value="LimeGreen" />
+                                                            <Setter Property="Foreground" Value="White" />
+                                                            <Setter Property="BorderThickness" Value="1" />
+                                                            <Setter Property="BorderBrush" Value="Black" />
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
 
 
@@ -403,7 +461,6 @@
                     FontSize="20"
                     Padding="10" />
         </StackPanel>
-
 
     </Grid>
 </Window>

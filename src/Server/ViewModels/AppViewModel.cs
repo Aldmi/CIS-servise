@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows;
@@ -38,6 +39,7 @@ namespace Server.ViewModels
             //events.Subscribe(this);
 
             _serviceHost = new DefaultServiceHostFactory().CreateServiceHost("CisServiceResolver", new Uri[0]);
+
         }
 
 
@@ -61,8 +63,18 @@ namespace Server.ViewModels
 
             const string railwayStationName = "Вокзал 3";
             var railwayStation = await _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName).Include(r => r.Stations).Include(op => op.OperativeSchedules).FirstOrDefaultAsync();
-            if(railwayStation != null)
+            if (railwayStation != null)
             {
+                //DEBUG-------------------------------------------------------------------------------------------
+                //Moq вокзал
+                //var stations = new List<Station> {new Station {Name = "111", Id = 1}, new Station { Name = "222", Id = 2 }, new Station { Name = "333", Id = 3 } };//DEBUG
+                //var operSh = new List<OperativeSchedule>
+                //{
+                //    new OperativeSchedule {Id = 1, ListOfStops = new ObservableCollection<Station>(stations.Take(2).ToList())}
+                //};
+                //railwayStation= new RailwayStation {Id = 1, Name = "c1", Stations = stations, OperativeSchedules = operSh};
+                //--------------------------------------------------------------------------------------------------
+
                 var editViewModel = new RailwayStationEditViewModel(_unitOfWork, railwayStation);
                 var result = _windowManager.ShowDialog(editViewModel);
 

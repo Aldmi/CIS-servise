@@ -174,9 +174,7 @@ D:\Temp\CIS_test\src\Server\obj\Debug\Server.g.resources
 D:\Temp\CIS_test\src\Server\obj\Debug\Server.Properties.Resources.resources
 D:\Temp\CIS_test\src\Server\obj\Debug\Server.csproj.GenerateResource.Cache
 D:\Git\CIS\src\Server\bin\Debug\WCFCis2AvtodictorContract.dll
-D:\Git\CIS\src\Server\bin\Debug\WCFCis2AvtodictorService.dll
 D:\Git\CIS\src\Server\bin\Debug\WCFCis2AvtodictorContract.pdb
-D:\Git\CIS\src\Server\bin\Debug\WCFCis2AvtodictorService.pdb
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Server.exe.config
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Server.exe
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Server.pdb
@@ -195,10 +193,8 @@ E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\System.Reactive.Interfaces.dll
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\System.Reactive.Linq.dll
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\System.Windows.Interactivity.dll
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\WCFCis2AvtodictorContract.dll
-E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\WCFCis2AvtodictorService.dll
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Domain.pdb
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\WCFCis2AvtodictorContract.pdb
-E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\WCFCis2AvtodictorService.pdb
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Caliburn.Micro.xml
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Caliburn.Micro.Platform.xml
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Caliburn.Micro.Platform.Core.xml
@@ -241,3 +237,7 @@ D:\Dropbox\C#\Project C#\CIS\Server\obj\Debug\Views\RailwayStationEditView.g.cs
 D:\Dropbox\C#\Project C#\CIS\Server\obj\Debug\Views\RailwayStationEditView.baml
 D:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Castle.Facilities.WcfIntegration.dll
 D:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Castle.Facilities.WcfIntegration.xml
+E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Castle.Facilities.WcfIntegration.dll
+E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Castle.Facilities.WcfIntegration.xml
+D:\Git\CIS\src\Server\bin\Debug\Castle.Facilities.WcfIntegration.dll
+D:\Git\CIS\src\Server\bin\Debug\Castle.Facilities.WcfIntegration.xml

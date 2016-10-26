@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Domain.Abstract;
@@ -30,6 +32,8 @@ namespace Server.ViewModels
         public ObservableCollection<OperativeSchedule> OperativeSchedules { get; set; }
 
         public Options CurrentOption { get; set; } = Options.OperativeSchedule;
+
+
 
 
         public RailwayStationEditViewModel(IUnitOfWork unitOfWork, RailwayStation railwayStation)

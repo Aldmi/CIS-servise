@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -36,7 +37,7 @@ namespace Domain.Entities
         [Required]
         public DateTime DepartureTime { get; set; }                            //Время отправления поезда со станции
 
-        public virtual ICollection<Station> ListOfStops { get; set; }          //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
+        public virtual ObservableCollection<Station> ListOfStops { get; set; }          //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
 
         public virtual ICollection<Station> ListWithoutStops { get; set; }     //Список станций которые поезд
     }

@@ -19,10 +19,13 @@ namespace WCFCis2AvtodictorContract.DataContract
         [DataMember]
         public string Description { get; set; }
 
-        //public ICollection<OperativeScheduleData> OperativeSchedulesListOfStops { get; set; }      
+        [DataMember]
+        public ICollection<OperativeScheduleData> OperativeSchedulesListOfStops { get; set; }
 
-        //public ICollection<OperativeSchedule> OperativeSchedulesListWithoutStops { get; set; } 
+        [DataMember]
+        public ICollection<OperativeScheduleData> OperativeSchedulesListWithoutStops { get; set; }
 
-        //public ICollection<RailwayStation> RailwayStations { get; set; }
+        [DataMember]
+        public ICollection<RailwayStationData> RailwayStations { get; set; }
     }
 }
