@@ -155,6 +155,15 @@ namespace Server.ViewModels
             //await _unitOfWork.SaveAsync();
         }
 
+        public void LoadXmlDataInDb(string nameRailwayStations )
+        {
+            
+        }
+
+
+
+
+
 
         protected override void OnInitialize()
         {

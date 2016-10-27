@@ -39,6 +39,6 @@ namespace Domain.Entities
 
         public virtual ObservableCollection<Station> ListOfStops { get; set; }          //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
 
-        public virtual ICollection<Station> ListWithoutStops { get; set; }     //Список станций которые поезд
+        public virtual ObservableCollection<Station> ListWithoutStops { get; set; }     //Список станций которые поезд
     }
 }

@@ -27,9 +27,33 @@
 
         <fluent:Ribbon Grid.Row="0">
             <!--  Backstage  -->
-            <!--<fluent:Ribbon.Menu>
-                <fluent:Backstage />
-            </fluent:Ribbon.Menu>-->
+            <fluent:Ribbon.Menu>
+                <fluent:Backstage>
+                    <fluent:BackstageTabControl>
+                        <fluent:BackstageTabItem Header="Загрузить данные из XML файла в БД" />
+                        <fluent:Button micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('Вокзал 1')]"
+                                       FontSize="13"
+                                       Header="XML файл вокзала 1">
+                            <fluent:Button.ToolTip>
+                                <fluent:ScreenTip Title="Загрузить из XML файла"
+                                                  Width="250"
+                                                  Text="Эта команда загружает в базу данных сервера информацию по конкретному вокзалу" />
+                            </fluent:Button.ToolTip>
+                        </fluent:Button>
+
+                        <fluent:Button micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('Вокзал 2')]"
+                                       FontSize="13"
+                                       Header="XML файл вокзала 2">
+                            <fluent:Button.ToolTip>
+                                <fluent:ScreenTip Title="Загрузить из XML файла"
+                                                  Width="250"
+                                                  Text="Эта команда загружает в базу данных сервера информацию по конкретному вокзалу" />
+                            </fluent:Button.ToolTip>
+                        </fluent:Button>
+                    </fluent:BackstageTabControl>
+                </fluent:Backstage>
+            </fluent:Ribbon.Menu>
+
             <!--  Tabs  -->
             <fluent:RibbonTabItem Header="ВОКЗАЛЫ">
                 <fluent:RibbonGroupBox>

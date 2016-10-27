@@ -25,13 +25,15 @@ namespace WCFCis2AvtodictorContract.Contract
         Task<ICollection<OperativeScheduleData>> GetOperativeSchedules(int? count = null);
 
         [OperationContract]
-        Task<ICollection<RailwayStationData>> GetRailwayStations(int? count = null);
+        Task<RailwayStationData> GetRailwayStationByName(string name);
 
         [OperationContract]
         Task<ICollection<DiagnosticData>> GetDiagnostics(int? count = null);
 
         [OperationContract]
-        Task<ICollection<InfoData>> GetInfos(int? count = null);
+        void SetDiagnostics(int idRailwayStation, ICollection<DiagnosticData> diagnosticData);
 
+        [OperationContract]
+        Task<ICollection<InfoData>> GetInfos(int? count = null);
     }
 }

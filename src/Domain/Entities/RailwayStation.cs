@@ -24,6 +24,5 @@ namespace Domain.Entities
        //public virtual ICollection<Info> Infos { get; set; }
 
        // public virtual ICollection<Diagnostic> Diagnostics { get; set; }
-
     }
 }

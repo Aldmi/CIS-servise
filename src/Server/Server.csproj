@@ -175,7 +175,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Bootstrapper\WCFResolveSetting\" />
     <Folder Include="Event\" />
     <Folder Include="Models\" />
   </ItemGroup>

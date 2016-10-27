@@ -4,11 +4,10 @@ using System.Data.Entity;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using Domain.Abstract;
-using Domain.Entities;
 using WCFCis2AvtodictorContract.Contract;
 using WCFCis2AvtodictorContract.DataContract;
+
 
 namespace Server.HostWCF
 {
@@ -19,7 +18,7 @@ namespace Server.HostWCF
         private readonly IUnitOfWork _unitOfWork;
 
 
-
+        //TODO: возможно инжектировать IEventAggregator для регистрации издателя событий, который срабатывает при получении данных от автодикторов.
         public CisServise(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -94,12 +93,49 @@ namespace Server.HostWCF
         }
 
 
-        public Task<ICollection<RailwayStationData>> GetRailwayStations(int? count = null)
+
+        public async Task<RailwayStationData> GetRailwayStationByName(string name)
+        {
+            if(name == null)
+                throw new Exception("имя вокзала не указанно");
+
+            var railwayStation = await _unitOfWork.RailwayStationRepository.Search(r=> r.Name == name)
+                        .Include(r=> r.Stations)
+                        .Include(op=> op.OperativeSchedules)
+                        //TODO: Добавить Infos, Diagnostics, RegulatorySchedules
+                        .FirstOrDefaultAsync();
+
+
+            if(railwayStation == null)
+                throw new Exception("такого имени нету");
+
+
+            return new RailwayStationData
+            {
+                Name = railwayStation.Name,
+                Id = railwayStation.Id,
+                Stations = railwayStation.Stations.Select(r=> new StationsData {Id = r.Id, Name = r.Name, EcpCode = r.EcpCode, Description = r.Description}).ToList(),
+                OperativeSchedules = railwayStation.OperativeSchedules.Select(op=>new OperativeScheduleData {
+                    Id = op.Id,
+                    DispatchStation = new StationsData {Id = op.DispatchStation.Id, Description = op.DispatchStation.Description, EcpCode = op.DispatchStation.EcpCode, Name = op.DispatchStation.Name},
+                    StationOfDestination = new StationsData {Id = op.StationOfDestination.Id, Description = op.StationOfDestination.Description, EcpCode = op.StationOfDestination.EcpCode, Name = op.DispatchStation.Name},
+                    RouteName = op.RouteName,
+                    ArrivalTime = op.ArrivalTime,
+                    DepartureTime = op.DepartureTime,
+                    NumberOfTrain = op.NumberOfTrain,
+                    ListOfStops = new List<StationsData>(op.ListOfStops.Select(st => new StationsData { Id = st.Id, Name = st.Name, EcpCode = st.EcpCode, Description = st.Description })),
+                    ListWithoutStops = new List<StationsData>(op.ListWithoutStops.Select(st => new StationsData { Id = st.Id, Name = st.Name, EcpCode = st.EcpCode, Description = st.Description }))
+                }).ToList(),
+                //TODO: Добавить Infos, Diagnostics, RegulatorySchedules
+            };
+        }
+
+        public Task<ICollection<DiagnosticData>> GetDiagnostics(int? count = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ICollection<DiagnosticData>> GetDiagnostics(int? count = null)
+        public void SetDiagnostics(int idRailwayStation, ICollection<DiagnosticData> diagnosticData)
         {
             throw new NotImplementedException();
         }
@@ -112,10 +148,5 @@ namespace Server.HostWCF
         //TODO: добавить методы "получить N данных вокзала по id вокзала: станции, расписание,..."
         //TODO: добавить методы "получить N данных из какой-то таблицы: таблица станций, таблица расписаний, ..."
         //TODO: добавить методы "передать данные об состояния автодиктора"
-
-        //public ICollection<OperativeScheduleData> GetOperativeSchedules(int count)
-        //{
-        //    throw new System.NotImplementedException();
-        //}
     }
 }
