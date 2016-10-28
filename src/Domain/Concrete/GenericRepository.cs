@@ -53,7 +53,7 @@ namespace Domain.Concrete
             }
 
             foreach (var includeProperty in includeProperties.Split                        //управление ленивой загрузкой
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                (new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 query = query.Include(includeProperty);
             }

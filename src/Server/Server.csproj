@@ -100,6 +100,7 @@
     <Reference Include="System.ServiceModel.Activation" />
     <Reference Include="System.ServiceModel.Discovery" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.2.0.1.61\lib\net45\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -197,6 +198,10 @@
       <Project>{04a093c7-370e-497c-a70e-474379229f84}</Project>
       <Name>Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Library\Library.csproj">
+      <Project>{ace44fd0-96a6-4e11-9805-b8f78bcda7f4}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WCFCis2AvtodictorContract\WCFCis2AvtodictorContract.csproj">
       <Project>{57ca03dc-052f-445f-a708-edcd02d22e3f}</Project>
       <Name>WCFCis2AvtodictorContract</Name>
@@ -204,9 +209,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Components\Images\train_icon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

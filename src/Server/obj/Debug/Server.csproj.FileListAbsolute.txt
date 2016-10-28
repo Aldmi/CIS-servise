@@ -241,3 +241,7 @@ E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Castle.Facilities.WcfIntegration.d
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Castle.Facilities.WcfIntegration.xml
 D:\Git\CIS\src\Server\bin\Debug\Castle.Facilities.WcfIntegration.dll
 D:\Git\CIS\src\Server\bin\Debug\Castle.Facilities.WcfIntegration.xml
+E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Library.dll
+E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Library.pdb
+D:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Library.dll
+D:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Library.pdb

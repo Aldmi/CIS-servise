@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
-using System.Windows;
 using Caliburn.Micro;
 using Domain.Abstract;
 using Domain.DbContext;
 using Domain.Entities;
 using System.ServiceModel;
+using System.Windows.Forms;
+using System.Xml.Linq;
 using Castle.Facilities.WcfIntegration;
+using Library.Xml;
 using Server.HostWCF;
 using WCFCis2AvtodictorContract.Contract;
-
+using MessageBox = System.Windows.MessageBox;
 
 
 namespace Server.ViewModels
@@ -62,7 +65,9 @@ namespace Server.ViewModels
             //----DEBUG--------------------------------------------------------
 
             const string railwayStationName = "Вокзал 3";
-            var railwayStation = await _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName).Include(r => r.Stations).Include(op => op.OperativeSchedules).FirstOrDefaultAsync();
+            var query = _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName, null, "Stations, OperativeSchedules");
+            var railwayStation = await query.FirstOrDefaultAsync();
+
             if (railwayStation != null)
             {
                 //DEBUG-------------------------------------------------------------------------------------------
@@ -155,9 +160,28 @@ namespace Server.ViewModels
             //await _unitOfWork.SaveAsync();
         }
 
-        public void LoadXmlDataInDb(string nameRailwayStations )
+        public void LoadXmlDataInDb(string nameRailwayStations)
         {
-            
+            //1. Таблица "Станции" должна быть заполнена всеми возможными станциями 8 вокзалов (все станции Росии (примерно 11617))
+            //2. Таблица "Вокзалы" должна быть заполнена 8 элементами.
+
+            //Загрузка оперативного расписания (с полным уничтожением предыдущего).
+            //3. Из XML файла грузится список настроек (список объектов OperativeScheduleProxyXml).
+            //4. Если список создан без ошибок и в нем есть элемпенты, то имеем право очистить таблицу OperativeSchedules и список ссылок на элементы расписания в RailwayStation.
+            //5. Перебираем элементы сохданного прокси списка.
+            //6. Для каждого объекта из списка ищутся в таблице "Станции" нужные станции (станция отправления, станция назначения, список пропушенных, список остановочных).
+            //7. Каждый объект инициализирует новый OperativeSchedule и заполняет свои станции, найденными.
+            //8. Созданные объект OperativeSchedule помещается в список объекта RailwayStation.
+
+
+            var fbd = new OpenFileDialog { Filter = @"XML Files (.xml)|*.xml|All Files (*.*)|*.*" };
+            var result = fbd.ShowDialog();
+            if((result == DialogResult.OK) && (!string.IsNullOrWhiteSpace(fbd.FileName)))
+            {
+                //var x = XmlWorker.LoadXmlFile(fbd.InitialDirectory, fbd.SafeFileName);
+               var x=  XElement.Load(fbd.FileName);
+                MessageBox.Show(nameRailwayStations + "Files found: " + fbd.FileName);
+            }
         }
 
 

@@ -30,7 +30,44 @@
             <fluent:Ribbon.Menu>
                 <fluent:Backstage>
                     <fluent:BackstageTabControl>
-                        <fluent:BackstageTabItem Header="Загрузить данные из XML файла в БД" />
+                        <fluent:BackstageTabItem Header="Загрузить данных вокзала 1">
+                            <StackPanel VerticalAlignment="Top"
+                                        Background="LightCyan"
+                                        Orientation="Vertical">
+                                <fluent:Button Margin="10"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('operative')]"
+                                               Background="LightBlue"
+                                               FontSize="20"
+                                               Header="Оперативное расписание XML"
+                                               Padding="10">
+                                    <fluent:Button.ToolTip>
+                                        <fluent:ScreenTip Title="Загрузить из XML файла"
+                                                          Width="250"
+                                                          Text="Эта команда загружает в базу данных сервера оперативное расписание" />
+                                    </fluent:Button.ToolTip>
+                                </fluent:Button>
+
+                                <fluent:Button Margin="10"
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('regular')]"
+                                               Background="LightBlue"
+                                               FontSize="20"
+                                               Header="Регулярное расписание XML"
+                                               Padding="10">
+                                    <fluent:Button.ToolTip>
+                                        <fluent:ScreenTip Title="Загрузить из XML файла"
+                                                          Width="250"
+                                                          Text="Эта команда загружает в базу данных сервера регулярное расписание" />
+                                    </fluent:Button.ToolTip>
+                                </fluent:Button>
+
+                            </StackPanel>
+                        </fluent:BackstageTabItem>
+
+
                         <fluent:Button micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('Вокзал 1')]"
                                        FontSize="13"
                                        Header="XML файл вокзала 1">
