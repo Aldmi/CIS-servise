@@ -7,11 +7,11 @@ using Domain.Entities;
 
 namespace Domain.FactoryEntities
 {
-    public class OperativeScheduleFactory
+    public static class OperativeScheduleFromXmlFactory
     {
         #region Methode
 
-        public static List<OperativeSchedule> LoadXmlSetting(XElement xml, IEnumerable<Station> station)
+        public static List<OperativeSchedule> LoadXmlSetting(XElement xml, IEnumerable<Station> stations)
         {
             var operativeSchedules= new List<OperativeSchedule>();
 
@@ -20,13 +20,20 @@ namespace Domain.FactoryEntities
             {
                 foreach (var el in xElements)
                 {
+                    int ecpCodeDispatchStation = int.Parse((string) el.Attribute("Станция отправления"));
+                    int ecpCodeStationOfDestination = int.Parse((string)el.Attribute("Станция назначения"));
+
+                    var dispatchStation= stations.FirstOrDefault(st => st.EcpCode == ecpCodeStationOfDestination) ?? new Station { EcpCode = ecpCodeDispatchStation };
+                    var stationOfDestination = stations.FirstOrDefault(st => st.EcpCode == ecpCodeStationOfDestination) ?? new Station { EcpCode = ecpCodeStationOfDestination };
+
+
                     var op= new OperativeSchedule {
                         RouteName = (string) el.Attribute("Id"),
                         ArrivalTime = DateTime.Parse((string)el.Attribute("ArrivalTime")),
                         DepartureTime = DateTime.Parse((string)el.Attribute("DepartureTime")),
                         NumberOfTrain = (int) el.Attribute("NumberOfTrain"),
-                        DispatchStation = station.First(st => st.Name.Equals((string)el.Attribute("Станция отпарвления"))),
-                        StationOfDestination = station.First(st => st.Name.Equals((string)el.Attribute("Станция назначения")))
+                        DispatchStation = dispatchStation,
+                        StationOfDestination = stationOfDestination
                     };
 
                     operativeSchedules.Add(op);

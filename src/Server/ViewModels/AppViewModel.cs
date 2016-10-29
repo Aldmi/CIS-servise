@@ -176,12 +176,16 @@ namespace Server.ViewModels
 
             var fbd = new OpenFileDialog { Filter = @"XML Files (.xml)|*.xml|All Files (*.*)|*.*" };
             var result = fbd.ShowDialog();
-            if((result == DialogResult.OK) && (!string.IsNullOrWhiteSpace(fbd.FileName)))
+            if ((result == DialogResult.OK) && (!string.IsNullOrWhiteSpace(fbd.FileName)))
             {
-                //var x = XmlWorker.LoadXmlFile(fbd.InitialDirectory, fbd.SafeFileName);
-               var x=  XElement.Load(fbd.FileName);
-                MessageBox.Show(nameRailwayStations + "Files found: " + fbd.FileName);
+                var x = XElement.Load(fbd.FileName);
             }
+
+            //var newStationDisp= new Station {Description = "новая станция назначения", EcpCode = 586, Name = "Станция ууу"};
+            //var newStationArriv = new Station { Description = "новая станция прибытия", EcpCode = 423, Name = "Станция ттт" };
+            //var operSh= new OperativeSchedule {ArrivalTime = DateTime.Now, DepartureTime = DateTime.Today, NumberOfTrain = 10, RouteName = "Новый маршрут", DispatchStation = newStationDisp, StationOfDestination = newStationArriv};
+            //_unitOfWork.OperativeScheduleRepository.Insert(operSh);
+            //_unitOfWork.SaveAsync();
         }
 
 

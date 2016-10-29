@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,6 +24,6 @@ namespace Domain.Entities
 
        //public virtual ICollection<Info> Infos { get; set; }
 
-       // public virtual ICollection<Diagnostic> Diagnostics { get; set; }
+        public virtual ObservableCollection<Diagnostic> Diagnostics { get; set; }              // один ко многим с Diagnostic. (одна запись в диагностики принаджежит только 1 вокзалу)
     }
 }

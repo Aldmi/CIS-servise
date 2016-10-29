@@ -9,7 +9,7 @@ namespace WCFCis2AvtodictorContract.DataContract
         public int Id { get; set; }
 
         [DataMember]
-        public int DeviceId { get; set; }   //Числовой Уникальный номер, присвоенный устройству в системе информирования.
+        public int DeviceNumber { get; set; }   //Числовой Уникальный номер, присвоенный устройству в системе информирования.
 
         [DataMember]
         public int Status { get; set; }     //Код общего статуса технического состояния устройства: исправен - неисправен

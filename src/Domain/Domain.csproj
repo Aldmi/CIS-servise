@@ -60,7 +60,7 @@
     <Compile Include="Entities\RailwayStation.cs" />
     <Compile Include="Entities\RegulatorySchedule.cs" />
     <Compile Include="Entities\Station.cs" />
-    <Compile Include="FactoryEntities\OperativeScheduleFactory.cs" />
+    <Compile Include="FactoryEntities\OperativeScheduleFromXmlFactory.cs" />
     <Compile Include="Migrations\201610221730154_Test1.cs" />
     <Compile Include="Migrations\201610221730154_Test1.Designer.cs">
       <DependentUpon>201610221730154_Test1.cs</DependentUpon>
@@ -72,6 +72,14 @@
     <Compile Include="Migrations\201610221821139_AddInfoAndDiagnosticTables.cs" />
     <Compile Include="Migrations\201610221821139_AddInfoAndDiagnosticTables.Designer.cs">
       <DependentUpon>201610221821139_AddInfoAndDiagnosticTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610291258012_AddDiagnosticsTable.cs" />
+    <Compile Include="Migrations\201610291258012_AddDiagnosticsTable.Designer.cs">
+      <DependentUpon>201610291258012_AddDiagnosticsTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610291313323_AddDiagnosticsCollectionsInRailwayStationTable.cs" />
+    <Compile Include="Migrations\201610291313323_AddDiagnosticsCollectionsInRailwayStationTable.Designer.cs">
+      <DependentUpon>201610291313323_AddDiagnosticsCollectionsInRailwayStationTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,6 +97,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610221821139_AddInfoAndDiagnosticTables.resx">
       <DependentUpon>201610221821139_AddInfoAndDiagnosticTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610291258012_AddDiagnosticsTable.resx">
+      <DependentUpon>201610291258012_AddDiagnosticsTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610291313323_AddDiagnosticsCollectionsInRailwayStationTable.resx">
+      <DependentUpon>201610291313323_AddDiagnosticsCollectionsInRailwayStationTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

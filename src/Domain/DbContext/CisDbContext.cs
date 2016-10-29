@@ -7,7 +7,7 @@ namespace Domain.DbContext
     {
         public CisDbContext() : base("CisDbContext")
         {
-             //Database.SetInitializer(new DropCreateDatabaseAlways<CisDbContext>());
+
         }
 
 
@@ -22,6 +22,8 @@ namespace Domain.DbContext
         public DbSet<RailwayStation> RailwayStations { get; set; }
 
         public DbSet<Info> Infos { get; set; }
+
+        public DbSet<Diagnostic> Diagnostics { get; set; }
 
         #endregion
 

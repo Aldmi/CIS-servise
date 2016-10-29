@@ -8,13 +8,6 @@ namespace WCFCis2AvtodictorContract.Contract
     [ServiceContract]
     public interface IServerContract
     {
-        //private GenericRepository<Station> _stationRepository;
-        //private GenericRepository<RegulatorySchedule> _regulatoryScheduleRepository;
-        //private GenericRepository<OperativeSchedule> _operativeScheduleRepository;
-        //private GenericRepository<RailwayStation> _railwayStationRepository;
-        //private GenericRepository<Diagnostic> _diagnosticRepository;
-        //private GenericRepository<Info> _infoRepository;
-
         [OperationContract]
         Task<ICollection<StationsData>> GetStations(int? count= null);
 

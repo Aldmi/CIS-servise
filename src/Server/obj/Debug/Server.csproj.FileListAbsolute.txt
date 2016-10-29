@@ -245,3 +245,5 @@ E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Library.dll
 E:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Library.pdb
 D:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Library.dll
 D:\Dropbox\C#\Project C#\CIS\Server\bin\Debug\Library.pdb
+D:\Git\CIS\src\Server\bin\Debug\Library.dll
+D:\Git\CIS\src\Server\bin\Debug\Library.pdb

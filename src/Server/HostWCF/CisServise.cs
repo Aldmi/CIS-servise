@@ -5,17 +5,20 @@ using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
 using Domain.Abstract;
+using Domain.Entities;
 using WCFCis2AvtodictorContract.Contract;
 using WCFCis2AvtodictorContract.DataContract;
+using WCFCis2AvtodictorContract.DataContract.SimpleData;
 
 
 namespace Server.HostWCF
 {
 
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
-    public class CisServise : IServerContract
+    public class CisServise : IServerContract, IServerContractSimple
     {
         private readonly IUnitOfWork _unitOfWork;
+
 
 
         //TODO: возможно инжектировать IEventAggregator для регистрации издателя событий, который срабатывает при получении данных от автодикторов.
@@ -26,17 +29,30 @@ namespace Server.HostWCF
 
 
 
+
+        #region ImplementsIServerContract
+
         public async Task<ICollection<StationsData>> GetStations(int? count = null)
         {
             try
             {
-                var stations = (count != null) ? await _unitOfWork.StationRepository.Get().AsNoTracking().Take(count.Value).ToListAsync() :
-                                                 await _unitOfWork.StationRepository.Get().AsNoTracking().ToListAsync();
+                var stations = (count != null)
+                    ? await _unitOfWork.StationRepository.Get().AsNoTracking().Take(count.Value).ToListAsync()
+                    : await _unitOfWork.StationRepository.Get().AsNoTracking().ToListAsync();
 
-                return stations.Select(st => new StationsData { Description = st.Description, Id = st.Id, Name = st.Name, EcpCode = st.EcpCode }).ToList();
+                return
+                    stations.Select(
+                        st =>
+                            new StationsData
+                            {
+                                Description = st.Description,
+                                Id = st.Id,
+                                Name = st.Name,
+                                EcpCode = st.EcpCode
+                            }).ToList();
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -73,22 +89,56 @@ namespace Server.HostWCF
                             .ToListAsync();
 
                 return
-                operativeSchedules.Select(op => new OperativeScheduleData
-                {
-                    Id = op.Id,
-                    RouteName = op.RouteName,
-                    ArrivalTime = op.ArrivalTime,
-                    DepartureTime = op.DepartureTime,
-                    NumberOfTrain = op.NumberOfTrain,
-                    DispatchStation = new StationsData { Id = op.DispatchStation.Id, Name = op.DispatchStation.Name, Description = op.DispatchStation.Description, EcpCode = op.DispatchStation.EcpCode },
-                    StationOfDestination = new StationsData { Id = op.StationOfDestination.Id, Name = op.StationOfDestination.Name, Description = op.StationOfDestination.Description, EcpCode = op.StationOfDestination.EcpCode },
-                    ListOfStops = new List<StationsData>(op.ListOfStops.Select(st=> new StationsData { Id = st.Id, Name = st.Name, EcpCode = st.EcpCode, Description = st.Description})),
-                    ListWithoutStops = new List<StationsData>(op.ListWithoutStops.Select(st => new StationsData { Id = st.Id, Name = st.Name, EcpCode = st.EcpCode, Description = st.Description }))
-                }).ToList();
+                    operativeSchedules.Select(op => new OperativeScheduleData
+                    {
+                        Id = op.Id,
+                        RouteName = op.RouteName,
+                        ArrivalTime = op.ArrivalTime,
+                        DepartureTime = op.DepartureTime,
+                        NumberOfTrain = op.NumberOfTrain,
+                        DispatchStation =
+                            new StationsData
+                            {
+                                Id = op.DispatchStation.Id,
+                                Name = op.DispatchStation.Name,
+                                Description = op.DispatchStation.Description,
+                                EcpCode = op.DispatchStation.EcpCode
+                            },
+                        StationOfDestination =
+                            new StationsData
+                            {
+                                Id = op.StationOfDestination.Id,
+                                Name = op.StationOfDestination.Name,
+                                Description = op.StationOfDestination.Description,
+                                EcpCode = op.StationOfDestination.EcpCode
+                            },
+                        ListOfStops =
+                            new List<StationsData>(
+                                op.ListOfStops.Select(
+                                    st =>
+                                        new StationsData
+                                        {
+                                            Id = st.Id,
+                                            Name = st.Name,
+                                            EcpCode = st.EcpCode,
+                                            Description = st.Description
+                                        })),
+                        ListWithoutStops =
+                            new List<StationsData>(
+                                op.ListWithoutStops.Select(
+                                    st =>
+                                        new StationsData
+                                        {
+                                            Id = st.Id,
+                                            Name = st.Name,
+                                            EcpCode = st.EcpCode,
+                                            Description = st.Description
+                                        }))
+                    }).ToList();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw ex;         //TODO: реализовать отправку форматированного исключения на сервер.
+                throw ex; //TODO: реализовать отправку форматированного исключения на сервер.
             }
         }
 
@@ -96,17 +146,17 @@ namespace Server.HostWCF
 
         public async Task<RailwayStationData> GetRailwayStationByName(string name)
         {
-            if(name == null)
+            if (name == null)
                 throw new Exception("имя вокзала не указанно");
 
-            var railwayStation = await _unitOfWork.RailwayStationRepository.Search(r=> r.Name == name)
-                        .Include(r=> r.Stations)
-                        .Include(op=> op.OperativeSchedules)
-                        //TODO: Добавить Infos, Diagnostics, RegulatorySchedules
-                        .FirstOrDefaultAsync();
+            var railwayStation = await _unitOfWork.RailwayStationRepository.Search(r => r.Name == name)
+                .Include(r => r.Stations)
+                .Include(op => op.OperativeSchedules)
+                //TODO: Добавить Infos, Diagnostics, RegulatorySchedules
+                .FirstOrDefaultAsync();
 
 
-            if(railwayStation == null)
+            if (railwayStation == null)
                 throw new Exception("такого имени нету");
 
 
@@ -114,17 +164,61 @@ namespace Server.HostWCF
             {
                 Name = railwayStation.Name,
                 Id = railwayStation.Id,
-                Stations = railwayStation.Stations.Select(r=> new StationsData {Id = r.Id, Name = r.Name, EcpCode = r.EcpCode, Description = r.Description}).ToList(),
-                OperativeSchedules = railwayStation.OperativeSchedules.Select(op=>new OperativeScheduleData {
+                Stations =
+                    railwayStation.Stations.Select(
+                        r =>
+                            new StationsData
+                            {
+                                Id = r.Id,
+                                Name = r.Name,
+                                EcpCode = r.EcpCode,
+                                Description = r.Description
+                            }).ToList(),
+                OperativeSchedules = railwayStation.OperativeSchedules.Select(op => new OperativeScheduleData
+                {
                     Id = op.Id,
-                    DispatchStation = new StationsData {Id = op.DispatchStation.Id, Description = op.DispatchStation.Description, EcpCode = op.DispatchStation.EcpCode, Name = op.DispatchStation.Name},
-                    StationOfDestination = new StationsData {Id = op.StationOfDestination.Id, Description = op.StationOfDestination.Description, EcpCode = op.StationOfDestination.EcpCode, Name = op.DispatchStation.Name},
+                    DispatchStation =
+                        new StationsData
+                        {
+                            Id = op.DispatchStation.Id,
+                            Description = op.DispatchStation.Description,
+                            EcpCode = op.DispatchStation.EcpCode,
+                            Name = op.DispatchStation.Name
+                        },
+                    StationOfDestination =
+                        new StationsData
+                        {
+                            Id = op.StationOfDestination.Id,
+                            Description = op.StationOfDestination.Description,
+                            EcpCode = op.StationOfDestination.EcpCode,
+                            Name = op.DispatchStation.Name
+                        },
                     RouteName = op.RouteName,
                     ArrivalTime = op.ArrivalTime,
                     DepartureTime = op.DepartureTime,
                     NumberOfTrain = op.NumberOfTrain,
-                    ListOfStops = new List<StationsData>(op.ListOfStops.Select(st => new StationsData { Id = st.Id, Name = st.Name, EcpCode = st.EcpCode, Description = st.Description })),
-                    ListWithoutStops = new List<StationsData>(op.ListWithoutStops.Select(st => new StationsData { Id = st.Id, Name = st.Name, EcpCode = st.EcpCode, Description = st.Description }))
+                    ListOfStops =
+                        new List<StationsData>(
+                            op.ListOfStops.Select(
+                                st =>
+                                    new StationsData
+                                    {
+                                        Id = st.Id,
+                                        Name = st.Name,
+                                        EcpCode = st.EcpCode,
+                                        Description = st.Description
+                                    })),
+                    ListWithoutStops =
+                        new List<StationsData>(
+                            op.ListWithoutStops.Select(
+                                st =>
+                                    new StationsData
+                                    {
+                                        Id = st.Id,
+                                        Name = st.Name,
+                                        EcpCode = st.EcpCode,
+                                        Description = st.Description
+                                    }))
                 }).ToList(),
                 //TODO: Добавить Infos, Diagnostics, RegulatorySchedules
             };
@@ -137,7 +231,7 @@ namespace Server.HostWCF
 
         public void SetDiagnostics(int idRailwayStation, ICollection<DiagnosticData> diagnosticData)
         {
-            throw new NotImplementedException();
+            var diagnostic= new Diagnostic();
         }
 
         public Task<ICollection<InfoData>> GetInfos(int? count = null)
@@ -145,8 +239,25 @@ namespace Server.HostWCF
             throw new NotImplementedException();
         }
 
-        //TODO: добавить методы "получить N данных вокзала по id вокзала: станции, расписание,..."
-        //TODO: добавить методы "получить N данных из какой-то таблицы: таблица станций, таблица расписаний, ..."
-        //TODO: добавить методы "передать данные об состояния автодиктора"
+        #endregion
+
+
+
+
+
+        #region ImplementsIServerContractSimple
+
+        public Task<ICollection<RegulatoryScheduleDataSimple>> GetSimpleRegulatorySchedules(int? count = null)
+        {
+            return null;
+        }
+
+        public Task<ICollection<OperativeScheduleDataSimple>> GetSimpleOperativeSchedules(int? count = null)
+        {
+            return null;
+        }
+
+        #endregion
+
     }
 }
