@@ -24,7 +24,7 @@ namespace WCFCis2AvtodictorContract.Contract
         Task<ICollection<DiagnosticData>> GetDiagnostics(int? count = null);
 
         [OperationContract]
-        void SetDiagnostics(int idRailwayStation, ICollection<DiagnosticData> diagnosticData);
+        void SetDiagnostics(string nameRailwayStation, ICollection<DiagnosticData> diagnosticData);
 
         [OperationContract]
         Task<ICollection<InfoData>> GetInfos(int? count = null);

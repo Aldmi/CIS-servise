@@ -8,6 +8,7 @@
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:micro="http://www.caliburnproject.org"
                      xmlns:viewModels="clr-namespace:Server.ViewModels"
+                     xmlns:views="clr-namespace:Server.Views"
                      Title="ЦИС"
                      d:DataContext="{d:DesignInstance Type=viewModels:AppViewModel,
                                                       IsDesignTimeCreatable=True}"
@@ -15,12 +16,16 @@
                      mc:Ignorable="d">
 
 
-
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModels:DiagnosticViewModel}">
+            <views:DiagnosticView />
+        </DataTemplate>
+    </Window.Resources>
 
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -66,27 +71,6 @@
 
                             </StackPanel>
                         </fluent:BackstageTabItem>
-
-
-                        <fluent:Button micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('Вокзал 1')]"
-                                       FontSize="13"
-                                       Header="XML файл вокзала 1">
-                            <fluent:Button.ToolTip>
-                                <fluent:ScreenTip Title="Загрузить из XML файла"
-                                                  Width="250"
-                                                  Text="Эта команда загружает в базу данных сервера информацию по конкретному вокзалу" />
-                            </fluent:Button.ToolTip>
-                        </fluent:Button>
-
-                        <fluent:Button micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('Вокзал 2')]"
-                                       FontSize="13"
-                                       Header="XML файл вокзала 2">
-                            <fluent:Button.ToolTip>
-                                <fluent:ScreenTip Title="Загрузить из XML файла"
-                                                  Width="250"
-                                                  Text="Эта команда загружает в базу данных сервера информацию по конкретному вокзалу" />
-                            </fluent:Button.ToolTip>
-                        </fluent:Button>
                     </fluent:BackstageTabControl>
                 </fluent:Backstage>
             </fluent:Ribbon.Menu>
@@ -153,11 +137,32 @@
         </fluent:Ribbon>
 
 
-        <Label Grid.Row="1"
-               HorizontalAlignment="Center"
-               Content=" ТУТ БУДЕТ ОБЩАЯ ИНФОРМАЦИЯ ПО ВОКЗАЛАМ" />
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
+            <UserControl Grid.Row="0"
+                         Grid.Column="0"
+                         Margin="10"
+                         Content="{Binding Path=DiagnosticVm1,
+                                           Mode=OneWay}" />
+
+            <UserControl Grid.Row="0"
+                         Grid.Column="1"
+                         Margin="10"
+                         Content="{Binding Path=DiagnosticVm2,
+                                           Mode=OneWay}" />
+
+        </Grid>
     </Grid>
 
 </fluent:RibbonWindow>

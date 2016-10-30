@@ -4,8 +4,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
+using Caliburn.Micro;
 using Domain.Abstract;
-using Domain.Entities;
+using Server.Event;
 using WCFCis2AvtodictorContract.Contract;
 using WCFCis2AvtodictorContract.DataContract;
 using WCFCis2AvtodictorContract.DataContract.SimpleData;
@@ -13,18 +14,18 @@ using WCFCis2AvtodictorContract.DataContract.SimpleData;
 
 namespace Server.HostWCF
 {
-
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class CisServise : IServerContract, IServerContractSimple
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEventAggregator _events;
 
 
 
-        //TODO: возможно инжектировать IEventAggregator для регистрации издателя событий, который срабатывает при получении данных от автодикторов.
-        public CisServise(IUnitOfWork unitOfWork)
+        public CisServise(IUnitOfWork unitOfWork, IEventAggregator events)
         {
             _unitOfWork = unitOfWork;
+            _events = events;
         }
 
 
@@ -229,9 +230,23 @@ namespace Server.HostWCF
             throw new NotImplementedException();
         }
 
-        public void SetDiagnostics(int idRailwayStation, ICollection<DiagnosticData> diagnosticData)
+        public void SetDiagnostics(string nameRailwayStation, ICollection<DiagnosticData> diagnosticData)
         {
-            var diagnostic= new Diagnostic();
+            //DEBUG-----------------------------------------------------
+            diagnosticData = new List<DiagnosticData>
+            {
+                new DiagnosticData {DeviceNumber = 10, Fault = "sadsad", Status = 458},
+                new DiagnosticData {DeviceNumber = 11, Fault = "gfg", Status = 78},
+                new DiagnosticData {DeviceNumber = 12, Fault = "jh", Status = 65}
+            };
+            //DEBUG-----------------------------------------------------
+
+            var eventData = new AutodictorDiagnosticEvent {NameRailwayStation = nameRailwayStation, DiagnosticData = diagnosticData};
+            _events.Publish(eventData,
+                      action =>
+                      {
+                          Task.Factory.StartNew(action);
+                      });
         }
 
         public Task<ICollection<InfoData>> GetInfos(int? count = null)

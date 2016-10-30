@@ -128,14 +128,19 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Bootstrapper\WindsorConfig.cs" />
+    <Compile Include="Event\AutodictorDiagnosticEvent.cs" />
     <Compile Include="HostWCF\CisServise.cs" />
     <Compile Include="Utils\EnumMatchToBooleanConverter.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="Bootstrapper\AppBootstrapper.cs" />
+    <Compile Include="ViewModels\DiagnosticViewModel.cs" />
     <Compile Include="ViewModels\DialogViewModel.cs" />
     <Compile Include="ViewModels\RailwayStationEditViewModel.cs" />
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DiagnosticView.xaml.cs">
+      <DependentUpon>DiagnosticView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DialogView.xaml.cs">
       <DependentUpon>DialogView.xaml</DependentUpon>
@@ -176,11 +181,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Event\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\AppView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DiagnosticView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

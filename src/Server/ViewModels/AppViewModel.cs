@@ -16,6 +16,7 @@ using Library.Xml;
 using Server.HostWCF;
 using WCFCis2AvtodictorContract.Contract;
 using MessageBox = System.Windows.MessageBox;
+using Screen = Caliburn.Micro.Screen;
 
 
 namespace Server.ViewModels
@@ -28,21 +29,20 @@ namespace Server.ViewModels
         private readonly ServiceHostBase _serviceHost;
 
 
-
-        public IDisposable DispouseOrderStatusProcess { get; set; }
-        public IDisposable DispouseOrderStatusAcsess { get; set; }
-
+        public DiagnosticViewModel DiagnosticVm1 { get; set; }
+        public DiagnosticViewModel DiagnosticVm2 { get; set; }
 
 
-        public AppViewModel(IEventAggregator events, IWindowManager windowManager, IUnitOfWork unitOfWork, IServerContract autoDictorServise)
+        public AppViewModel(IEventAggregator events, IWindowManager windowManager, IUnitOfWork unitOfWork)
         {
             _windowManager = windowManager;
             _unitOfWork = unitOfWork;
             _eventAggregator = events;
-            //events.Subscribe(this);
+
+            DiagnosticVm1 = new DiagnosticViewModel("Вокзал 1",_eventAggregator);
+            DiagnosticVm2 = new DiagnosticViewModel("Вокзал 2", _eventAggregator);
 
             _serviceHost = new DefaultServiceHostFactory().CreateServiceHost("CisServiceResolver", new Uri[0]);
-
         }
 
 
@@ -162,18 +162,6 @@ namespace Server.ViewModels
 
         public void LoadXmlDataInDb(string nameRailwayStations)
         {
-            //1. Таблица "Станции" должна быть заполнена всеми возможными станциями 8 вокзалов (все станции Росии (примерно 11617))
-            //2. Таблица "Вокзалы" должна быть заполнена 8 элементами.
-
-            //Загрузка оперативного расписания (с полным уничтожением предыдущего).
-            //3. Из XML файла грузится список настроек (список объектов OperativeScheduleProxyXml).
-            //4. Если список создан без ошибок и в нем есть элемпенты, то имеем право очистить таблицу OperativeSchedules и список ссылок на элементы расписания в RailwayStation.
-            //5. Перебираем элементы сохданного прокси списка.
-            //6. Для каждого объекта из списка ищутся в таблице "Станции" нужные станции (станция отправления, станция назначения, список пропушенных, список остановочных).
-            //7. Каждый объект инициализирует новый OperativeSchedule и заполняет свои станции, найденными.
-            //8. Созданные объект OperativeSchedule помещается в список объекта RailwayStation.
-
-
             var fbd = new OpenFileDialog { Filter = @"XML Files (.xml)|*.xml|All Files (*.*)|*.*" };
             var result = fbd.ShowDialog();
             if ((result == DialogResult.OK) && (!string.IsNullOrWhiteSpace(fbd.FileName)))
