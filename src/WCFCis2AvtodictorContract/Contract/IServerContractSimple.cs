@@ -14,9 +14,9 @@ namespace WCFCis2AvtodictorContract.Contract
     public interface IServerContractSimple
     {
         [OperationContract]
-        Task<ICollection<RegulatoryScheduleDataSimple>> GetSimpleRegulatorySchedules(int? count = null);
+        Task<ICollection<RegulatoryScheduleDataSimple>> GetSimpleRegulatorySchedules(string nameRailwayStation, int? count = null);
 
         [OperationContract]
-        Task<ICollection<OperativeScheduleDataSimple>> GetSimpleOperativeSchedules(int? count = null);
+        Task<ICollection<OperativeScheduleDataSimple>> GetSimpleOperativeSchedules(string nameRailwayStation, int? count = null);
     }
 }

@@ -9,24 +9,21 @@ namespace WCFCis2AvtodictorContract.Contract
     public interface IServerContract
     {
         [OperationContract]
-        Task<ICollection<StationsData>> GetStations(int? count= null);
+        Task<ICollection<StationsData>> GetStations(string nameRailwayStation, int? count = null);
 
         [OperationContract]
-        Task<ICollection<RegulatoryScheduleData>> GetRegulatorySchedules(int? count = null);
+        Task<ICollection<RegulatoryScheduleData>> GetRegulatorySchedules(string nameRailwayStation, int? count = null);
 
         [OperationContract]
-        Task<ICollection<OperativeScheduleData>> GetOperativeSchedules(int? count = null);
+        Task<ICollection<OperativeScheduleData>> GetOperativeSchedules(string nameRailwayStation, int? count = null);
 
         [OperationContract]
-        Task<RailwayStationData> GetRailwayStationByName(string name);
+        Task<ICollection<DiagnosticData>> GetDiagnostics(string nameRailwayStation, int? count = null);
 
         [OperationContract]
-        Task<ICollection<DiagnosticData>> GetDiagnostics(int? count = null);
+        Task<ICollection<InfoData>> GetInfos(string nameRailwayStation, int? count = null);
 
         [OperationContract]
         void SetDiagnostics(string nameRailwayStation, ICollection<DiagnosticData> diagnosticData);
-
-        [OperationContract]
-        Task<ICollection<InfoData>> GetInfos(int? count = null);
     }
 }

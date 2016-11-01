@@ -20,6 +20,7 @@ namespace Server.HostWCF
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEventAggregator _events;
 
+        private int test = 0;
 
 
         public CisServise(IUnitOfWork unitOfWork, IEventAggregator events)
@@ -33,13 +34,14 @@ namespace Server.HostWCF
 
         #region ImplementsIServerContract
 
-        public async Task<ICollection<StationsData>> GetStations(int? count = null)
+        public async Task<ICollection<StationsData>> GetStations(string nameRailwayStation, int? count = null)
         {
             try
             {
-                var stations = (count != null)
-                    ? await _unitOfWork.StationRepository.Get().AsNoTracking().Take(count.Value).ToListAsync()
-                    : await _unitOfWork.StationRepository.Get().AsNoTracking().ToListAsync();
+                var query = _unitOfWork.RailwayStationRepository.Search(r => r.Name == nameRailwayStation, null, "Stations").AsNoTracking();
+                var railwayStation = await query.FirstOrDefaultAsync();
+                var stations = (count != null) ? railwayStation.Stations.Take(count.Value) : railwayStation.Stations;
+
 
                 return
                     stations.Select(
@@ -60,34 +62,39 @@ namespace Server.HostWCF
         }
 
 
-        public Task<ICollection<RegulatoryScheduleData>> GetRegulatorySchedules(int? count = null)
+        public Task<ICollection<RegulatoryScheduleData>> GetRegulatorySchedules(string nameRailwayStation, int? count = null)
         {
             throw new NotImplementedException();
         }
 
 
-        public async Task<ICollection<OperativeScheduleData>> GetOperativeSchedules(int? count = null)
+        public async Task<ICollection<OperativeScheduleData>> GetOperativeSchedules(string nameRailwayStation, int? count = null)
         {
             try
             {
-                var operativeSchedules = (count != null)
-                    ? await
-                        _unitOfWork.OperativeScheduleRepository.Get()
-                            .Include(op => op.DispatchStation)
-                            .Include(op => op.StationOfDestination)
-                            .Include(op => op.ListOfStops)
-                            .Include(op => op.ListWithoutStops)
-                            .AsNoTracking()
-                            .Take(count.Value)
-                            .ToListAsync()
-                    : await
-                        _unitOfWork.OperativeScheduleRepository.Get()
-                            .Include(op => op.DispatchStation)
-                            .Include(op => op.StationOfDestination)
-                            .Include(op => op.ListOfStops)
-                            .Include(op => op.ListWithoutStops)
-                            .AsNoTracking()
-                            .ToListAsync();
+                var query = _unitOfWork.RailwayStationRepository.Search(r => r.Name == nameRailwayStation, null, "OperativeSchedules").AsNoTracking();
+                var railwayStation = await query.FirstOrDefaultAsync();
+                var operativeSchedules = (count != null) ? railwayStation.OperativeSchedules.Take(count.Value) : railwayStation.OperativeSchedules;
+
+                //DEBUG-----------------------------------------------------
+
+                test++;
+                var diagnosticData = new List<DiagnosticData>
+                {
+                   new DiagnosticData {DeviceNumber = 10, Fault = "sadsad", Status = test},
+                   new DiagnosticData {DeviceNumber = 11, Fault = "gfg", Status = test + 1 },
+                   new DiagnosticData {DeviceNumber = 12, Fault = "jh", Status = test + 123}
+               };
+                var eventData = new AutodictorDiagnosticEvent { NameRailwayStation = "Вокзал 1", DiagnosticData = diagnosticData };
+                _events.Publish(eventData,
+                          action =>
+                          {
+                              Task.Factory.StartNew(action);
+                          });
+                //DEBUG-----------------------------------------------------
+
+
+
 
                 return
                     operativeSchedules.Select(op => new OperativeScheduleData
@@ -144,91 +151,11 @@ namespace Server.HostWCF
         }
 
 
-
-        public async Task<RailwayStationData> GetRailwayStationByName(string name)
-        {
-            if (name == null)
-                throw new Exception("имя вокзала не указанно");
-
-            var railwayStation = await _unitOfWork.RailwayStationRepository.Search(r => r.Name == name)
-                .Include(r => r.Stations)
-                .Include(op => op.OperativeSchedules)
-                //TODO: Добавить Infos, Diagnostics, RegulatorySchedules
-                .FirstOrDefaultAsync();
-
-
-            if (railwayStation == null)
-                throw new Exception("такого имени нету");
-
-
-            return new RailwayStationData
-            {
-                Name = railwayStation.Name,
-                Id = railwayStation.Id,
-                Stations =
-                    railwayStation.Stations.Select(
-                        r =>
-                            new StationsData
-                            {
-                                Id = r.Id,
-                                Name = r.Name,
-                                EcpCode = r.EcpCode,
-                                Description = r.Description
-                            }).ToList(),
-                OperativeSchedules = railwayStation.OperativeSchedules.Select(op => new OperativeScheduleData
-                {
-                    Id = op.Id,
-                    DispatchStation =
-                        new StationsData
-                        {
-                            Id = op.DispatchStation.Id,
-                            Description = op.DispatchStation.Description,
-                            EcpCode = op.DispatchStation.EcpCode,
-                            Name = op.DispatchStation.Name
-                        },
-                    StationOfDestination =
-                        new StationsData
-                        {
-                            Id = op.StationOfDestination.Id,
-                            Description = op.StationOfDestination.Description,
-                            EcpCode = op.StationOfDestination.EcpCode,
-                            Name = op.DispatchStation.Name
-                        },
-                    RouteName = op.RouteName,
-                    ArrivalTime = op.ArrivalTime,
-                    DepartureTime = op.DepartureTime,
-                    NumberOfTrain = op.NumberOfTrain,
-                    ListOfStops =
-                        new List<StationsData>(
-                            op.ListOfStops.Select(
-                                st =>
-                                    new StationsData
-                                    {
-                                        Id = st.Id,
-                                        Name = st.Name,
-                                        EcpCode = st.EcpCode,
-                                        Description = st.Description
-                                    })),
-                    ListWithoutStops =
-                        new List<StationsData>(
-                            op.ListWithoutStops.Select(
-                                st =>
-                                    new StationsData
-                                    {
-                                        Id = st.Id,
-                                        Name = st.Name,
-                                        EcpCode = st.EcpCode,
-                                        Description = st.Description
-                                    }))
-                }).ToList(),
-                //TODO: Добавить Infos, Diagnostics, RegulatorySchedules
-            };
-        }
-
-        public Task<ICollection<DiagnosticData>> GetDiagnostics(int? count = null)
+        public Task<ICollection<DiagnosticData>> GetDiagnostics(string nameRailwayStation, int? count = null)
         {
             throw new NotImplementedException();
         }
+
 
         public void SetDiagnostics(string nameRailwayStation, ICollection<DiagnosticData> diagnosticData)
         {
@@ -241,7 +168,7 @@ namespace Server.HostWCF
             };
             //DEBUG-----------------------------------------------------
 
-            var eventData = new AutodictorDiagnosticEvent {NameRailwayStation = nameRailwayStation, DiagnosticData = diagnosticData};
+            var eventData = new AutodictorDiagnosticEvent { NameRailwayStation = nameRailwayStation, DiagnosticData = diagnosticData };
             _events.Publish(eventData,
                       action =>
                       {
@@ -249,7 +176,7 @@ namespace Server.HostWCF
                       });
         }
 
-        public Task<ICollection<InfoData>> GetInfos(int? count = null)
+        public Task<ICollection<InfoData>> GetInfos(string nameRailwayStation, int? count = null)
         {
             throw new NotImplementedException();
         }
@@ -262,12 +189,12 @@ namespace Server.HostWCF
 
         #region ImplementsIServerContractSimple
 
-        public Task<ICollection<RegulatoryScheduleDataSimple>> GetSimpleRegulatorySchedules(int? count = null)
+        public Task<ICollection<RegulatoryScheduleDataSimple>> GetSimpleRegulatorySchedules(string nameRailwayStation, int? count = null)
         {
             return null;
         }
 
-        public Task<ICollection<OperativeScheduleDataSimple>> GetSimpleOperativeSchedules(int? count = null)
+        public Task<ICollection<OperativeScheduleDataSimple>> GetSimpleOperativeSchedules(string nameRailwayStation, int? count = null)
         {
             return null;
         }
