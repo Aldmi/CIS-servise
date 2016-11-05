@@ -55,6 +55,7 @@
     <Compile Include="Concrete\UnitOfWork.cs" />
     <Compile Include="DbContext\CisDbContext.cs" />
     <Compile Include="Entities\Diagnostic.cs" />
+    <Compile Include="Entities\IEntitie.cs" />
     <Compile Include="Entities\Info.cs" />
     <Compile Include="Entities\OperativeSchedule.cs" />
     <Compile Include="Entities\RailwayStation.cs" />

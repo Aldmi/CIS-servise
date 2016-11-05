@@ -8,7 +8,7 @@ namespace Domain.Entities
     /// <summary>
     /// ЖД Станция.
     /// </summary>
-    public class Station
+    public class Station : IEntitie
     {
         [Key]
         public int Id { get; set; }

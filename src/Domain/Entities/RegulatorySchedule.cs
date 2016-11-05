@@ -13,7 +13,7 @@ namespace Domain.Entities
     /// Данные нормативного расписания предназначены для формирования информации на табло с общим расписанием движения поездов по станции
     /// Пересчет нормативного расписания осуществляется один раз в сутки.
     /// </summary>
-    public class RegulatorySchedule
+    public class RegulatorySchedule : IEntitie
     {
         [Key]
         public int Id { get; set; }

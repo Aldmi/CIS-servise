@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Linq;
 using Domain.Entities;
 
 namespace Domain.DbContext

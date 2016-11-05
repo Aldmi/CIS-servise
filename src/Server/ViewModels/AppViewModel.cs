@@ -12,11 +12,14 @@ using System.ServiceModel;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using Castle.Facilities.WcfIntegration;
+using Castle.Windsor;
+using Domain.Concrete;
 using Library.Xml;
 using Server.HostWCF;
 using WCFCis2AvtodictorContract.Contract;
 using MessageBox = System.Windows.MessageBox;
 using Screen = Caliburn.Micro.Screen;
+
 
 
 namespace Server.ViewModels
@@ -25,18 +28,22 @@ namespace Server.ViewModels
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IWindowManager _windowManager;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IWindsorContainer _windsorContainer;
         private readonly ServiceHostBase _serviceHost;
+
+
 
 
         public DiagnosticViewModel DiagnosticVm1 { get; set; }
         public DiagnosticViewModel DiagnosticVm2 { get; set; }
 
 
-        public AppViewModel(IEventAggregator events, IWindowManager windowManager, IUnitOfWork unitOfWork)
+
+
+        public AppViewModel(IEventAggregator events, IWindowManager windowManager, IWindsorContainer windsorContainer)
         {
             _windowManager = windowManager;
-            _unitOfWork = unitOfWork;
+            _windsorContainer = windsorContainer;
             _eventAggregator = events;
 
             DiagnosticVm1 = new DiagnosticViewModel("Вокзал 1",_eventAggregator);
@@ -49,116 +56,83 @@ namespace Server.ViewModels
 
 
 
-
         public async void RailwayStation1()
         {
-            //----DEBUG-------------------------------------------------------
-            //station.Name был равен Name1
-            //var station = _unitOfWork.StationRepository.Get().First();
-            ////поменяли в локальной коллекции без Update в БД
-            //station.Name = "NEWname";
-            ////сделали запрос чтобы к БД (хочу предыдущее состояние)
-            //_unitOfWork.StationRepository.UndoChanges();
-            //station = _unitOfWork.StationRepository.Get().First();
-            //// но station.Name уже "NEWname";
-            //var c = 5 + 5;
-            //----DEBUG--------------------------------------------------------
-
-            const string railwayStationName = "Вокзал 3";
-            var query = _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName, null, "Stations, OperativeSchedules");
-            var railwayStation = await query.FirstOrDefaultAsync();
-
-            if (railwayStation != null)
+            using (var unitOfWork = _windsorContainer.Resolve<IUnitOfWork>())
             {
-                //DEBUG-------------------------------------------------------------------------------------------
-                //Moq вокзал
-                //var stations = new List<Station> {new Station {Name = "111", Id = 1}, new Station { Name = "222", Id = 2 }, new Station { Name = "333", Id = 3 } };//DEBUG
-                //var operSh = new List<OperativeSchedule>
+                //DEBUG-------------------------------------------------------
+                //var station = _unitOfWork.StationRepository.GetById(1);
+                //var copyStation = new Station
                 //{
-                //    new OperativeSchedule {Id = 1, ListOfStops = new ObservableCollection<Station>(stations.Take(2).ToList())}
+                //    Id = station.Id,
+                //    Name = "qqqq",
+                //    EcpCode = station.EcpCode,
+                //    Description = station.Description
                 //};
-                //railwayStation= new RailwayStation {Id = 1, Name = "c1", Stations = stations, OperativeSchedules = operSh};
-                //--------------------------------------------------------------------------------------------------
+                ////_unitOfWork.StationRepository.Update(copyStation, copyStation.Id);
+                //_unitOfWork.StationRepository.Update(copyStation);
+                //await _unitOfWork.SaveAsync();
+                //DEBUG-------------------------------------------------------
 
-                var editViewModel = new RailwayStationEditViewModel(_unitOfWork, railwayStation);
-                var result = _windowManager.ShowDialog(editViewModel);
+                const string railwayStationName = "Вокзал 3";
+                var query = unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName, null, "Stations, OperativeSchedules");
+                var railwayStation = await query.FirstOrDefaultAsync();
 
-                if(result != null && result.Value)
+                if (railwayStation != null)
                 {
-                    // MessageBox.Show("Ok");
+                    //создадим копию--------------------------------------------------------------
+                    //var stations = railwayStation.Stations.Select(st => new Station
+                    //{
+                    //    Id = st.Id,
+                    //    Name = st.Name,
+                    //    EcpCode = st.EcpCode,
+                    //    Description = st.Description,
+                    //    RailwayStations = st.RailwayStations,
+                    //    OperativeSchedulesListWithoutStops = st.OperativeSchedulesListWithoutStops,
+                    //    OperativeSchedulesListOfStops = st.OperativeSchedulesListOfStops
+                    //}).ToList();
+
+                    //var railwayStationCpy = new RailwayStation
+                    //{
+                    //    Id = railwayStation.Id,
+                    //    Name = railwayStation.Name,
+                    //    Stations = stations,
+                    //    OperativeSchedules = railwayStation.OperativeSchedules.Select(op => new OperativeSchedule
+                    //    {
+                    //        Id = op.Id,
+                    //        ArrivalTime = op.ArrivalTime,
+                    //        DepartureTime = op.DepartureTime,
+                    //        ListOfStops = op.ListOfStops,
+                    //        ListWithoutStops = op.ListWithoutStops,
+                    //        NumberOfTrain = op.NumberOfTrain,
+                    //        RouteName = op.RouteName,
+                    //        DispatchStation = stations.FirstOrDefault(st => st.Id == op.DispatchStation.Id),
+                    //        StationOfDestination = stations.FirstOrDefault(st => st.Id == op.StationOfDestination.Id)
+                    //    }).ToList(),
+                    //    Diagnostics = railwayStation.Diagnostics
+                    //};
+                    //создадим копию--------------------------------------------------------------
+
+                    var editViewModel = new RailwayStationEditViewModel(unitOfWork, railwayStation);
+                    var result = _windowManager.ShowDialog(editViewModel);
+                    if (result != null && result.Value)
+                    {
+                        // MessageBox.Show("Ok");
+                    }
+                    else
+                    {
+                        // MessageBox.Show("Cancel");
+                    }
                 }
                 else
                 {
-                    // MessageBox.Show("Cancel");
+                    MessageBox.Show("Вокзала с именеем {0} не найденно", railwayStationName);
                 }
             }
-            else
-            {
-                MessageBox.Show("Вокзала с именеем {0} не найденно", railwayStationName);
-            }
 
-
-
-
-
-            //var dialogViewModel= new DialogViewModel();
-            //var result= _windowManager.ShowDialog(dialogViewModel);
-
-            //if (result != null && result.Value)
-            //{
-            //    MessageBox.Show("Ok");
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Cancel");
-            //}
-
-
-
-
-
-
-
-            //var stations = _unitOfWork.StationRepository.Get().OrderBy(x => x.Id).ToList();
-
-
-            //заполнение таблицы оперативного расписания
-            //_unitOfWork.OperativeScheduleRepository.Insert(new OperativeSchedule {ArrivalTime = DateTime.Today, DepartureTime = DateTime.Now, RouteName = "Маршрут 2", NumberOfTrain = 2, DispatchStation = stations[2], StationOfDestination = stations[7], ListOfStops = stations.Skip(4).Take(2).ToList(), ListWithoutStops = stations.Skip(3).Take(6).ToList() });
-            //await _unitOfWork.SaveAsync();
-
-
-
-            //Добавление станции
-            //_unitOfWork.RailwayStationRepository.Insert(new RailwayStation { Name = "Вокзал 3", Stations = new List<Station>(stations.Skip(0)) });
-            //await _unitOfWork.SaveAsync();
-
-
-            // var operativeSh= _unitOfWork.RailwayStationRepository.Search(r => r.Name == "Вокзал 2").Include(r => r.AllStations).First();
-            // var operative = _unitOfWork.RailwayStationRepository.Get().Include(r => r.AllStations).ToList();
-
-
-
-            //var editStation = stations[0];
-            //editStation.Name = "New NAME!!";
-            //_unitOfWork.StationRepository.Update(editStation);
-            //await _unitOfWork.SaveAsync();
-
-
-
-
-            //Обновление
-            //var rs = _unitOfWork.RailwayStationRepository.GetById(4);  //_unitOfWork.RailwayStationRepository.Get().OrderBy(x => x.Id).ToList().First();
-            //rs.OperativeSchedules.Clear();
-            //rs.OperativeSchedules = _unitOfWork.OperativeScheduleRepository.Get().ToList();
-            //_unitOfWork.RailwayStationRepository.Update(rs);
-            //await _unitOfWork.SaveAsync();
-
-
-            //удаление
-            //var rs = _unitOfWork.RailwayStationRepository.GetById(1);  //_unitOfWork.RailwayStationRepository.Get().OrderBy(x => x.Id).ToList().First();
-            //_unitOfWork.RailwayStationRepository.Remove(rs);
-            //await _unitOfWork.SaveAsync();
+            //dbCont.Dispose();
         }
+
 
         public void LoadXmlDataInDb(string nameRailwayStations)
         {
@@ -175,9 +149,6 @@ namespace Server.ViewModels
             //_unitOfWork.OperativeScheduleRepository.Insert(operSh);
             //_unitOfWork.SaveAsync();
         }
-
-
-
 
 
 
@@ -201,7 +172,10 @@ namespace Server.ViewModels
         protected override void OnDeactivate(bool close)
         {
             _eventAggregator?.Unsubscribe(this);
-            _serviceHost?.Close();
+
+            if(_serviceHost?.State == CommunicationState.Opened)
+              _serviceHost.Close();
+
             base.OnDeactivate(close);
         }
     }

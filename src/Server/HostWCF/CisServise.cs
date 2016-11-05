@@ -70,31 +70,32 @@ namespace Server.HostWCF
 
         public async Task<ICollection<OperativeScheduleData>> GetOperativeSchedules(string nameRailwayStation, int? count = null)
         {
-            try
-            {
-                var query = _unitOfWork.RailwayStationRepository.Search(r => r.Name == nameRailwayStation, null, "OperativeSchedules").AsNoTracking();
-                var railwayStation = await query.FirstOrDefaultAsync();
-                var operativeSchedules = (count != null) ? railwayStation.OperativeSchedules.Take(count.Value) : railwayStation.OperativeSchedules;
-
-                //DEBUG-----------------------------------------------------
-
-                test++;
-                var diagnosticData = new List<DiagnosticData>
+            //DEBUG-----------------------------------------------------
+            test++;
+            var diagnosticData = new List<DiagnosticData>
                 {
                    new DiagnosticData {DeviceNumber = 10, Fault = "sadsad", Status = test},
                    new DiagnosticData {DeviceNumber = 11, Fault = "gfg", Status = test + 1 },
                    new DiagnosticData {DeviceNumber = 12, Fault = "jh", Status = test + 123}
                };
-                var eventData = new AutodictorDiagnosticEvent { NameRailwayStation = "Вокзал 1", DiagnosticData = diagnosticData };
-                _events.Publish(eventData,
-                          action =>
-                          {
-                              Task.Factory.StartNew(action);
-                          });
-                //DEBUG-----------------------------------------------------
+            var eventData = new AutodictorDiagnosticEvent { NameRailwayStation = "Вокзал 1", DiagnosticData = diagnosticData };
+            _events.Publish(eventData,
+                      action =>
+                      {
+                          Task.Factory.StartNew(action);
+                      });
+            //DEBUG-----------------------------------------------------
+            try
+            {
+                var query = _unitOfWork.RailwayStationRepository.Search(r => r.Name == nameRailwayStation, null, "OperativeSchedules").AsNoTracking();
+                var railwayStation = await query.FirstOrDefaultAsync();
+                if (railwayStation == null)
+                {
+                    var ex= new ArgumentNullException($"{nameRailwayStation}");
+                    throw new FaultException<ArgumentNullException>(ex, $"Вокзал с таким именем не найден \"{nameRailwayStation}\"");
+                }
 
-
-
+                var operativeSchedules = (count != null) ? railwayStation.OperativeSchedules.Take(count.Value) : railwayStation.OperativeSchedules;
 
                 return
                     operativeSchedules.Select(op => new OperativeScheduleData
@@ -146,7 +147,7 @@ namespace Server.HostWCF
             }
             catch (Exception ex)
             {
-                throw ex; //TODO: реализовать отправку форматированного исключения на сервер.
+                throw new FaultException<Exception>(ex, $"Запрос для вокзала\"{nameRailwayStation}\" привел к ошибке на ЦИС сервере");
             }
         }
 

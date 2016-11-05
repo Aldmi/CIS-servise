@@ -2,13 +2,14 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
 
 namespace Domain.Entities
 {
     /// <summary>
     /// Вокзал.
     /// </summary>
-    public class RailwayStation
+    public class RailwayStation : IEntitie
     {
         [Key]
         public int Id { get; set; }

@@ -12,7 +12,7 @@ namespace Domain.Entities
     /// Данные оперативного расписания предназначены для формирования информации на  табло содержащих сведения о ближайших поездах по станции.
     /// Пересчет оперативного расписания осуществляется два раза в сутки.
     /// </summary>
-    public class OperativeSchedule
+    public class OperativeSchedule : IEntitie
     {
         [Key]
         public int Id { get; set; }

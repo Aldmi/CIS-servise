@@ -54,15 +54,19 @@ namespace Server.ViewModels
         {
             //Выполнить Update
             _unitOfWork.RailwayStationRepository.Update(RailwayStation);
-            _unitOfWork.SaveAsync();
 
-            
+            //var updateOp = OperativeSchedules.First();
+            //_unitOfWork.StationRepository.Update(updateOp.DispatchStation, updateOp.DispatchStation.Id);
+            //_unitOfWork.StationRepository.Update(updateOp.StationOfDestination, updateOp.DispatchStation.Id);
+            //_unitOfWork.OperativeScheduleRepository.Update(updateOp, updateOp.Id);
+
+            _unitOfWork.SaveAsync();
             //TryClose(true);
         }
 
         public void Clouse()
         {
-            _unitOfWork.UndoChanges();
+           // _unitOfWork.UndoChanges();
             TryClose(false);
         }
 

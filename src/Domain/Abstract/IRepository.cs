@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Domain.Entities;
 
 namespace Domain.Abstract
 {
-    public interface IRepository<TEntity> where TEntity: class
+    public interface IRepository<TEntity> where TEntity: IEntitie
     {
         TEntity GetById(object id);
         Task<TEntity> GetByIdAsync(int id);

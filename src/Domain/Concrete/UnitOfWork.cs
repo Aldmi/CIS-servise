@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
 using Domain.Abstract;
@@ -43,22 +44,9 @@ namespace Domain.Concrete
 
         public void UndoChanges()
         {
-            foreach(var entry in _context.ChangeTracker.Entries())
+            foreach (var entity in _context.ChangeTracker.Entries())
             {
-                switch(entry.State)
-                {
-                    case EntityState.Modified:
-                        entry.State = EntityState.Unchanged;
-                        break;
-
-                    case EntityState.Deleted:
-                        entry.Reload();
-                        break;
-
-                    case EntityState.Added:
-                        entry.State = EntityState.Detached;
-                        break;
-                }
+                entity.Reload();
             }
         }
 

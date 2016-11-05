@@ -249,3 +249,4 @@ D:\Git\CIS\src\Server\bin\Debug\Library.dll
 D:\Git\CIS\src\Server\bin\Debug\Library.pdb
 D:\Git\CIS\src\Server\obj\Debug\Views\DiagnosticView.g.cs
 D:\Git\CIS\src\Server\obj\Debug\Views\DiagnosticView.baml
+D:\Git\CIS\src\Server\bin\Debug\GeorgeCloney.dll
