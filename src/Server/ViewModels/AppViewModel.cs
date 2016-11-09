@@ -9,6 +9,8 @@ using Domain.Abstract;
 using Domain.DbContext;
 using Domain.Entities;
 using System.ServiceModel;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using Castle.Facilities.WcfIntegration;
@@ -33,6 +35,28 @@ namespace Server.ViewModels
 
 
 
+        private bool _isBusy;
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                NotifyOfPropertyChange(() => IsBusy);
+            }
+        }
+
+        private string _messageBusy;
+        public string MessageBusy
+        {
+            get { return _messageBusy; }
+            set
+            {
+                _messageBusy = value;
+                NotifyOfPropertyChange(() => MessageBusy);
+            }
+        }
+
 
         public DiagnosticViewModel DiagnosticVm1 { get; set; }
         public DiagnosticViewModel DiagnosticVm2 { get; set; }
@@ -46,11 +70,12 @@ namespace Server.ViewModels
             _windsorContainer = windsorContainer;
             _eventAggregator = events;
 
-            DiagnosticVm1 = new DiagnosticViewModel("Вокзал 1",_eventAggregator);
+            DiagnosticVm1 = new DiagnosticViewModel("Вокзал 1", _eventAggregator);
             DiagnosticVm2 = new DiagnosticViewModel("Вокзал 2", _eventAggregator);
 
             _serviceHost = new DefaultServiceHostFactory().CreateServiceHost("CisServiceResolver", new Uri[0]);
         }
+
 
 
 
@@ -74,9 +99,14 @@ namespace Server.ViewModels
                 //await _unitOfWork.SaveAsync();
                 //DEBUG-------------------------------------------------------
 
+                ShowBusyIndicator(true, "Идет загрузка данных из БД");
                 const string railwayStationName = "Вокзал 3";
-                var query = unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName, null, "Stations, OperativeSchedules");
-                var railwayStation = await query.FirstOrDefaultAsync();
+                var railwayStation = await await Task.Factory.StartNew(async () =>
+                {
+                    var query = unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName);
+                    return await query.FirstOrDefaultAsync();
+                });
+                ShowBusyIndicator(false);
 
                 if (railwayStation != null)
                 {
@@ -129,8 +159,7 @@ namespace Server.ViewModels
                     MessageBox.Show("Вокзала с именеем {0} не найденно", railwayStationName);
                 }
             }
-
-            //dbCont.Dispose();
+            IsBusy = false;
         }
 
 
@@ -150,6 +179,18 @@ namespace Server.ViewModels
             //_unitOfWork.SaveAsync();
         }
 
+
+        private void ShowBusyIndicator(bool? isBusy = null, string message = null)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                MessageBusy = message;
+            }
+            if (isBusy.HasValue)
+            {
+                IsBusy = isBusy.Value;
+            }
+        }
 
 
         protected override void OnInitialize()
@@ -173,8 +214,8 @@ namespace Server.ViewModels
         {
             _eventAggregator?.Unsubscribe(this);
 
-            if(_serviceHost?.State == CommunicationState.Opened)
-              _serviceHost.Close();
+            if (_serviceHost?.State == CommunicationState.Opened)
+                _serviceHost.Close();
 
             base.OnDeactivate(close);
         }

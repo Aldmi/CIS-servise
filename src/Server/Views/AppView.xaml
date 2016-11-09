@@ -9,6 +9,7 @@
                      xmlns:micro="http://www.caliburnproject.org"
                      xmlns:viewModels="clr-namespace:Server.ViewModels"
                      xmlns:views="clr-namespace:Server.Views"
+                     xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
                      Title="ЦИС"
                      d:DataContext="{d:DesignInstance Type=viewModels:AppViewModel,
                                                       IsDesignTimeCreatable=True}"
@@ -23,146 +24,149 @@
     </Window.Resources>
 
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
-
-        <fluent:Ribbon Grid.Row="0">
-            <!--  Backstage  -->
-            <fluent:Ribbon.Menu>
-                <fluent:Backstage>
-                    <fluent:BackstageTabControl>
-                        <fluent:BackstageTabItem Header="Загрузить данных вокзала 1">
-                            <StackPanel VerticalAlignment="Top"
-                                        Background="LightCyan"
-                                        Orientation="Vertical">
-                                <fluent:Button Margin="10"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
-                                               micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('operative')]"
-                                               Background="LightBlue"
-                                               FontSize="20"
-                                               Header="Оперативное расписание XML"
-                                               Padding="10">
-                                    <fluent:Button.ToolTip>
-                                        <fluent:ScreenTip Title="Загрузить из XML файла"
-                                                          Width="250"
-                                                          Text="Эта команда загружает в базу данных сервера оперативное расписание" />
-                                    </fluent:Button.ToolTip>
-                                </fluent:Button>
-
-                                <fluent:Button Margin="10"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
-                                               micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('regular')]"
-                                               Background="LightBlue"
-                                               FontSize="20"
-                                               Header="Регулярное расписание XML"
-                                               Padding="10">
-                                    <fluent:Button.ToolTip>
-                                        <fluent:ScreenTip Title="Загрузить из XML файла"
-                                                          Width="250"
-                                                          Text="Эта команда загружает в базу данных сервера регулярное расписание" />
-                                    </fluent:Button.ToolTip>
-                                </fluent:Button>
-
-                            </StackPanel>
-                        </fluent:BackstageTabItem>
-                    </fluent:BackstageTabControl>
-                </fluent:Backstage>
-            </fluent:Ribbon.Menu>
-
-            <!--  Tabs  -->
-            <fluent:RibbonTabItem Header="ВОКЗАЛЫ">
-                <fluent:RibbonGroupBox>
-                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation1]"
-                                   Header="ВОКЗАЛ 1"
-                                   LargeIcon="../Components/Images/train_icon.png"
-                                   Size="Large" />
-                </fluent:RibbonGroupBox>
-
-                <fluent:RibbonGroupBox>
-                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation2]"
-                                   Header="ВОКЗАЛ 2"
-                                   LargeIcon="../Components/Images/train_icon.png"
-                                   Size="Large" />
-                </fluent:RibbonGroupBox>
-
-                <fluent:RibbonGroupBox>
-                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation3]"
-                                   Header="ВОКЗАЛ 3"
-                                   LargeIcon="../Components/Images/train_icon.png"
-                                   Size="Large" />
-                </fluent:RibbonGroupBox>
-
-                <fluent:RibbonGroupBox>
-                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation4]"
-                                   Header="ВОКЗАЛ 4"
-                                   LargeIcon="../Components/Images/train_icon.png"
-                                   Size="Large" />
-                </fluent:RibbonGroupBox>
-
-                <fluent:RibbonGroupBox>
-                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation5]"
-                                   Header="ВОКЗАЛ 5"
-                                   LargeIcon="../Components/Images/train_icon.png"
-                                   Size="Large" />
-                </fluent:RibbonGroupBox>
-
-                <fluent:RibbonGroupBox>
-                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation6]"
-                                   Header="ВОКЗАЛ 6"
-                                   LargeIcon="../Components/Images/train_icon.png"
-                                   Size="Large" />
-                </fluent:RibbonGroupBox>
-
-                <fluent:RibbonGroupBox>
-                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation7]"
-                                   Header="ВОКЗАЛ 7"
-                                   LargeIcon="../Components/Images/train_icon.png"
-                                   Size="Large" />
-                </fluent:RibbonGroupBox>
-
-                <fluent:RibbonGroupBox>
-                    <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation8]"
-                                   Header="ВОКЗАЛ 8"
-                                   LargeIcon="../Components/Images/train_icon.png"
-                                   Size="Large" />
-                </fluent:RibbonGroupBox>
-
-            </fluent:RibbonTabItem>
-        </fluent:Ribbon>
-
-
-        <Grid Grid.Row="1">
+    <xctk:BusyIndicator BusyContent="{Binding Path=MessageBusy, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" IsBusy="{Binding Path=IsBusy, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
 
-            <UserControl Grid.Row="0"
-                         Grid.Column="0"
-                         Margin="10"
-                         Content="{Binding Path=DiagnosticVm1,
-                                           Mode=OneWay}" />
+            <fluent:Ribbon Grid.Row="0">
+                <!--  Backstage  -->
+                <fluent:Ribbon.Menu>
+                    <fluent:Backstage>
+                        <fluent:BackstageTabControl>
+                            <fluent:BackstageTabItem Header="Загрузить данных вокзала 1">
+                                <StackPanel VerticalAlignment="Top"
+                                            Background="LightCyan"
+                                            Orientation="Vertical">
+                                    <fluent:Button Margin="10"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('operative')]"
+                                                   Background="LightBlue"
+                                                   FontSize="20"
+                                                   Header="Оперативное расписание XML"
+                                                   Padding="10">
+                                        <fluent:Button.ToolTip>
+                                            <fluent:ScreenTip Title="Загрузить из XML файла"
+                                                              Width="250"
+                                                              Text="Эта команда загружает в базу данных сервера оперативное расписание" />
+                                        </fluent:Button.ToolTip>
+                                    </fluent:Button>
 
-            <UserControl Grid.Row="0"
-                         Grid.Column="1"
-                         Margin="10"
-                         Content="{Binding Path=DiagnosticVm2,
-                                           Mode=OneWay}" />
+                                    <fluent:Button Margin="10"
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('regular')]"
+                                                   Background="LightBlue"
+                                                   FontSize="20"
+                                                   Header="Регулярное расписание XML"
+                                                   Padding="10">
+                                        <fluent:Button.ToolTip>
+                                            <fluent:ScreenTip Title="Загрузить из XML файла"
+                                                              Width="250"
+                                                              Text="Эта команда загружает в базу данных сервера регулярное расписание" />
+                                        </fluent:Button.ToolTip>
+                                    </fluent:Button>
 
+                                </StackPanel>
+                            </fluent:BackstageTabItem>
+                        </fluent:BackstageTabControl>
+                    </fluent:Backstage>
+                </fluent:Ribbon.Menu>
+
+                <!--  Tabs  -->
+                <fluent:RibbonTabItem Header="ВОКЗАЛЫ">
+                    <fluent:RibbonGroupBox>
+                        <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation1]"
+                                       Header="ВОКЗАЛ 1"
+                                       LargeIcon="../Components/Images/train_icon.png"
+                                       Size="Large" />
+                    </fluent:RibbonGroupBox>
+
+                    <fluent:RibbonGroupBox>
+                        <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation2]"
+                                       Header="ВОКЗАЛ 2"
+                                       LargeIcon="../Components/Images/train_icon.png"
+                                       Size="Large" />
+                    </fluent:RibbonGroupBox>
+
+                    <fluent:RibbonGroupBox>
+                        <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation3]"
+                                       Header="ВОКЗАЛ 3"
+                                       LargeIcon="../Components/Images/train_icon.png"
+                                       Size="Large" />
+                    </fluent:RibbonGroupBox>
+
+                    <fluent:RibbonGroupBox>
+                        <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation4]"
+                                       Header="ВОКЗАЛ 4"
+                                       LargeIcon="../Components/Images/train_icon.png"
+                                       Size="Large" />
+                    </fluent:RibbonGroupBox>
+
+                    <fluent:RibbonGroupBox>
+                        <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation5]"
+                                       Header="ВОКЗАЛ 5"
+                                       LargeIcon="../Components/Images/train_icon.png"
+                                       Size="Large" />
+                    </fluent:RibbonGroupBox>
+
+                    <fluent:RibbonGroupBox>
+                        <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation6]"
+                                       Header="ВОКЗАЛ 6"
+                                       LargeIcon="../Components/Images/train_icon.png"
+                                       Size="Large" />
+                    </fluent:RibbonGroupBox>
+
+                    <fluent:RibbonGroupBox>
+                        <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation7]"
+                                       Header="ВОКЗАЛ 7"
+                                       LargeIcon="../Components/Images/train_icon.png"
+                                       Size="Large" />
+                    </fluent:RibbonGroupBox>
+
+                    <fluent:RibbonGroupBox>
+                        <fluent:Button micro:Message.Attach="[Event Click] = [Action RailwayStation8]"
+                                       Header="ВОКЗАЛ 8"
+                                       LargeIcon="../Components/Images/train_icon.png"
+                                       Size="Large" />
+                    </fluent:RibbonGroupBox>
+
+                </fluent:RibbonTabItem>
+            </fluent:Ribbon>
+
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <UserControl Grid.Row="0"
+                             Grid.Column="0"
+                             Margin="10"
+                             Content="{Binding Path=DiagnosticVm1,
+                                               Mode=OneWay}" />
+
+                <UserControl Grid.Row="0"
+                             Grid.Column="1"
+                             Margin="10"
+                             Content="{Binding Path=DiagnosticVm2,
+                                               Mode=OneWay}" />
+
+            </Grid>
         </Grid>
-    </Grid>
+    </xctk:BusyIndicator>
 
 </fluent:RibbonWindow>

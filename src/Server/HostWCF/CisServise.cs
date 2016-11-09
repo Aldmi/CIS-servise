@@ -71,19 +71,19 @@ namespace Server.HostWCF
         public async Task<ICollection<OperativeScheduleData>> GetOperativeSchedules(string nameRailwayStation, int? count = null)
         {
             //DEBUG-----------------------------------------------------
-            test++;
-            var diagnosticData = new List<DiagnosticData>
-                {
-                   new DiagnosticData {DeviceNumber = 10, Fault = "sadsad", Status = test},
-                   new DiagnosticData {DeviceNumber = 11, Fault = "gfg", Status = test + 1 },
-                   new DiagnosticData {DeviceNumber = 12, Fault = "jh", Status = test + 123}
-               };
-            var eventData = new AutodictorDiagnosticEvent { NameRailwayStation = "Вокзал 1", DiagnosticData = diagnosticData };
-            _events.Publish(eventData,
-                      action =>
-                      {
-                          Task.Factory.StartNew(action);
-                      });
+            //test++;
+            //var diagnosticData = new List<DiagnosticData>
+            //    {
+            //       new DiagnosticData {DeviceNumber = 10, Fault = "sadsad", Status = test},
+            //       new DiagnosticData {DeviceNumber = 11, Fault = "gfg", Status = test + 1 },
+            //       new DiagnosticData {DeviceNumber = 12, Fault = "jh", Status = test + 123}
+            //   };
+            //var eventData = new AutodictorDiagnosticEvent { NameRailwayStation = "Вокзал 1", DiagnosticData = diagnosticData };
+            //_events.Publish(eventData,
+            //          action =>
+            //          {
+            //              Task.Factory.StartNew(action);
+            //          });
             //DEBUG-----------------------------------------------------
             try
             {
@@ -160,15 +160,7 @@ namespace Server.HostWCF
 
         public void SetDiagnostics(string nameRailwayStation, ICollection<DiagnosticData> diagnosticData)
         {
-            //DEBUG-----------------------------------------------------
-            diagnosticData = new List<DiagnosticData>
-            {
-                new DiagnosticData {DeviceNumber = 10, Fault = "sadsad", Status = 458},
-                new DiagnosticData {DeviceNumber = 11, Fault = "gfg", Status = 78},
-                new DiagnosticData {DeviceNumber = 12, Fault = "jh", Status = 65}
-            };
-            //DEBUG-----------------------------------------------------
-
+            nameRailwayStation = "Вокзал 1";//DEBUG
             var eventData = new AutodictorDiagnosticEvent { NameRailwayStation = nameRailwayStation, DiagnosticData = diagnosticData };
             _events.Publish(eventData,
                       action =>
