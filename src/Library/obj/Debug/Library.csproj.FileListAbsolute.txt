@@ -7,3 +7,7 @@ D:\Git\CIS\src\Library\bin\Debug\Library.dll
 D:\Git\CIS\src\Library\bin\Debug\Library.pdb
 D:\Git\CIS\src\Library\obj\Debug\Library.dll
 D:\Git\CIS\src\Library\obj\Debug\Library.pdb
+D:\Dropbox\C#\Project C#\CIS\src\Library\bin\Debug\Library.dll
+D:\Dropbox\C#\Project C#\CIS\src\Library\bin\Debug\Library.pdb
+D:\Dropbox\C#\Project C#\CIS\src\Library\obj\Debug\Library.dll
+D:\Dropbox\C#\Project C#\CIS\src\Library\obj\Debug\Library.pdb

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Core.Metadata.Edm;
@@ -37,6 +38,7 @@ namespace Server.ViewModels
 
 
         private bool _isBusy;
+
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -48,6 +50,7 @@ namespace Server.ViewModels
         }
 
         private string _messageBusy;
+
         public string MessageBusy
         {
             get { return _messageBusy; }
@@ -77,11 +80,11 @@ namespace Server.ViewModels
 
         public async void Save()
         {
-           ShowBusyIndicator(true, "Идет сохранение в БД");
-           await Task.Delay(500);
-           _unitOfWork.RailwayStationRepository.Update(RailwayStation);
-           await _unitOfWork.SaveAsync();
-           ShowBusyIndicator(false);
+            ShowBusyIndicator(true, "Идет сохранение в БД");
+            await Task.Delay(500);
+            _unitOfWork.RailwayStationRepository.Update(RailwayStation);
+            await _unitOfWork.SaveAsync();
+            ShowBusyIndicator(false);
         }
 
 
@@ -103,6 +106,18 @@ namespace Server.ViewModels
                 IsBusy = isBusy.Value;
             }
         }
+
+
+        public async void AddNewElement(int number)
+        {
+            //в зависмости от выбранной таблице CurrentOption
+            // вызывается окно добавления нового элемента.
+            // созданный элемент добавляется в коллекцию ObservableCollection<Т>, т.е. сразу отображается в списке
+            // При нажатии на кнопку "Сохранить" вычисляются элементы которые были добавленны
+            //на примере: OperativeSchedules  distinct  RailwayStation.OperativeSchedules
+            // вычисленные добавленные элементы добавляются к коллекции (на примере: RailwayStation.OperativeSchedules)
+        }
+
 
 
         //public async void NextPage(int number)

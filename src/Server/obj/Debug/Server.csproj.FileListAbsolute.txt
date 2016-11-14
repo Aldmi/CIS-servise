@@ -282,7 +282,6 @@ D:\Dropbox\C#\Project C#\CIS\src\Server\bin\Debug\Domain.dll
 D:\Dropbox\C#\Project C#\CIS\src\Server\bin\Debug\EntityFramework.dll
 D:\Dropbox\C#\Project C#\CIS\src\Server\bin\Debug\EntityFramework.SqlServer.dll
 D:\Dropbox\C#\Project C#\CIS\src\Server\bin\Debug\Fluent.dll
-D:\Dropbox\C#\Project C#\CIS\src\Server\bin\Debug\GeorgeCloney.dll
 D:\Dropbox\C#\Project C#\CIS\src\Server\bin\Debug\Library.dll
 D:\Dropbox\C#\Project C#\CIS\src\Server\bin\Debug\System.Reactive.Core.dll
 D:\Dropbox\C#\Project C#\CIS\src\Server\bin\Debug\System.Reactive.Interfaces.dll

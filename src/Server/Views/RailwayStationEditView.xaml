@@ -57,11 +57,15 @@
         <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
             <Setter Property="FontSize" Value="15" />
             <Setter Property="HorizontalAlignment" Value="Center" />
-
+        
             <Style.Triggers>
                 <Trigger Property="IsEditing" Value="True">
                     <Setter Property="BorderBrush" Value="LightGreen" />
                     <Setter Property="BorderThickness" Value="4" />
+                </Trigger>
+
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="DarkOliveGreen" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -198,6 +202,8 @@
                                           Path=IsChecked,
                                           Mode=OneWay}"
                       ItemsSource="{Binding Path=Stations}"
+                      IsSelected="False"
+                     
                       Style="{StaticResource DataGridStyle}">
 
                 <DataGrid.Columns>
