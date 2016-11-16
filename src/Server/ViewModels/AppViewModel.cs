@@ -13,10 +13,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using Castle.Core.Internal;
 using Castle.Facilities.WcfIntegration;
 using Castle.Windsor;
 using Domain.Concrete;
 using Library.Xml;
+using Server.Event;
 using Server.HostWCF;
 using WCFCis2AvtodictorContract.Contract;
 using MessageBox = System.Windows.MessageBox;
@@ -26,7 +28,7 @@ using Screen = Caliburn.Micro.Screen;
 
 namespace Server.ViewModels
 {
-    public class AppViewModel : Conductor<object>
+    public class AppViewModel : Conductor<object>, IHandle<AutodictorDiagnosticEvent>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IWindowManager _windowManager;
@@ -36,6 +38,7 @@ namespace Server.ViewModels
 
 
         private bool _isBusy;
+
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -47,6 +50,7 @@ namespace Server.ViewModels
         }
 
         private string _messageBusy;
+
         public string MessageBusy
         {
             get { return _messageBusy; }
@@ -69,6 +73,7 @@ namespace Server.ViewModels
             _windowManager = windowManager;
             _windsorContainer = windsorContainer;
             _eventAggregator = events;
+            events.Subscribe(this);
 
             DiagnosticVm1 = new DiagnosticViewModel("Вокзал 1", _eventAggregator);
             DiagnosticVm2 = new DiagnosticViewModel("Вокзал 2", _eventAggregator);
@@ -100,7 +105,7 @@ namespace Server.ViewModels
                 //DEBUG-------------------------------------------------------
 
                 ShowBusyIndicator(true, "Идет загрузка данных из БД");
-                const string railwayStationName = "Вокзал 3";
+                const string railwayStationName = "Вокзал 1";
                 var railwayStation = await await Task.Factory.StartNew(async () =>
                 {
                     var query = unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName);
@@ -218,6 +223,40 @@ namespace Server.ViewModels
                 _serviceHost.Close();
 
             base.OnDeactivate(close);
+        }
+
+
+
+        #region EventHandler
+
+        public async void Handle(AutodictorDiagnosticEvent message)
+        {
+            using (var unitOfWork = _windsorContainer.Resolve<IUnitOfWork>())
+            {
+                var railwayStation = await await Task.Factory.StartNew(async () =>
+                {
+                    var query = unitOfWork.RailwayStationRepository.Search(r => r.Name == message.NameRailwayStation).Include(r => r.Diagnostics);
+                    return await query.FirstOrDefaultAsync();
+                });
+
+                if (railwayStation != null)
+                {
+                    //удалим тек
+                    unitOfWork.DiagnosticRepository.RemoveRange(railwayStation.Diagnostics.ToList());
+
+
+                    var diagnosticDatas =   message.DiagnosticData.Select( d => new Diagnostic { DeviceNumber = d.DeviceNumber, DeviceName = d.DeviceName, Fault = d.Fault, Status = d.Status, Date = DateTime.Now });
+                    diagnosticDatas.ForEach(d => railwayStation.Diagnostics.Add(d));
+ 
+       
+
+
+                    await unitOfWork.SaveAsync();
+                }
+            }
+
+            #endregion
+
         }
     }
 }

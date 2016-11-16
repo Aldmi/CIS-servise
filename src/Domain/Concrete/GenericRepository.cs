@@ -89,5 +89,13 @@ namespace Domain.Concrete
             }
             DbSet.Remove(entity);
         }
+
+        public virtual void RemoveRange(List<TEntity> entitys)
+        {
+            for (int i = 0; i < entitys.Count(); i++)
+            {
+                Remove(entitys[i]);
+            }
+        }
     }
 }

@@ -171,14 +171,21 @@ namespace Server.HostWCF
 
         public void SetDiagnostics(string nameRailwayStation, ICollection<DiagnosticData> diagnosticData)
         {
-            nameRailwayStation = "Вокзал 1";//DEBUG
-            var eventData = new AutodictorDiagnosticEvent { NameRailwayStation = nameRailwayStation, DiagnosticData = diagnosticData };
-            _events.Publish(eventData,
-                      action =>
-                      {
-                          Task.Factory.StartNew(action);
-                      });
+            if (diagnosticData != null)
+            {
+                var eventData = new AutodictorDiagnosticEvent
+                {
+                    NameRailwayStation = nameRailwayStation,
+                    DiagnosticData = diagnosticData
+                };
+                _events.Publish(eventData,
+                    action =>
+                    {
+                        Task.Factory.StartNew(action);
+                    });
+            }
         }
+
 
         public Task<ICollection<InfoData>> GetInfos(string nameRailwayStation, int? count = null)
         {
@@ -186,8 +193,6 @@ namespace Server.HostWCF
         }
 
         #endregion
-
-
 
 
 

@@ -14,7 +14,7 @@
     <Window.Resources>
         <utils:EnumMatchToBooleanConverter x:Key="EnumConverter" />
 
-
+        
         <Style x:Key="RadioButtonStyle" TargetType="{x:Type RadioButton}">
             <Setter Property="Margin" Value="10" />
             <Setter Property="BorderThickness" Value="5" />
@@ -192,6 +192,8 @@
             </GroupBox>
 
 
+            
+            
             <DataGrid Name="StationsTable"
                       Grid.Row="1"
                       CanUserAddRows="False"
@@ -265,6 +267,9 @@
                 </DataGrid.RowDetailsTemplate>
             </DataGrid>
 
+            
+            
+            
             <DataGrid Name="OperativeScheduleTable"
                       Grid.Row="1"
                       CanUserAddRows="False"
@@ -307,6 +312,7 @@
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
 
+                    
                     <DataGridTemplateColumn Header="Дата время прибытия">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -368,7 +374,6 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-
 
 
                     <DataGridTemplateColumn Header="Остановочные станции">
@@ -479,6 +484,226 @@
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
             </DataGrid>
+
+
+
+
+            <DataGrid Name="RegulatorySchedulesTable"
+                      Grid.Row="1"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CellStyle="{StaticResource DataGridCellStyle}"
+                      ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
+                      IsEnabled="{Binding ElementName=RegulatorySchedule,
+                                          Path=IsChecked,
+                                          Mode=OneWay}"
+                      ItemsSource="{Binding Path=RegulatorySchedules}"
+                      Style="{StaticResource DataGridStyle}">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="Auto"
+                                        Binding="{Binding Path=Id}"
+                                        Header="Id"
+                                        IsReadOnly="True" />
+
+                    <DataGridTextColumn Width="Auto"
+                                        Binding="{Binding Path=NumberOfTrain}"
+                                        Header="Номер поезда" />
+
+                    <DataGridTextColumn Width="Auto"
+                                        Binding="{Binding Path=RouteName}"
+                                        Header="Маршрут" />
+
+                    <DataGridTemplateColumn Header="Дата и время отправления">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=DepartureTime, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <DatePicker SelectedDate="{Binding Path=DepartureTime}" />
+                                    <DatePickerTextBox Text="{Binding Path=DepartureTime}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+
+                    
+                    <DataGridTemplateColumn Header="Дата время прибытия">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=ArrivalTime, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <DatePicker SelectedDate="{Binding Path=ArrivalTime}" />
+                                    <DatePickerTextBox Text="{Binding Path=ArrivalTime}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Header="Станция отправления">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding ElementName=EditView,
+                                                                Path=DataContext.Stations,
+                                                                Mode=OneWay}"
+                                          Padding="5"
+                                          SelectedItem="{Binding Path=DispatchStation,
+                                                                 Mode=TwoWay,
+                                                                 UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Width="Auto" Text="{Binding Path=Name, Mode=OneWay}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Header="Станция назначения">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding ElementName=EditView,
+                                                                Path=DataContext.Stations,
+                                                                Mode=OneWay}"
+                                          Padding="5"
+                                          SelectedItem="{Binding Path=StationOfDestination,
+                                                                 Mode=TwoWay,
+                                                                 UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Width="Auto" Text="{Binding Path=Name, Mode=OneWay}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Header="Остановочные станции">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Expander Margin="1"
+                                          BorderBrush="Bisque"
+                                          BorderThickness="2"
+                                          Padding="1">
+                                    <ListView ItemContainerStyle="{StaticResource ListViewShowStyle}"
+                                              ItemsSource="{Binding Path=ListOfStops,
+                                                                    Mode=TwoWay,
+                                                                    UpdateSourceTrigger=PropertyChanged}"
+                                              Padding="5">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridView.Columns>
+                                                    <GridViewColumn DisplayMemberBinding="{Binding Path=Name}"
+                                                                    Header="Название станции"
+                                                                    HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
+                                                </GridView.Columns>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </Expander>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ListView Margin="5"
+                                          IsSelected="True"
+                                          ItemContainerStyle="{StaticResource ListViewEditingStyle}"
+                                          ItemsSource="{Binding ElementName=EditView,
+                                                                Path=DataContext.Stations,
+                                                                Mode=OneWay}"
+                                          SelectionMode="Extended">
+
+                                    <i:Interaction.Behaviors>
+                                        <wpfExtensions:MultiSelectionBehavior SelectedItems="{Binding Path=ListOfStops, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </i:Interaction.Behaviors>
+
+                                </ListView>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+
+
+                    <DataGridTemplateColumn Header="Промежуточные станции">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Expander Margin="1"
+                                          BorderBrush="Bisque"
+                                          BorderThickness="2"
+                                          Padding="1">
+                                    <ListView ItemContainerStyle="{StaticResource ListViewShowStyle}"
+                                              ItemsSource="{Binding Path=ListWithoutStops,
+                                                                    Mode=TwoWay,
+                                                                    UpdateSourceTrigger=PropertyChanged}"
+                                              Padding="5">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridView.Columns>
+                                                    <GridViewColumn DisplayMemberBinding="{Binding Path=Name}"
+                                                                    Header="Название станции"
+                                                                    HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
+                                                </GridView.Columns>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </Expander>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ListView Margin="5"
+                                          IsSelected="True"
+                                          ItemContainerStyle="{StaticResource ListViewEditingStyle}"
+                                          ItemsSource="{Binding ElementName=EditView,
+                                                                Path=DataContext.Stations,
+                                                                Mode=OneWay}"
+                                          SelectionMode="Extended">
+
+                                    <i:Interaction.Behaviors>
+                                        <wpfExtensions:MultiSelectionBehavior SelectedItems="{Binding Path=ListWithoutStops, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </i:Interaction.Behaviors>
+
+                                </ListView>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+
+
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <Border Margin="10"
+                                BorderBrush="SteelBlue"
+                                BorderThickness="2"
+                                CornerRadius="5"
+                                Padding="10">
+                            <TextBlock MaxWidth="350"
+                                       FontSize="10"
+                                       Text="{Binding Path= DaysFollowings, StringFormat= ДНИ СЛЕДОВАНИЯ: {0}, Mode=OneWay, UpdateSourceTrigger=Default}"
+                                       TextWrapping="Wrap" />
+                        </Border>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+            </DataGrid>
+
+
 
             <StackPanel Grid.Row="2"
                         HorizontalAlignment="Right"

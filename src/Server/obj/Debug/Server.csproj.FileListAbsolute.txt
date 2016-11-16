@@ -249,7 +249,6 @@ D:\Git\CIS\src\Server\bin\Debug\Library.dll
 D:\Git\CIS\src\Server\bin\Debug\Library.pdb
 D:\Git\CIS\src\Server\obj\Debug\Views\DiagnosticView.g.cs
 D:\Git\CIS\src\Server\obj\Debug\Views\DiagnosticView.baml
-D:\Git\CIS\src\Server\bin\Debug\GeorgeCloney.dll
 D:\Git\CIS\src\Server\bin\Debug\Xceed.Wpf.AvalonDock.dll
 D:\Git\CIS\src\Server\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
 D:\Git\CIS\src\Server\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll

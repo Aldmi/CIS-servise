@@ -82,6 +82,30 @@
     <Compile Include="Migrations\201610291313323_AddDiagnosticsCollectionsInRailwayStationTable.Designer.cs">
       <DependentUpon>201610291313323_AddDiagnosticsCollectionsInRailwayStationTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611161019280_AddDiagnosticTable_DateAndName.cs" />
+    <Compile Include="Migrations\201611161019280_AddDiagnosticTable_DateAndName.Designer.cs">
+      <DependentUpon>201611161019280_AddDiagnosticTable_DateAndName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611161658253_Add RegularSheduleTable.cs" />
+    <Compile Include="Migrations\201611161658253_Add RegularSheduleTable.Designer.cs">
+      <DependentUpon>201611161658253_Add RegularSheduleTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611161700104_Change in RegularSheduleTable DaysFollowings type.cs" />
+    <Compile Include="Migrations\201611161700104_Change in RegularSheduleTable DaysFollowings type.Designer.cs">
+      <DependentUpon>201611161700104_Change in RegularSheduleTable DaysFollowings type.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611161713382_Change in RegularSheduleTable DaysFollowings type Many2Many.cs" />
+    <Compile Include="Migrations\201611161713382_Change in RegularSheduleTable DaysFollowings type Many2Many.Designer.cs">
+      <DependentUpon>201611161713382_Change in RegularSheduleTable DaysFollowings type Many2Many.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611161741164_Change in RegularSheduleTable DaysFollowings type on string.cs" />
+    <Compile Include="Migrations\201611161741164_Change in RegularSheduleTable DaysFollowings type on string.Designer.cs">
+      <DependentUpon>201611161741164_Change in RegularSheduleTable DaysFollowings type on string.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611161748490_Change in RegularSheduleTable attribute.cs" />
+    <Compile Include="Migrations\201611161748490_Change in RegularSheduleTable attribute.Designer.cs">
+      <DependentUpon>201611161748490_Change in RegularSheduleTable attribute.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -104,6 +128,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610291313323_AddDiagnosticsCollectionsInRailwayStationTable.resx">
       <DependentUpon>201610291313323_AddDiagnosticsCollectionsInRailwayStationTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611161019280_AddDiagnosticTable_DateAndName.resx">
+      <DependentUpon>201611161019280_AddDiagnosticTable_DateAndName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611161658253_Add RegularSheduleTable.resx">
+      <DependentUpon>201611161658253_Add RegularSheduleTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611161700104_Change in RegularSheduleTable DaysFollowings type.resx">
+      <DependentUpon>201611161700104_Change in RegularSheduleTable DaysFollowings type.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611161713382_Change in RegularSheduleTable DaysFollowings type Many2Many.resx">
+      <DependentUpon>201611161713382_Change in RegularSheduleTable DaysFollowings type Many2Many.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611161741164_Change in RegularSheduleTable DaysFollowings type on string.resx">
+      <DependentUpon>201611161741164_Change in RegularSheduleTable DaysFollowings type on string.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611161748490_Change in RegularSheduleTable attribute.resx">
+      <DependentUpon>201611161748490_Change in RegularSheduleTable attribute.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -34,11 +34,12 @@ namespace Server.ViewModels
 
         public ObservableCollection<OperativeSchedule> OperativeSchedules { get; set; }
 
+        public ObservableCollection<RegulatorySchedule> RegulatorySchedules { get; set; }
+
         public Options CurrentOption { get; set; } = Options.OperativeSchedule;
 
 
         private bool _isBusy;
-
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -50,7 +51,6 @@ namespace Server.ViewModels
         }
 
         private string _messageBusy;
-
         public string MessageBusy
         {
             get { return _messageBusy; }
@@ -71,6 +71,16 @@ namespace Server.ViewModels
 
             Stations = new ObservableCollection<Station>(RailwayStation.Stations);
             OperativeSchedules = new ObservableCollection<OperativeSchedule>(RailwayStation.OperativeSchedules);
+            // RegulatorySchedules = new ObservableCollection<RegulatorySchedule>(RailwayStation.RegulatorySchedules);
+
+            RegulatorySchedules= new ObservableCollection<RegulatorySchedule> {new RegulatorySchedule
+            {
+                ArrivalTime = DateTime.Now,
+                DepartureTime = DateTime.Today,
+                RouteName = "dvcxv",
+                NumberOfTrain = 54,
+                DaysFollowings = "gfgfdgdfg fgfg"
+            } };
         }
 
 

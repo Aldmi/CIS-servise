@@ -7,7 +7,7 @@ using Domain.Entities;
 
 namespace Domain.Abstract
 {
-    public interface IRepository<TEntity> where TEntity: IEntitie
+    public interface IRepository<TEntity> where TEntity : IEntitie
     {
         TEntity GetById(object id);
         Task<TEntity> GetByIdAsync(int id);
@@ -22,5 +22,6 @@ namespace Domain.Abstract
         void Insert(TEntity entity);
         void Update(TEntity entity);
         void Remove(TEntity entity);
+        void RemoveRange(List<TEntity> entitys);
     }
 }

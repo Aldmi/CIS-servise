@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
@@ -18,22 +20,28 @@ namespace Domain.Entities
         [Key]
         public int Id { get; set; }
 
-        public uint NumberOfTrain { get; set; }             //Номер поезда в расписании
+        [Required]
+        public uint NumberOfTrain { get; set; }                      //Номер поезда в расписании
 
-        public string RouteName { get; set; }               //Станция отправления и станция назначения, а также фирменное название поезда, если есть.
+        [MaxLength(100)]
+        public string RouteName { get; set; }                       //Станция отправления и станция назначения, а также фирменное название поезда, если есть.
 
-        public Station DispatchStation { get; set; }        //Станция отправления
+        public virtual Station DispatchStation { get; set; }        //Станция отправления
 
-        public Station StationOfDestination { get; set; }   //Станция назначения
+        public virtual Station StationOfDestination { get; set; }   //Станция назначения
 
-        public DateTime ArrivalTime { get; set; }           //Время прибытия поезда на станцию
+        [Column(TypeName = "datetime2")]
+        [Required]
+        public DateTime ArrivalTime { get; set; }                  //Время прибытия поезда на станцию
 
-        public DateTime DepartureTime { get; set; }         //Время отправления поезда со станции
+        [Column(TypeName = "datetime2")]
+        [Required]
+        public DateTime DepartureTime { get; set; }                //Время отправления поезда со станции
 
-        public string DaysFollowing { get; set; }           //Дни следования поезда(ежедневно, четные, по рабочим и т.п.)
+        public string DaysFollowings { get; set; }                 //Дни следования поезда(ежедневно, четные, по рабочим и т.п.)
 
-        public List<Station> ListOfStops { get; set; }      //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
+        public virtual List<Station> ListOfStops { get; set; }      //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
 
-        public List<Station> ListWithoutStops { get; set; } //Список станций которые поезд проезжает без остановки (Заполнятся только для пригородных поездов)
+        public virtual List<Station> ListWithoutStops { get; set; } //Список станций которые поезд проезжает без остановки (Заполнятся только для пригородных поездов)
     }
 }
