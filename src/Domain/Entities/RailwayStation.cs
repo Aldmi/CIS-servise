@@ -21,10 +21,10 @@ namespace Domain.Entities
 
         public virtual ICollection<OperativeSchedule> OperativeSchedules { get; set; }         // один ко многим с  OperativeSchedule. (одна запись в расписании принаджежит только 1 вокзалу)
 
-        public ICollection<RegulatorySchedule> RegulatorySchedules { get; set; }               // один ко многим с RegulatorySchedules. (одна запись в расписании принаджежит только 1 вокзалу)
+        public virtual ICollection<RegulatorySchedule> RegulatorySchedules { get; set; }       // один ко многим с RegulatorySchedules. (одна запись в расписании принаджежит только 1 вокзалу)
 
         //public virtual ICollection<Info> Infos { get; set; }
 
-        public virtual ICollection<Diagnostic> Diagnostics { get; set; }                        // один ко многим с Diagnostic. (одна запись в диагностики принаджежит только 1 вокзалу)
+        public virtual ICollection<Diagnostic> Diagnostics { get; set; }                       // один ко многим с Diagnostic. (одна запись в диагностики принаджежит только 1 вокзалу)
     }
 }

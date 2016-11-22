@@ -62,9 +62,51 @@ namespace Server.HostWCF
         }
 
 
-        public Task<ICollection<RegulatoryScheduleData>> GetRegulatorySchedules(string nameRailwayStation, int? count = null)
+        public async Task<ICollection<RegulatoryScheduleData>> GetRegulatorySchedules(string nameRailwayStation, int? count = null)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var query = _unitOfWork.RailwayStationRepository.Search(r => r.Name == nameRailwayStation, null, "RegulatorySchedules").AsNoTracking();
+                var railwayStation = await query.FirstOrDefaultAsync();
+                if (railwayStation == null)
+                {
+                    var ex = new ArgumentNullException($"{nameRailwayStation}");
+                    throw new FaultException<ArgumentNullException>(ex, $"Вокзал с таким именем не найден \"{nameRailwayStation}\"");
+                }
+
+                var regularSchedules = (count != null) ? railwayStation.RegulatorySchedules.Take(count.Value) : railwayStation.RegulatorySchedules;
+
+                return
+                    regularSchedules.Select(op => new RegulatoryScheduleData
+                    {
+                        Id = op.Id,
+                        RouteName = op.RouteName,
+                        ArrivalTime = op.ArrivalTime,
+                        DepartureTime = op.DepartureTime,
+                        NumberOfTrain = op.NumberOfTrain,
+                        DispatchStation =
+                            new StationsData
+                            {
+                                Id = op.DispatchStation.Id,
+                                Name = op.DispatchStation.Name,
+                                Description = op.DispatchStation.Description,
+                                EcpCode = op.DispatchStation.EcpCode
+                            },
+                        StationOfDestination =
+                            new StationsData
+                            {
+                                Id = op.StationOfDestination.Id,
+                                Name = op.StationOfDestination.Name,
+                                Description = op.StationOfDestination.Description,
+                                EcpCode = op.StationOfDestination.EcpCode
+                            },
+                        DaysFollowing = op.DaysFollowings
+                    }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new FaultException<Exception>(ex, $"Запрос для вокзала\"{nameRailwayStation}\" привел к ошибке на ЦИС сервере");
+            }
         }
 
 

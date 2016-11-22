@@ -90,20 +90,6 @@ namespace Server.ViewModels
         {
             using (var unitOfWork = _windsorContainer.Resolve<IUnitOfWork>())
             {
-                //DEBUG-------------------------------------------------------
-                //var station = _unitOfWork.StationRepository.GetById(1);
-                //var copyStation = new Station
-                //{
-                //    Id = station.Id,
-                //    Name = "qqqq",
-                //    EcpCode = station.EcpCode,
-                //    Description = station.Description
-                //};
-                ////_unitOfWork.StationRepository.Update(copyStation, copyStation.Id);
-                //_unitOfWork.StationRepository.Update(copyStation);
-                //await _unitOfWork.SaveAsync();
-                //DEBUG-------------------------------------------------------
-
                 ShowBusyIndicator(true, "Идет загрузка данных из БД");
                 const string railwayStationName = "Вокзал 1";
                 var railwayStation = await await Task.Factory.StartNew(async () =>
@@ -233,26 +219,26 @@ namespace Server.ViewModels
         {
             using (var unitOfWork = _windsorContainer.Resolve<IUnitOfWork>())
             {
-                var railwayStation = await await Task.Factory.StartNew(async () =>
-                {
-                    var query = unitOfWork.RailwayStationRepository.Search(r => r.Name == message.NameRailwayStation).Include(r => r.Diagnostics);
-                    return await query.FirstOrDefaultAsync();
-                });
+                //var railwayStation = await await Task.Factory.StartNew(async () =>
+                //{
+                //    var query = unitOfWork.RailwayStationRepository.Search(r => r.Name == message.NameRailwayStation).Include(r => r.Diagnostics);
+                //    return await query.FirstOrDefaultAsync();
+                //});
 
-                if (railwayStation != null)
-                {
-                    //удалим тек
-                    unitOfWork.DiagnosticRepository.RemoveRange(railwayStation.Diagnostics.ToList());
+                //if (railwayStation != null)
+                //{
+                //    //удалим тек
+                //    unitOfWork.DiagnosticRepository.RemoveRange(railwayStation.Diagnostics.ToList());
 
 
-                    var diagnosticDatas =   message.DiagnosticData.Select( d => new Diagnostic { DeviceNumber = d.DeviceNumber, DeviceName = d.DeviceName, Fault = d.Fault, Status = d.Status, Date = DateTime.Now });
-                    diagnosticDatas.ForEach(d => railwayStation.Diagnostics.Add(d));
+                //    var diagnosticDatas =   message.DiagnosticData.Select( d => new Diagnostic { DeviceNumber = d.DeviceNumber, DeviceName = d.DeviceName, Fault = d.Fault, Status = d.Status, Date = DateTime.Now });
+                //    diagnosticDatas.ForEach(d => railwayStation.Diagnostics.Add(d));
  
        
 
 
-                    await unitOfWork.SaveAsync();
-                }
+                //    await unitOfWork.SaveAsync();
+                //}
             }
 
             #endregion

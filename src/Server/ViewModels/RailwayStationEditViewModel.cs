@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Core.Metadata.Edm;
+using System.Globalization;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,6 +13,7 @@ using System.Windows.Data;
 using Caliburn.Micro;
 using Domain.Abstract;
 using Domain.Entities;
+
 
 namespace Server.ViewModels
 {
@@ -64,6 +67,9 @@ namespace Server.ViewModels
 
 
 
+
+
+
         public RailwayStationEditViewModel(IUnitOfWork unitOfWork, RailwayStation railwayStation)
         {
             _unitOfWork = unitOfWork;
@@ -71,22 +77,47 @@ namespace Server.ViewModels
 
             Stations = new ObservableCollection<Station>(RailwayStation.Stations);
             OperativeSchedules = new ObservableCollection<OperativeSchedule>(RailwayStation.OperativeSchedules);
-            // RegulatorySchedules = new ObservableCollection<RegulatorySchedule>(RailwayStation.RegulatorySchedules);
+            RegulatorySchedules = new ObservableCollection<RegulatorySchedule>(RailwayStation.RegulatorySchedules);
 
-            RegulatorySchedules= new ObservableCollection<RegulatorySchedule> {new RegulatorySchedule
-            {
-                ArrivalTime = DateTime.Now,
-                DepartureTime = DateTime.Today,
-                RouteName = "dvcxv",
-                NumberOfTrain = 54,
-                DaysFollowings = "gfgfdgdfg fgfg"
-            } };
+            //RegulatorySchedules= new ObservableCollection<RegulatorySchedule> {new RegulatorySchedule
+            //{
+            //    ArrivalTime = DateTime.Now,
+            //    DepartureTime = DateTime.Today,
+            //    RouteName = "dvcxv",
+            //    NumberOfTrain = 54,
+            //    DaysFollowings = "gfgfdgdfg fgfg"
+            //} };
+
+            //SelectedDateTimes.Add(new DateTime(2016, 11, 20));
+            //SelectedDateTimes.Add(new DateTime(2016, 11, 21));
+            //SelectedDateTimes.Add(new DateTime(2016, 11, 22));
         }
 
 
 
 
         #region Methods
+
+        public async void Add()
+        {
+            //const string railwayStationName = "Вокзал 1";
+            //var railwayStation = await await Task.Factory.StartNew(async () =>
+            //{
+            //    var query = _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName).Include(s=> s.Stations);
+            //    return await query.FirstOrDefaultAsync();
+            //});
+
+            var newStation = new Station { Name = "Станция 6", Description = "описание 6!!!!!!!!!!!!1", EcpCode = 695 };
+            //railwayStation.Stations.Add(newStation);
+            RailwayStation.Stations.Add(newStation);
+
+            //Stations = new ObservableCollection<Station>(railwayStation.Stations);
+
+
+
+            //Stations.Add(newStation);
+        }
+
 
         public async void Save()
         {
@@ -144,6 +175,16 @@ namespace Server.ViewModels
         //    //    OperativeSchedules.Add(railwayStation.OperativeSchedules.ToArray()[1]);
         //    //}
         //}
+
+
+        public void EditDaysFollowings(RegulatorySchedule param)
+        {
+            var daysFollowing = param.DaysFollowings;
+
+            // открыть окно редактирования для строки daysFollowing, полученный результат присвоить param.DaysFollowings
+
+            param.DaysFollowings = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+        }
 
         #endregion
     }

@@ -21,7 +21,7 @@ namespace Domain.Entities
         public int Id { get; set; }
 
         [Required]
-        public uint NumberOfTrain { get; set; }                      //Номер поезда в расписании
+        public int NumberOfTrain { get; set; }                      //Номер поезда в расписании
 
         [MaxLength(100)]
         public string RouteName { get; set; }                       //Станция отправления и станция назначения, а также фирменное название поезда, если есть.
@@ -40,8 +40,8 @@ namespace Domain.Entities
 
         public string DaysFollowings { get; set; }                 //Дни следования поезда(ежедневно, четные, по рабочим и т.п.)
 
-        public virtual List<Station> ListOfStops { get; set; }      //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
+        public virtual ObservableCollection<Station> ListOfStops { get; set; }      //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
 
-        public virtual List<Station> ListWithoutStops { get; set; } //Список станций которые поезд проезжает без остановки (Заполнятся только для пригородных поездов)
+        public virtual ObservableCollection<Station> ListWithoutStops { get; set; } //Список станций которые поезд проезжает без остановки (Заполнятся только для пригородных поездов)
     }
 }
