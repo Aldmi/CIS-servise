@@ -50,6 +50,7 @@ namespace Server.ViewModels
         }
 
         private string _messageBusy;
+    
 
         public string MessageBusy
         {
@@ -88,69 +89,32 @@ namespace Server.ViewModels
 
         public async void RailwayStation1()
         {
-            using (var unitOfWork = _windsorContainer.Resolve<IUnitOfWork>())
-            {
-                ShowBusyIndicator(true, "Идет загрузка данных из БД");
-                const string railwayStationName = "Вокзал 1";
-                var railwayStation = await await Task.Factory.StartNew(async () =>
-                {
-                    var query = unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName);
-                    return await query.FirstOrDefaultAsync();
-                });
-                ShowBusyIndicator(false);
+            const string railwayStationName = "Вокзал 1";
 
-                if (railwayStation != null)
-                {
-                    //создадим копию--------------------------------------------------------------
-                    //var stations = railwayStation.Stations.Select(st => new Station
-                    //{
-                    //    Id = st.Id,
-                    //    Name = st.Name,
-                    //    EcpCode = st.EcpCode,
-                    //    Description = st.Description,
-                    //    RailwayStations = st.RailwayStations,
-                    //    OperativeSchedulesListWithoutStops = st.OperativeSchedulesListWithoutStops,
-                    //    OperativeSchedulesListOfStops = st.OperativeSchedulesListOfStops
-                    //}).ToList();
+            //DEBUG
+            //---------------------------------------------------------------------
+           //IUnitOfWork unitOfWork = _windsorContainer.Resolve<IUnitOfWork>();
+           // var query = unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName)
+           //     .Include(s => s.Stations);
 
-                    //var railwayStationCpy = new RailwayStation
-                    //{
-                    //    Id = railwayStation.Id,
-                    //    Name = railwayStation.Name,
-                    //    Stations = stations,
-                    //    OperativeSchedules = railwayStation.OperativeSchedules.Select(op => new OperativeSchedule
-                    //    {
-                    //        Id = op.Id,
-                    //        ArrivalTime = op.ArrivalTime,
-                    //        DepartureTime = op.DepartureTime,
-                    //        ListOfStops = op.ListOfStops,
-                    //        ListWithoutStops = op.ListWithoutStops,
-                    //        NumberOfTrain = op.NumberOfTrain,
-                    //        RouteName = op.RouteName,
-                    //        DispatchStation = stations.FirstOrDefault(st => st.Id == op.DispatchStation.Id),
-                    //        StationOfDestination = stations.FirstOrDefault(st => st.Id == op.StationOfDestination.Id)
-                    //    }).ToList(),
-                    //    Diagnostics = railwayStation.Diagnostics
-                    //};
-                    //создадим копию--------------------------------------------------------------
+           // var railWaySt= await query.FirstOrDefaultAsync();
 
-                    var editViewModel = new RailwayStationEditViewModel(unitOfWork, railwayStation);
-                    var result = _windowManager.ShowDialog(editViewModel);
-                    if (result != null && result.Value)
-                    {
-                        // MessageBox.Show("Ok");
-                    }
-                    else
-                    {
-                        // MessageBox.Show("Cancel");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Вокзала с именеем {0} не найденно", railwayStationName);
-                }
-            }
-            IsBusy = false;
+
+           // var newStation = new Station { Name = "Станция 11", Description = "описание 1256", EcpCode = 96, RailwayStations = new List<RailwayStation> { railWaySt } };
+           // unitOfWork.StationRepository.Insert(newStation);
+
+            //railWaySt.Stations.Add(newStation);
+
+            //unitOfWork.RailwayStationRepository.Update(railWaySt);
+            //await unitOfWork.SaveAsync();
+            //------------------------------------------------------------------------------
+
+
+
+
+
+            var editViewModel = new RailwayStationEditViewModel(railwayStationName, _windsorContainer);
+            var result = _windowManager.ShowDialog(editViewModel);
         }
 
 

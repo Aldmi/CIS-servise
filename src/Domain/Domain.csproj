@@ -110,6 +110,18 @@
     <Compile Include="Migrations\201611170332050_RegulatoryShedules Table NumberOfTrain Change type uint2int.Designer.cs">
       <DependentUpon>201611170332050_RegulatoryShedules Table NumberOfTrain Change type uint2int.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611221118440_Add atribute in Station table.cs" />
+    <Compile Include="Migrations\201611221118440_Add atribute in Station table.Designer.cs">
+      <DependentUpon>201611221118440_Add atribute in Station table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611221138560_Add atribute in Station table ECPCode min 0.cs" />
+    <Compile Include="Migrations\201611221138560_Add atribute in Station table ECPCode min 0.Designer.cs">
+      <DependentUpon>201611221138560_Add atribute in Station table ECPCode min 0.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611221209166_ type_NumberOfTrain_change2string .cs" />
+    <Compile Include="Migrations\201611221209166_ type_NumberOfTrain_change2string .Designer.cs">
+      <DependentUpon>201611221209166_ type_NumberOfTrain_change2string .cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -153,6 +165,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611170332050_RegulatoryShedules Table NumberOfTrain Change type uint2int.resx">
       <DependentUpon>201611170332050_RegulatoryShedules Table NumberOfTrain Change type uint2int.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611221118440_Add atribute in Station table.resx">
+      <DependentUpon>201611221118440_Add atribute in Station table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611221138560_Add atribute in Station table ECPCode min 0.resx">
+      <DependentUpon>201611221138560_Add atribute in Station table ECPCode min 0.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611221209166_ type_NumberOfTrain_change2string .resx">
+      <DependentUpon>201611221209166_ type_NumberOfTrain_change2string .cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

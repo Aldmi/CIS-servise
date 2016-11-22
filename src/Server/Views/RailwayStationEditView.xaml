@@ -11,6 +11,7 @@
     xmlns:wpfExtensions="clr-namespace:Server.WPFExtensions"
     xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
     Name="EditView"
+    SizeToContent="WidthAndHeight"
     mc:Ignorable="d">
 
 
@@ -21,12 +22,103 @@
 
 
 
+        <SolidColorBrush x:Key="FontBrush" Color="#DDDDDD" />
+
+        <LinearGradientBrush x:Key="BgBrush1" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#888888" />
+            <GradientStop Offset="1" Color="#222222" />
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="BorderBrush1" Color="#333333" />
+        <LinearGradientBrush x:Key="CheckedBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#992020" />
+            <GradientStop Offset="2" Color="#111111" />
+        </LinearGradientBrush>
+
+        <!--  левый переключатель  -->
+        <ControlTemplate x:Key="ToggleButtonLeft" TargetType="{x:Type ToggleButton}">
+            <Border
+                Name="Border"
+                Background="{StaticResource BgBrush1}"
+                BorderBrush="{StaticResource BorderBrush1}"
+                BorderThickness="1"
+                CornerRadius="10,0,0,10">
+                <ContentPresenter
+                    Margin="{TemplateBinding Padding}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{TemplateBinding Content}"
+                    TextBlock.FontWeight="Bold"
+                    TextBlock.Foreground="{StaticResource FontBrush}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#808080" />
+                </Trigger>
+                <Trigger Property="IsChecked" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="{StaticResource CheckedBrush}" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!--  средний переключатель  -->
+        <ControlTemplate x:Key="ToggleButtonMid" TargetType="{x:Type ToggleButton}">
+            <Border
+                Name="Border"
+                Background="{StaticResource BgBrush1}"
+                BorderBrush="{StaticResource BorderBrush1}"
+                BorderThickness="0,1,0,1"
+                CornerRadius="0">
+                <ContentPresenter
+                    Margin="{TemplateBinding Padding}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{TemplateBinding Content}"
+                    TextBlock.FontWeight="Bold"
+                    TextBlock.Foreground="{StaticResource FontBrush}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#808080" />
+                </Trigger>
+                <Trigger Property="IsChecked" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="{StaticResource CheckedBrush}" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <!--  правый переключатель  -->
+        <ControlTemplate x:Key="ToggleButtonRight" TargetType="{x:Type ToggleButton}">
+            <Border
+                Name="Border"
+                Background="{StaticResource BgBrush1}"
+                BorderBrush="{StaticResource BorderBrush1}"
+                BorderThickness="1"
+                CornerRadius="0,10,10,0">
+                <ContentPresenter
+                    Margin="{TemplateBinding Padding}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{TemplateBinding Content}"
+                    TextBlock.FontWeight="Bold"
+                    TextBlock.Foreground="{StaticResource FontBrush}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#808080" />
+                </Trigger>
+                <Trigger Property="IsChecked" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="{StaticResource CheckedBrush}" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+
+
+
         <Style x:Key="RadioButtonStyle" TargetType="{x:Type RadioButton}">
-            <Setter Property="Margin" Value="10" />
-            <Setter Property="BorderThickness" Value="5" />
-            <Setter Property="BorderBrush" Value="Blue" />
+            <Setter Property="Margin" Value="2" />
             <Setter Property="Padding" Value="10" />
-            <Setter Property="FontSize" Value="20" />
         </Style>
 
 
@@ -176,35 +268,40 @@
                         Content="Оперативное расписание"
                         GroupName="group 0"
                         IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=OperativeSchedule}"
-                        Style="{StaticResource RadioButtonStyle}" />
+                        Style="{StaticResource RadioButtonStyle}"
+                        Template="{DynamicResource ToggleButtonLeft}" />
 
                     <RadioButton
                         Name="RegulatorySchedule"
                         Content="Нормативное расписание"
                         GroupName="group 0"
                         IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=RegulatorySchedule}"
-                        Style="{StaticResource RadioButtonStyle}" />
+                        Style="{StaticResource RadioButtonStyle}"
+                        Template="{DynamicResource ToggleButtonMid}" />
 
                     <RadioButton
                         Name="Info"
                         Content="Информация"
                         GroupName="group 0"
                         IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=Info}"
-                        Style="{StaticResource RadioButtonStyle}" />
+                        Style="{StaticResource RadioButtonStyle}"
+                        Template="{DynamicResource ToggleButtonMid}" />
 
                     <RadioButton
                         Name="Diagnostic"
                         Content="Диагностика"
                         GroupName="group 0"
                         IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=Diagnostic}"
-                        Style="{StaticResource RadioButtonStyle}" />
+                        Style="{StaticResource RadioButtonStyle}"
+                        Template="{DynamicResource ToggleButtonMid}" />
 
                     <RadioButton
                         Name="Station"
                         Content="Станции"
                         GroupName="group 0"
                         IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=Station}"
-                        Style="{StaticResource RadioButtonStyle}" />
+                        Style="{StaticResource RadioButtonStyle}"
+                        Template="{DynamicResource ToggleButtonRight}" />
                 </StackPanel>
             </GroupBox>
 
@@ -219,8 +316,8 @@
                 CellStyle="{StaticResource DataGridCellStyle}"
                 ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
                 IsEnabled="{Binding ElementName=Station, Path=IsChecked, Mode=OneWay}"
-                IsSelected="False"
                 ItemsSource="{Binding Path=Stations}"
+                SelectedItem="{Binding Path=SelectedItemStation, Mode=OneWayToSource}"
                 Style="{StaticResource DataGridStyle}">
 
                 <DataGrid.Columns>
@@ -301,6 +398,7 @@
                 ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
                 IsEnabled="{Binding ElementName=OperativeSchedule, Path=IsChecked, Mode=OneWay}"
                 ItemsSource="{Binding Path=OperativeSchedules}"
+                SelectedItem="{Binding Path=SelectedItemOperativeSchedule, Mode=OneWayToSource}"
                 Style="{StaticResource DataGridStyle}">
 
                 <DataGrid.Columns>
@@ -517,6 +615,7 @@
                 ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
                 IsEnabled="{Binding ElementName=RegulatorySchedule, Path=IsChecked, Mode=OneWay}"
                 ItemsSource="{Binding Path=RegulatorySchedules}"
+                SelectedItem="{Binding Path=SelectedItemRegulatorySchedule, Mode=OneWayToSource}"
                 Style="{StaticResource DataGridStyle}">
 
                 <DataGrid.Columns>
@@ -744,14 +843,14 @@
                     Name="Add"
                     Margin="10,10,10,10"
                     Padding="10"
-                    Content="Добавить"
+                    Content="Новая запись"
                     FontSize="20" />
 
                 <Button
                     Name="Del"
                     Margin="10,10,400,10"
                     Padding="10"
-                    Content="Удалить"
+                    Content="Удалить запись"
                     FontSize="20" />
 
                 <Button

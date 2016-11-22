@@ -8,7 +8,7 @@ namespace Domain.DbContext
     {
         public CisDbContext() : base("CisDbContext")
         {
-
+            //Database.SetInitializer(new DropCreateDatabaseAlways<CisDbContext>());
         }
 
 

@@ -162,6 +162,9 @@
     <Compile Include="ViewModels\DiagnosticViewModel.cs" />
     <Compile Include="ViewModels\DialogViewModel.cs" />
     <Compile Include="ViewModels\RailwayStationEditViewModel.cs" />
+    <Compile Include="Views\AddNewStationView.xaml.cs">
+      <DependentUpon>AddNewStationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>
@@ -211,6 +214,10 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\AddNewStationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AppView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

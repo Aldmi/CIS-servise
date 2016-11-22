@@ -21,7 +21,8 @@ namespace Domain.Entities
         public int Id { get; set; }
 
         [Required]
-        public int NumberOfTrain { get; set; }                      //Номер поезда в расписании
+        [MaxLength(10)]
+        public string NumberOfTrain { get; set; }                   //Номер поезда в расписании
 
         [MaxLength(100)]
         public string RouteName { get; set; }                       //Станция отправления и станция назначения, а также фирменное название поезда, если есть.

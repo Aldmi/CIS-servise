@@ -31,7 +31,7 @@ namespace Domain.FactoryEntities
                         RouteName = (string) el.Attribute("Id"),
                         ArrivalTime = DateTime.Parse((string)el.Attribute("ArrivalTime")),
                         DepartureTime = DateTime.Parse((string)el.Attribute("DepartureTime")),
-                        NumberOfTrain = (int) el.Attribute("NumberOfTrain"),
+                        NumberOfTrain = (string)el.Attribute("NumberOfTrain"),
                         DispatchStation = dispatchStation,
                         StationOfDestination = stationOfDestination
                     };
