@@ -20,3 +20,4 @@ H:\Git\CIS_SSD\src\WCFCis2AvtodictorContract\bin\Debug\WCFCis2AvtodictorContract
 H:\Git\CIS_SSD\src\WCFCis2AvtodictorContract\bin\Debug\WCFCis2AvtodictorContract.pdb
 H:\Git\CIS_SSD\src\WCFCis2AvtodictorContract\obj\Debug\WCFCis2AvtodictorContract.dll
 H:\Git\CIS_SSD\src\WCFCis2AvtodictorContract\obj\Debug\WCFCis2AvtodictorContract.pdb
+H:\Git\CIS_SSD\src\WCFCis2AvtodictorContract\obj\Debug\WCFCis2AvtodictorContract.csprojResolveAssemblyReference.cache

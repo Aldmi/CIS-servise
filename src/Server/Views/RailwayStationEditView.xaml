@@ -21,7 +21,6 @@
         <utils:MultiLineConverter x:Key="MultiLineConverter" />
 
 
-
         <SolidColorBrush x:Key="FontBrush" Color="#DDDDDD" />
 
         <LinearGradientBrush x:Key="BgBrush1" StartPoint="0,0" EndPoint="0,1">
@@ -135,11 +134,13 @@
             <Setter Property="Margin" Value="10" />
             <Setter Property="Padding" Value="10" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="GridLinesVisibility" Value="Horizontal" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="AlternatingRowBackground" Value="LightBlue" />
             <Setter Property="RowBackground" Value="Bisque" />
             <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="GridLinesVisibility" Value="None" />
 
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="True">
@@ -155,9 +156,10 @@
         <Style x:Key="DataGridCellStyle" TargetType="{x:Type DataGridCell}">
             <Setter Property="FontSize" Value="15" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="TextBlock.TextAlignment" Value="Center" />
 
             <Style.Triggers>
                 <Trigger Property="IsEditing" Value="True">
@@ -166,7 +168,7 @@
                 </Trigger>
 
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="DarkOliveGreen" />
+                    <Setter Property="Background" Value="{StaticResource BorderBrush1}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -368,7 +370,7 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
 
-                <DataGrid.RowDetailsTemplate>
+                <!--<DataGrid.RowDetailsTemplate>
                     <DataTemplate>
                         <Border
                             Margin="10"
@@ -383,7 +385,7 @@
                                 TextWrapping="Wrap" />
                         </Border>
                     </DataTemplate>
-                </DataGrid.RowDetailsTemplate>
+                </DataGrid.RowDetailsTemplate>-->
             </DataGrid>
 
 
@@ -403,7 +405,6 @@
 
                 <DataGrid.Columns>
                     <DataGridTextColumn
-                        Width="Auto"
                         Binding="{Binding Path=Id}"
                         Header="Id"
                         IsReadOnly="True" />
@@ -455,10 +456,7 @@
                     <DataGridTemplateColumn Header="Станция отправления">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox
-                                    Padding="5"
-                                    ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
-                                    SelectedItem="{Binding Path=DispatchStation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}" SelectedItem="{Binding Path=DispatchStation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -475,10 +473,7 @@
                     <DataGridTemplateColumn Header="Станция назначения">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox
-                                    Padding="5"
-                                    ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
-                                    SelectedItem="{Binding Path=StationOfDestination, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}" SelectedItem="{Binding Path=StationOfDestination, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -500,10 +495,7 @@
                                     Padding="1"
                                     BorderBrush="Bisque"
                                     BorderThickness="2">
-                                    <ListView
-                                        Padding="5"
-                                        ItemContainerStyle="{StaticResource ListViewShowStyle}"
-                                        ItemsSource="{Binding Path=ListOfStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListView ItemContainerStyle="{StaticResource ListViewShowStyle}" ItemsSource="{Binding Path=ListOfStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <ListView.View>
                                             <GridView>
                                                 <GridView.Columns>
@@ -522,7 +514,6 @@
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <ListView
-                                    Margin="5"
                                     IsSelected="True"
                                     ItemContainerStyle="{StaticResource ListViewEditingStyle}"
                                     ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
@@ -546,10 +537,7 @@
                                     Padding="1"
                                     BorderBrush="Bisque"
                                     BorderThickness="2">
-                                    <ListView
-                                        Padding="5"
-                                        ItemContainerStyle="{StaticResource ListViewShowStyle}"
-                                        ItemsSource="{Binding Path=ListWithoutStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListView ItemContainerStyle="{StaticResource ListViewShowStyle}" ItemsSource="{Binding Path=ListWithoutStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <ListView.View>
                                             <GridView>
                                                 <GridView.Columns>
@@ -568,7 +556,6 @@
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <ListView
-                                    Margin="5"
                                     IsSelected="True"
                                     ItemContainerStyle="{StaticResource ListViewEditingStyle}"
                                     ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
@@ -585,7 +572,7 @@
                 </DataGrid.Columns>
 
 
-                <DataGrid.RowDetailsTemplate>
+                <!--<DataGrid.RowDetailsTemplate>
                     <DataTemplate>
                         <Border
                             Margin="10"
@@ -600,7 +587,7 @@
                                 TextWrapping="Wrap" />
                         </Border>
                     </DataTemplate>
-                </DataGrid.RowDetailsTemplate>
+                </DataGrid.RowDetailsTemplate>-->
             </DataGrid>
 
 
@@ -635,35 +622,29 @@
                         Binding="{Binding Path=RouteName}"
                         Header="Маршрут" />
 
-                    <DataGridTemplateColumn Header="Дата и время отправления">
+                    <DataGridTemplateColumn Header="Время отправления">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=DepartureTime, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}" />
+                                <TextBlock Text="{Binding Path=DepartureTime, StringFormat=\{0:HH:mm:ss\}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <DatePicker SelectedDate="{Binding Path=DepartureTime}" />
-                                    <DatePickerTextBox Text="{Binding Path=DepartureTime}" />
-                                </StackPanel>
+                                <DatePickerTextBox Text="{Binding Path=DepartureTime, StringFormat={}{0:HH:mm:ss}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
 
 
-                    <DataGridTemplateColumn Header="Дата время прибытия">
+                    <DataGridTemplateColumn Header="Время прибытия">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Path=ArrivalTime, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}" />
+                                <TextBlock Text="{Binding Path=ArrivalTime, StringFormat=\{0:HH:mm:ss\}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <DatePicker SelectedDate="{Binding Path=ArrivalTime}" />
-                                    <DatePickerTextBox Text="{Binding Path=ArrivalTime}" />
-                                </StackPanel>
+                                <DatePickerTextBox Text="{Binding Path=ArrivalTime, StringFormat={}{0:HH:mm:ss}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
@@ -672,10 +653,7 @@
                     <DataGridTemplateColumn Header="Станция отправления">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox
-                                    Padding="5"
-                                    ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
-                                    SelectedItem="{Binding Path=DispatchStation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}" SelectedItem="{Binding Path=DispatchStation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -692,10 +670,7 @@
                     <DataGridTemplateColumn Header="Станция назначения">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox
-                                    Padding="5"
-                                    ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
-                                    SelectedItem="{Binding Path=StationOfDestination, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}" SelectedItem="{Binding Path=StationOfDestination, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -717,10 +692,7 @@
                                     Padding="1"
                                     BorderBrush="Bisque"
                                     BorderThickness="2">
-                                    <ListView
-                                        Padding="5"
-                                        ItemContainerStyle="{StaticResource ListViewShowStyle}"
-                                        ItemsSource="{Binding Path=ListOfStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListView ItemContainerStyle="{StaticResource ListViewShowStyle}" ItemsSource="{Binding Path=ListOfStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <ListView.View>
                                             <GridView>
                                                 <GridView.Columns>
@@ -739,7 +711,6 @@
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <ListView
-                                    Margin="5"
                                     IsSelected="True"
                                     ItemContainerStyle="{StaticResource ListViewEditingStyle}"
                                     ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
@@ -763,10 +734,7 @@
                                     Padding="1"
                                     BorderBrush="Bisque"
                                     BorderThickness="2">
-                                    <ListView
-                                        Padding="5"
-                                        ItemContainerStyle="{StaticResource ListViewShowStyle}"
-                                        ItemsSource="{Binding Path=ListWithoutStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListView ItemContainerStyle="{StaticResource ListViewShowStyle}" ItemsSource="{Binding Path=ListWithoutStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <ListView.View>
                                             <GridView>
                                                 <GridView.Columns>
@@ -785,7 +753,6 @@
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <ListView
-                                    Margin="5"
                                     IsSelected="True"
                                     ItemContainerStyle="{StaticResource ListViewEditingStyle}"
                                     ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
@@ -801,18 +768,22 @@
                     </DataGridTemplateColumn>
 
 
-                    <DataGridTemplateColumn Header="Дни следования">
+                    <DataGridTemplateColumn MinWidth="600" Header="Дни следования">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="1" Orientation="Vertical">
-                                    <TextBlock Text="{Binding Path=DaysFollowings, Converter={StaticResource MultiLineConverter}}" />
-                                </StackPanel>
+                                <Expander>
+                                    <TextBlock
+                                        Foreground="White"
+                                        Text="{Binding Path=DaysFollowings, Converter={StaticResource MultiLineConverter}}"
+                                        TextAlignment="Left" />
+                                </Expander>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
 
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
-                                <Button cal:Message.Attach="[Event Click] = [Action EditDaysFollowings($dataContext)]" Content="Редактировать" />
+                                <!--<Button cal:Message.Attach="[Event Click] = [Action EditDaysFollowings($dataContext)]" Content="Редактировать" />-->
+                                <TextBox Text="{Binding Path=DaysFollowings, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource MultiLineConverter}}" />
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
 
@@ -841,14 +812,14 @@
 
                 <Button
                     Name="Add"
-                    Margin="10,10,10,10"
+                    Margin="10"
                     Padding="10"
                     Content="Новая запись"
                     FontSize="20" />
 
                 <Button
                     Name="Del"
-                    Margin="10,10,400,10"
+                    Margin="10,10,600,10"
                     Padding="10"
                     Content="Удалить запись"
                     FontSize="20" />

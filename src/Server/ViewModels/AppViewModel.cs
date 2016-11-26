@@ -18,6 +18,7 @@ using Castle.Facilities.WcfIntegration;
 using Castle.Windsor;
 using Domain.Concrete;
 using Library.Xml;
+using Server.ClientSOAP;
 using Server.Event;
 using Server.HostWCF;
 using WCFCis2AvtodictorContract.Contract;
@@ -36,6 +37,9 @@ namespace Server.ViewModels
         private readonly ServiceHostBase _serviceHost;
 
 
+
+
+        public ApkDk ApkDk { get; set; }
 
         private bool _isBusy;
 
@@ -80,6 +84,8 @@ namespace Server.ViewModels
             DiagnosticVm2 = new DiagnosticViewModel("Вокзал 2", _eventAggregator);
 
             _serviceHost = new DefaultServiceHostFactory().CreateServiceHost("CisServiceResolver", new Uri[0]);
+
+            ApkDk= new ApkDk(_windsorContainer);
         }
 
 
@@ -115,6 +121,13 @@ namespace Server.ViewModels
 
             var editViewModel = new RailwayStationEditViewModel(railwayStationName, _windsorContainer);
             var result = _windowManager.ShowDialog(editViewModel);
+        }
+
+
+        public async void RailwayStation2()
+        {
+
+            ApkDk.RequestRegulatorySchedule();//DEBUG
         }
 
 
