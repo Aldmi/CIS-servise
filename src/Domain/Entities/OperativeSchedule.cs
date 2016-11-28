@@ -29,7 +29,7 @@ namespace Domain.Entities
         public virtual Station DispatchStation { get; set; }                           //Станция отправления
 
         //[Required]
-        public virtual Station StationOfDestination { get; set; }                      //Станция назначения
+        public virtual Station DestinationStation { get; set; }                        //Станция назначения
 
         [Column(TypeName = "datetime2")]
         [Required]
@@ -42,5 +42,13 @@ namespace Domain.Entities
         public virtual ObservableCollection<Station> ListOfStops { get; set; }          //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)
 
         public virtual ObservableCollection<Station> ListWithoutStops { get; set; }     //Список станций которые поезд
+
+
+        #region FK
+
+        [Required]
+        public RailwayStation RailwayStation { get; set; }                              //Обязательно относится к вокзалу            
+
+        #endregion
     }
 }

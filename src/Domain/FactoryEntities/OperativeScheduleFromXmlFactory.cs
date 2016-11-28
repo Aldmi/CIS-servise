@@ -33,7 +33,7 @@ namespace Domain.FactoryEntities
                         DepartureTime = DateTime.Parse((string)el.Attribute("DepartureTime")),
                         NumberOfTrain = (string)el.Attribute("NumberOfTrain"),
                         DispatchStation = dispatchStation,
-                        StationOfDestination = stationOfDestination
+                        DestinationStation = stationOfDestination
                     };
 
                     operativeSchedules.Add(op);

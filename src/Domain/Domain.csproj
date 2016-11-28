@@ -122,6 +122,34 @@
     <Compile Include="Migrations\201611221209166_ type_NumberOfTrain_change2string .Designer.cs">
       <DependentUpon>201611221209166_ type_NumberOfTrain_change2string .cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611280452064_add FK RailwayStation in RegulatorySh.cs" />
+    <Compile Include="Migrations\201611280452064_add FK RailwayStation in RegulatorySh.Designer.cs">
+      <DependentUpon>201611280452064_add FK RailwayStation in RegulatorySh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611280509423_add FK RailwayStation in OperativeSh.cs" />
+    <Compile Include="Migrations\201611280509423_add FK RailwayStation in OperativeSh.Designer.cs">
+      <DependentUpon>201611280509423_add FK RailwayStation in OperativeSh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611280739387_add FK Dispath and Dest in Stationtable.cs" />
+    <Compile Include="Migrations\201611280739387_add FK Dispath and Dest in Stationtable.Designer.cs">
+      <DependentUpon>201611280739387_add FK Dispath and Dest in Stationtable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611280806466_new 2 add FK Dispath and Dest in Stationtable.cs" />
+    <Compile Include="Migrations\201611280806466_new 2 add FK Dispath and Dest in Stationtable.Designer.cs">
+      <DependentUpon>201611280806466_new 2 add FK Dispath and Dest in Stationtable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611280807287_new 333 add FK Dispath and Dest in Stationtable.cs" />
+    <Compile Include="Migrations\201611280807287_new 333 add FK Dispath and Dest in Stationtable.Designer.cs">
+      <DependentUpon>201611280807287_new 333 add FK Dispath and Dest in Stationtable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611280812462_new 555 add FK Dispath and Dest in Stationtable.cs" />
+    <Compile Include="Migrations\201611280812462_new 555 add FK Dispath and Dest in Stationtable.Designer.cs">
+      <DependentUpon>201611280812462_new 555 add FK Dispath and Dest in Stationtable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611280819116_new 666 add FK Dispath and Dest in Stationtable.cs" />
+    <Compile Include="Migrations\201611280819116_new 666 add FK Dispath and Dest in Stationtable.Designer.cs">
+      <DependentUpon>201611280819116_new 666 add FK Dispath and Dest in Stationtable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -174,6 +202,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611221209166_ type_NumberOfTrain_change2string .resx">
       <DependentUpon>201611221209166_ type_NumberOfTrain_change2string .cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611280452064_add FK RailwayStation in RegulatorySh.resx">
+      <DependentUpon>201611280452064_add FK RailwayStation in RegulatorySh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611280509423_add FK RailwayStation in OperativeSh.resx">
+      <DependentUpon>201611280509423_add FK RailwayStation in OperativeSh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611280739387_add FK Dispath and Dest in Stationtable.resx">
+      <DependentUpon>201611280739387_add FK Dispath and Dest in Stationtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611280806466_new 2 add FK Dispath and Dest in Stationtable.resx">
+      <DependentUpon>201611280806466_new 2 add FK Dispath and Dest in Stationtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611280807287_new 333 add FK Dispath and Dest in Stationtable.resx">
+      <DependentUpon>201611280807287_new 333 add FK Dispath and Dest in Stationtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611280812462_new 555 add FK Dispath and Dest in Stationtable.resx">
+      <DependentUpon>201611280812462_new 555 add FK Dispath and Dest in Stationtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611280819116_new 666 add FK Dispath and Dest in Stationtable.resx">
+      <DependentUpon>201611280819116_new 666 add FK Dispath and Dest in Stationtable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

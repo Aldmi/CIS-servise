@@ -71,9 +71,9 @@ namespace Server.ClientSOAP
                 {
                     ArrivalTime = DateTime.Now,
                     DepartureTime = DateTime.Today,
-                    RouteName = "Маршурт новый 555",
+                    RouteName = "Маршурт новый 000",
                     NumberOfTrain = "34Ф",
-                    StationOfDestination = new Station {EcpCode = 851, Name = ""},        //создаем фейковую станцию и заполняем EcpCode из ответа.
+                    DestinationStation = new Station {EcpCode = 851, Name = ""},        //создаем фейковую станцию и заполняем EcpCode из ответа.
                     DispatchStation = new Station {EcpCode = 741, Name = ""},
                     DaysFollowings = "qwert",
                     ListOfStops = new ObservableCollection<Station>(),
@@ -83,9 +83,9 @@ namespace Server.ClientSOAP
                 {
                     ArrivalTime = DateTime.Now,
                     DepartureTime = DateTime.Today,
-                    RouteName = "Маршурт новый 666",
+                    RouteName = "Маршурт новый 001",
                     NumberOfTrain = "45",
-                    StationOfDestination = new Station {EcpCode = 452, Name = ""},
+                    DestinationStation = new Station {EcpCode = 452, Name = ""},
                     DispatchStation = new Station {EcpCode = 963, Name = ""},
                     DaysFollowings = "mjb,jb",
                     ListOfStops = new ObservableCollection<Station>(),
@@ -95,9 +95,9 @@ namespace Server.ClientSOAP
                 {
                     ArrivalTime = DateTime.Now,
                     DepartureTime = DateTime.Today,
-                    RouteName = "Маршурт новый 555",
-                    NumberOfTrain = "45",
-                    StationOfDestination = new Station {EcpCode = 741, Name = ""},
+                    RouteName = "Маршурт новый 002",
+                    NumberOfTrain = "89",
+                    DestinationStation = new Station {EcpCode = 756, Name = ""},
                     DispatchStation = new Station {EcpCode = 996, Name = ""},
                     DaysFollowings = "fzck",
                     ListOfStops = new ObservableCollection<Station>(),
@@ -130,6 +130,7 @@ namespace Server.ClientSOAP
 
             const string railwayStationName = "Вокзал 1";
 
+
             using (_unitOfWork = _windsorContainer.Resolve<IUnitOfWork>())
             {            
                 var railwayStation = await await Task.Factory.StartNew(async () =>
@@ -144,61 +145,70 @@ namespace Server.ClientSOAP
                     return;
 
 
+                
+               var allStations = new List<Station>(railwayStation.Stations);
+
+                //Нашли станции в БД или создали новые
                 foreach (var regSh in newRegSh)
                 {
-                    var stationOfDestinationDb = railwayStation.Stations.FirstOrDefault(st => st.EcpCode == regSh.StationOfDestination.EcpCode);
+                    var stationOfDestinationDb = allStations.FirstOrDefault(st => st.EcpCode == regSh.DestinationStation.EcpCode);
                     if (stationOfDestinationDb != null)
                     {
-                        regSh.StationOfDestination = stationOfDestinationDb;
+                        regSh.DestinationStation = stationOfDestinationDb;
+                    }
+                    else
+                    {
+                        allStations.Add(regSh.DestinationStation);
                     }
 
-                    var dispatchStationDb = railwayStation.Stations.FirstOrDefault(st => st.EcpCode == regSh.DispatchStation.EcpCode);
+                    var dispatchStationDb = allStations.FirstOrDefault(st => st.EcpCode == regSh.DispatchStation.EcpCode);
                     if (dispatchStationDb != null)
                     {
                         regSh.DispatchStation = dispatchStationDb;
                     }
+                    else
+                    {
+                        allStations.Add(regSh.DispatchStation);
+                    }
 
-                    //Повторить для списка станций остоновчных и проездых.
+                    //Повторить для списка станций остановчных и проездых.
                 }
 
-               // railwayStation.RegulatorySchedules.Clear();
+                //вачислим добавленные станции
+                var addedStations = allStations.Except(railwayStation.Stations).ToList();
 
-                //foreach (var regSh in newRegSh)
-                //{
-                //    railwayStation.RegulatorySchedules.Add(regSh);
-                //}
-
-                //railwayStation.RegulatorySchedules= new List<RegulatorySchedule>(newRegSh);
-
-
-                //Сначала добавляем новую станцию
-               var addStation = new Station
-               {
-                   EcpCode = 455, Name = "yyyyy", 
-                   RailwayStations = new List<RailwayStation> { railwayStation }
-               };
-                _unitOfWork.StationRepository.Insert(addStation);
-                railwayStation.Stations.Add(addStation);                //в локальном списке она уже будет
-                await _unitOfWork.SaveAsync();
-
-
-                //в новой строке расписания подставляем станции из локального списка  railwayStation.Stations
-                var tt = new RegulatorySchedule
+                //выполним запрос для получения имен добавленных станиций к сервису
+                foreach (var needAddStation in addedStations)
                 {
-                    ArrivalTime = DateTime.Now,
-                    DepartureTime = DateTime.Now,
-                    RouteName = "Маршурт новый 555",
-                    NumberOfTrain = "34Ф",
-                    StationOfDestination = addStation,
-                    DispatchStation = null,
-                   DaysFollowings = "jghkgjfg",
-                   ListOfStops = new ObservableCollection<Station>(),
-                   ListWithoutStops = new ObservableCollection<Station>() 
-               };
+                    needAddStation.Name = "Скоректированное имя";
+                    needAddStation.RailwayStations= new List<RailwayStation> {railwayStation};
+                }
 
-                railwayStation.RegulatorySchedules.Add(tt);
-              
+                //Новые станции добавим в БД.
+                if (addedStations.Any())
+                {
+                    _unitOfWork.StationRepository.InsertRange(addedStations);
+                    await _unitOfWork.SaveAsync();
+                }
 
+
+                //Удалим старое расписание.
+                var currentRegSh = railwayStation.RegulatorySchedules.ToList();
+                foreach (var regSh in currentRegSh)
+                {
+                    _unitOfWork.RegulatoryScheduleRepository.Remove(regSh);
+                }
+
+
+                //Добавим новое расписание.
+                railwayStation.RegulatorySchedules.Clear();
+                foreach (var regSh in newRegSh)
+                {
+                    railwayStation.RegulatorySchedules.Add(regSh);
+                }
+
+
+                //Сохраним изменения
                 try
                 {
                     _unitOfWork.RailwayStationRepository.Update(railwayStation);
@@ -220,6 +230,7 @@ namespace Server.ClientSOAP
                     // Throw a new DbEntityValidationException with the improved exception message.
                     throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
                 }
+
             }
 
         }

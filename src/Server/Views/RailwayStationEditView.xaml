@@ -195,6 +195,7 @@
             <Setter Property="Padding" Value="5" />
             <Setter Property="Background" Value="LightSteelBlue" />
 
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListViewItem}">
@@ -210,7 +211,7 @@
                                     Foreground="{TemplateBinding Foreground}"
                                     IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
 
-                                <TextBox Text="{Binding Path=Name, Mode=OneWay}" />
+                                <TextBlock Text="{Binding Path=Name, Mode=OneWay}" />
                             </StackPanel>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -473,7 +474,7 @@
                     <DataGridTemplateColumn Header="Станция назначения">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}" SelectedItem="{Binding Path=StationOfDestination, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}" SelectedItem="{Binding Path=DestinationStation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -517,7 +518,7 @@
                                     IsSelected="True"
                                     ItemContainerStyle="{StaticResource ListViewEditingStyle}"
                                     ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
-                                    SelectionMode="Extended">
+                                    SelectionMode="Multiple">
 
                                     <i:Interaction.Behaviors>
                                         <wpfExtensions:MultiSelectionBehavior SelectedItems="{Binding Path=ListOfStops, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -537,7 +538,11 @@
                                     Padding="1"
                                     BorderBrush="Bisque"
                                     BorderThickness="2">
-                                    <ListView ItemContainerStyle="{StaticResource ListViewShowStyle}" ItemsSource="{Binding Path=ListWithoutStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListView
+                                        MaxHeight="400"
+                                        IsSelected="False"
+                                        ItemContainerStyle="{StaticResource ListViewShowStyle}"
+                                        ItemsSource="{Binding Path=ListWithoutStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <ListView.View>
                                             <GridView>
                                                 <GridView.Columns>
@@ -549,6 +554,7 @@
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
+
                                 </Expander>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -556,10 +562,11 @@
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <ListView
+                                    MaxHeight="400"
                                     IsSelected="True"
                                     ItemContainerStyle="{StaticResource ListViewEditingStyle}"
                                     ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
-                                    SelectionMode="Extended">
+                                    SelectionMode="Multiple">
 
                                     <i:Interaction.Behaviors>
                                         <wpfExtensions:MultiSelectionBehavior SelectedItems="{Binding Path=ListWithoutStops, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -670,7 +677,7 @@
                     <DataGridTemplateColumn Header="Станция назначения">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}" SelectedItem="{Binding Path=StationOfDestination, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}" SelectedItem="{Binding Path=DestinationStation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -692,7 +699,10 @@
                                     Padding="1"
                                     BorderBrush="Bisque"
                                     BorderThickness="2">
-                                    <ListView ItemContainerStyle="{StaticResource ListViewShowStyle}" ItemsSource="{Binding Path=ListOfStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListView
+                                        MaxHeight="400"
+                                        ItemContainerStyle="{StaticResource ListViewShowStyle}"
+                                        ItemsSource="{Binding Path=ListOfStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <ListView.View>
                                             <GridView>
                                                 <GridView.Columns>
@@ -711,10 +721,11 @@
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <ListView
+                                    MaxHeight="400"
                                     IsSelected="True"
                                     ItemContainerStyle="{StaticResource ListViewEditingStyle}"
                                     ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
-                                    SelectionMode="Extended">
+                                    SelectionMode="Multiple">
 
                                     <i:Interaction.Behaviors>
                                         <wpfExtensions:MultiSelectionBehavior SelectedItems="{Binding Path=ListOfStops, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -734,7 +745,10 @@
                                     Padding="1"
                                     BorderBrush="Bisque"
                                     BorderThickness="2">
-                                    <ListView ItemContainerStyle="{StaticResource ListViewShowStyle}" ItemsSource="{Binding Path=ListWithoutStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListView
+                                        MaxHeight="400"
+                                        ItemContainerStyle="{StaticResource ListViewShowStyle}"
+                                        ItemsSource="{Binding Path=ListWithoutStops, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <ListView.View>
                                             <GridView>
                                                 <GridView.Columns>
@@ -753,10 +767,11 @@
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <ListView
+                                    MaxHeight="400"
                                     IsSelected="True"
                                     ItemContainerStyle="{StaticResource ListViewEditingStyle}"
                                     ItemsSource="{Binding ElementName=EditView, Path=DataContext.Stations, Mode=OneWay}"
-                                    SelectionMode="Extended">
+                                    SelectionMode="Multiple">
 
                                     <i:Interaction.Behaviors>
                                         <wpfExtensions:MultiSelectionBehavior SelectedItems="{Binding Path=ListWithoutStops, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />

@@ -8,7 +8,7 @@ namespace Domain.Abstract
     {
         IRepository<Station> StationRepository { get; }                                 //Станции
 
-       // IRepository<RegulatorySchedule> RegulatoryScheduleRepository { get; }         //Регулярное расписание
+        IRepository<RegulatorySchedule> RegulatoryScheduleRepository { get; }          //Регулярное расписание
 
         IRepository<OperativeSchedule> OperativeScheduleRepository { get; }             //Оперативное расписание
 

@@ -301,7 +301,7 @@ namespace Server.ViewModels
                     foreach (var removedStation in removedStations)
                     {
                         //TODO: испроавить EXCEPTION удаления станции
-                        //_unitOfWork.StationRepository.Remove(removedStation);
+                        _unitOfWork.StationRepository.Remove(removedStation);
                     }
                     break;
 
@@ -334,7 +334,7 @@ namespace Server.ViewModels
                     var removedOperShs = RailwayStation.OperativeSchedules.Except(OperativeSchedules).ToList();
                     foreach (var removedOperSh in removedOperShs)
                     {
-                        RailwayStation.OperativeSchedules.Remove(removedOperSh);
+                        _unitOfWork.OperativeScheduleRepository.Remove(removedOperSh);
                     }                 
                     _unitOfWork.RailwayStationRepository.Update(RailwayStation);
                     break;
@@ -368,7 +368,7 @@ namespace Server.ViewModels
                     var removedRegShs = RailwayStation.RegulatorySchedules.Except(RegulatorySchedules).ToList();
                     foreach (var removedRegSh in removedRegShs)
                     {
-                        RailwayStation.RegulatorySchedules.Remove(removedRegSh);
+                       _unitOfWork.RegulatoryScheduleRepository.Remove(removedRegSh);
                     }
                     _unitOfWork.RailwayStationRepository.Update(RailwayStation);
                     break;

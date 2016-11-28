@@ -68,6 +68,15 @@ namespace Domain.Concrete
         }
 
 
+        public virtual void InsertRange(List<TEntity> entitys)
+        {
+            for (int i = 0; i < entitys.Count(); i++)
+            {
+                Insert(entitys[i]);
+            }
+        }
+
+
         public virtual void Update(TEntity entity)
         {
             var local = Context.Set<TEntity>().Local.FirstOrDefault(en => en.Id == entity.Id);

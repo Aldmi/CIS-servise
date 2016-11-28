@@ -142,7 +142,7 @@ namespace Server.ViewModels
 
             //var newStationDisp= new Station {Description = "новая станция назначения", EcpCode = 586, Name = "Станция ууу"};
             //var newStationArriv = new Station { Description = "новая станция прибытия", EcpCode = 423, Name = "Станция ттт" };
-            //var operSh= new OperativeSchedule {ArrivalTime = DateTime.Now, DepartureTime = DateTime.Today, NumberOfTrain = 10, RouteName = "Новый маршрут", DispatchStation = newStationDisp, StationOfDestination = newStationArriv};
+            //var operSh= new OperativeSchedule {ArrivalTime = DateTime.Now, DepartureTime = DateTime.Today, NumberOfTrain = 10, RouteName = "Новый маршрут", DispatchStation = newStationDisp, DestinationStation = newStationArriv};
             //_unitOfWork.OperativeScheduleRepository.Insert(operSh);
             //_unitOfWork.SaveAsync();
         }

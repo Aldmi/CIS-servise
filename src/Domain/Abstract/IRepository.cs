@@ -20,6 +20,8 @@ namespace Domain.Abstract
             string includeProperties = "");
 
         void Insert(TEntity entity);
+        void InsertRange(List<TEntity> entitys);
+
         void Update(TEntity entity);
         void Remove(TEntity entity);
         void RemoveRange(List<TEntity> entitys);

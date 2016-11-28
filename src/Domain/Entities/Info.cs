@@ -19,7 +19,7 @@ namespace Domain.Entities
 
         public virtual Station DispatchStation { get; set; }       //Станция отправления
 
-        public virtual Station StationOfDestination { get; set; }  //Станция назначения
+        public virtual Station DestinationStation { get; set; }  //Станция назначения
 
         [Column(TypeName = "datetime2")]
         [Required]
