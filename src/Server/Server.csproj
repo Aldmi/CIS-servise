@@ -153,6 +153,7 @@
     </Compile>
     <Compile Include="Bootstrapper\WindsorConfig.cs" />
     <Compile Include="ClientSOAP\ApkDk.cs" />
+    <Compile Include="ClientSOAP\XmlServices\XmlRegularityShService.cs" />
     <Compile Include="Event\AutodictorDiagnosticEvent.cs" />
     <Compile Include="HostWCF\CisServise.cs" />
     <Compile Include="Utils\EnumMatchToBooleanConverter.cs" />

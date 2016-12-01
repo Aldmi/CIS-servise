@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Xml.Linq;
 using Castle.Windsor;
 using Domain.Abstract;
 using Domain.Entities;
-
+using Server.ClientSOAP.XmlServices;
 
 
 namespace Server.ClientSOAP
@@ -49,6 +52,17 @@ namespace Server.ClientSOAP
         public ApkDk(IWindsorContainer windsorContainer)
         {
             _windsorContainer = windsorContainer;
+
+            //DEBUG-- ЗАПРОС
+            XmlRegularityShService xmlRegShService= new XmlRegularityShService();
+            //var xmlDoc= xmlRegShService.GetRequest(new Station {EcpCode = 232543});
+            //xmlDoc.Save(Path.Combine(Environment.CurrentDirectory, "doc.xml"));
+
+
+            //DEBUG-- ОТВЕТ
+            var doc = XDocument.Load(Path.Combine(Environment.CurrentDirectory, "xmlRespRegSh.xml"));
+            xmlRegShService.SetResponse(doc);
+
         }
 
         #endregion
@@ -120,14 +134,6 @@ namespace Server.ClientSOAP
 
         public async void DbAcsessRegSh(IEnumerable<RegulatorySchedule> newRegSh)
         {
-            //Обработаем полученные данные
-            //1. Сделам запрос в БД на список всех станций. Получум локальную копию
-            //2. Переберем полученный список регулярного расписания и для каждой станции елси ее НЕТ в списке стануции то пусть остается, если ЕСТЬ то заменяем на найденную.
-            //3. Итого получим готовый список регулярного расписания со всеми станциями из таблицы станций.
-            //4. Очистим спсисок локальной копии рег. расписания.
-            //5. Заполним список новыми элементами.
-            //6. Сделаем Update на репозитории. и SaveAsync.
-
             const string railwayStationName = "Вокзал 1";
 
 
