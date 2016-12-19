@@ -16,10 +16,10 @@ namespace WCFCis2AvtodictorContract.DataContract
         public StationsData DestinationStation { get; set; }  //Станция назначения
 
         [DataMember]
-        public DateTime ArrivalTime { get; set; }                 //Время прибытия поезда на станцию
+        public DateTime? ArrivalTime { get; set; }                 //Время прибытия поезда на станцию
 
         [DataMember]
-        public DateTime DepartureTime { get; set; }               //Время отправления поезда со станции
+        public DateTime? DepartureTime { get; set; }               //Время отправления поезда со станции
 
         [DataMember]
         public int Platform { get; set; }                         //Номер платформы прибытия поезда, если еще неизвестен, то равен 0.

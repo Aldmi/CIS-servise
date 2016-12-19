@@ -23,10 +23,10 @@ namespace WCFCis2AvtodictorContract.DataContract
         public StationsData DestinationStation { get; set; }                      //Станция назначения
 
         [DataMember]
-        public DateTime ArrivalTime { get; set; }                                   //Время прибытия поезда на станцию
+        public DateTime? ArrivalTime { get; set; }                                   //Время прибытия поезда на станцию
 
         [DataMember]
-        public DateTime DepartureTime { get; set; }                                 //Время отправления поезда со станции
+        public DateTime? DepartureTime { get; set; }                                 //Время отправления поезда со станции
 
         [DataMember]
         public ICollection<StationsData> ListOfStops { get; set; }                  //Список станций где останавливается поезд (Заполнятся только для пригородных поездов)

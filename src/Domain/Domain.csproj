@@ -149,6 +149,10 @@
     <Compile Include="Migrations\201611280819116_new 666 add FK Dispath and Dest in Stationtable.Designer.cs">
       <DependentUpon>201611280819116_new 666 add FK Dispath and Dest in Stationtable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612190812404_DateTime set nullable in arrivalTime and DepartureTime.cs" />
+    <Compile Include="Migrations\201612190812404_DateTime set nullable in arrivalTime and DepartureTime.Designer.cs">
+      <DependentUpon>201612190812404_DateTime set nullable in arrivalTime and DepartureTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -222,6 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611280819116_new 666 add FK Dispath and Dest in Stationtable.resx">
       <DependentUpon>201611280819116_new 666 add FK Dispath and Dest in Stationtable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612190812404_DateTime set nullable in arrivalTime and DepartureTime.resx">
+      <DependentUpon>201612190812404_DateTime set nullable in arrivalTime and DepartureTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

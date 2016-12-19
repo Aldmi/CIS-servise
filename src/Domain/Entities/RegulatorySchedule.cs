@@ -32,12 +32,10 @@ namespace Domain.Entities
         public virtual Station DestinationStation { get; set; }   //Станция назначения
 
         [Column(TypeName = "datetime2")]
-        [Required]
-        public DateTime ArrivalTime { get; set; }                  //Время прибытия поезда на станцию
+        public DateTime? ArrivalTime { get; set; }                  //Время прибытия поезда на станцию
 
         [Column(TypeName = "datetime2")]
-        [Required]
-        public DateTime DepartureTime { get; set; }                //Время отправления поезда со станции
+        public DateTime? DepartureTime { get; set; }                //Время отправления поезда со станции
 
         public string DaysFollowings { get; set; }                 //Дни следования поезда(ежедневно, четные, по рабочим и т.п.)
 

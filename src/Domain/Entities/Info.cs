@@ -19,22 +19,26 @@ namespace Domain.Entities
 
         public virtual Station DispatchStation { get; set; }       //Станция отправления
 
-        public virtual Station DestinationStation { get; set; }  //Станция назначения
+        public virtual Station DestinationStation { get; set; }    //Станция назначения
 
         [Column(TypeName = "datetime2")]
-        [Required]
-        public DateTime ArrivalTime { get; set; }                 //Время прибытия поезда на станцию
+        public DateTime? ArrivalTime { get; set; }                 //Время прибытия поезда на станцию
 
         [Column(TypeName = "datetime2")]
-        [Required]
-        public DateTime DepartureTime { get; set; }               //Время отправления поезда со станции
+        public DateTime? DepartureTime { get; set; }               //Время отправления поезда со станции
 
+        [Range(0, 100)]
         public int Platform { get; set; }                         //Номер платформы прибытия поезда, если еще неизвестен, то равен 0.
 
+        [Required]
+        [Range(0, 100)]
         public int Way { get; set; }                              //Номер пути прибытия поезда, если еще неизвестен, то равен 0.
-         
+
+        [Required]
+        [MaxLength(100)]
         public string RouteName { get; set; }                     //Станция отправления и станция назначения, а также фирменное название поезда, если есть.
-         
+
+        [Range(0, 59)]
         public int Lateness { get; set; }                         //Количество минут опоздания от графика движения
     }
 }

@@ -138,10 +138,10 @@ namespace Server.ClientSOAP.XmlServices
 
 
 
-        private DateTime DateTimeConverter(string date)
+        private DateTime? DateTimeConverter(string date)
         {
             if (string.IsNullOrEmpty(date))
-                return DateTime.MinValue;
+                return null;
 
             try
             {
@@ -149,7 +149,7 @@ namespace Server.ClientSOAP.XmlServices
             }
             catch (Exception)
             {
-                return DateTime.MinValue;
+                return null;
             }
         }
 

@@ -23,13 +23,13 @@ namespace WCFCis2AvtodictorContract.DataContract.SimpleData
         public int StationOfDestinationEcpCode { get; set; }        //Станция назначения
 
         [DataMember]
-        public DateTime ArrivalTime { get; set; }                  //Время прибытия поезда на станцию
+        public DateTime? ArrivalTime { get; set; }                  //Время прибытия поезда на станцию
 
         [DataMember]
-        public DateTime DepartureTime { get; set; }                //Время отправления поезда со станции
+        public DateTime? DepartureTime { get; set; }                //Время отправления поезда со станции
 
         [DataMember]
-        public string DaysFollowing { get; set; }                  //Дни следования поезда(ежедневно, четные, по рабочим и т.п.)
+        public string DaysFollowing { get; set; }                   //Дни следования поезда(ежедневно, четные, по рабочим и т.п.)
 
         [DataMember]
         public ICollection<int> ListOfStopsEcpCode { get; set; }

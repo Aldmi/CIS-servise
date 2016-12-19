@@ -52,18 +52,6 @@ namespace Server.ClientSOAP
         public ApkDk(IWindsorContainer windsorContainer)
         {
             _windsorContainer = windsorContainer;
-
-            ////DEBUG-- ЗАПРОС
-            //XmlRegularityShService xmlRegShService= new XmlRegularityShService();
-            //var station = new Station {EcpCode = 34567 };
-            //var xmlDoc= xmlRegShService.GetRequest(station);
-            ////xmlDoc.Save(Path.Combine(Environment.CurrentDirectory, "doc.xml"));
-
-
-            ////DEBUG-- ОТВЕТ
-            //var doc = XDocument.Load(Path.Combine(Environment.CurrentDirectory, "xmlRespRegSh.xml"));
-            //xmlRegShService.SetResponse(doc, station);
-
         }
 
         #endregion
