@@ -42,7 +42,6 @@ namespace Server.ViewModels
         public ApkDk ApkDk { get; set; }
 
         private bool _isBusy;
-
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -54,8 +53,6 @@ namespace Server.ViewModels
         }
 
         private string _messageBusy;
-    
-
         public string MessageBusy
         {
             get { return _messageBusy; }
@@ -65,6 +62,8 @@ namespace Server.ViewModels
                 NotifyOfPropertyChange(() => MessageBusy);
             }
         }
+
+
 
 
         public DiagnosticViewModel DiagnosticVm1 { get; set; }
@@ -92,32 +91,9 @@ namespace Server.ViewModels
 
 
 
-
         public async void RailwayStation1()
         {
             const string railwayStationName = "Вокзал 1";
-
-            //DEBUG
-            //---------------------------------------------------------------------
-           //IUnitOfWork unitOfWork = _windsorContainer.Resolve<IUnitOfWork>();
-           // var query = unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName)
-           //     .Include(s => s.Stations);
-
-           // var railWaySt= await query.FirstOrDefaultAsync();
-
-
-           // var newStation = new Station { Name = "Станция 11", Description = "описание 1256", EcpCode = 96, RailwayStations = new List<RailwayStation> { railWaySt } };
-           // unitOfWork.StationRepository.Insert(newStation);
-
-            //railWaySt.Stations.Add(newStation);
-
-            //unitOfWork.RailwayStationRepository.Update(railWaySt);
-            //await unitOfWork.SaveAsync();
-            //------------------------------------------------------------------------------
-
-
-
-
 
             var editViewModel = new RailwayStationEditViewModel(railwayStationName, _windsorContainer);
             var result = _windowManager.ShowDialog(editViewModel);
@@ -126,8 +102,7 @@ namespace Server.ViewModels
 
         public async void RailwayStation2()
         {
-
-            ApkDk.RequestRegulatorySchedule();//DEBUG
+           await ApkDk.RequestRegulatorySchedule();//DEBUG
         }
 
 

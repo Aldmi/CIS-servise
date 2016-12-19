@@ -1,7 +1,6 @@
 ﻿
-FH:\Git\CIS_SSD\src\Server\App.xaml;;
-FH:\Git\CIS_SSD\src\Server\Views\AddNewStationView.xaml;;
-FH:\Git\CIS_SSD\src\Server\Views\AppView.xaml;;
-FH:\Git\CIS_SSD\src\Server\Views\DiagnosticView.xaml;;
-FH:\Git\CIS_SSD\src\Server\Views\RailwayStationEditView.xaml;;
+FD:\Git\CIS\src\Server\App.xaml;;
+FD:\Git\CIS\src\Server\Views\AppView.xaml;;
+FD:\Git\CIS\src\Server\ViewModels\DiagnosticView.xaml;;
+FD:\Git\CIS\src\Server\Views\RailwayStationEditView.xaml;;
 

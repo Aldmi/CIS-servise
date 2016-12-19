@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Navigation;
 using System.Xml;
 using System.Xml.Linq;
 using Domain.Entities;
@@ -11,12 +13,6 @@ using Domain.Entities;
 
 namespace Server.ClientSOAP.XmlServices
 {
-
-
-
-
-
-
 
     public class XmlRegularityShService
     {
@@ -43,7 +39,7 @@ namespace Server.ClientSOAP.XmlServices
 
 
 
-        /* ЗАПРОС
+        /* ОТВЕТ
          <?xml version="1.0" encoding="utf-8" ?>
            <root>
              <Place ESR=’34567’ Data=’2015.09.21’/>
@@ -63,61 +59,114 @@ namespace Server.ClientSOAP.XmlServices
             </Train>
           </root>
          */
-        public IEnumerable<RegulatorySchedule> SetResponse(XDocument xmlDoc)
+        public IEnumerable<RegulatorySchedule> SetResponse(XDocument xmlDoc, Station stationValid)
         {
             try
             {
                 var identQuery = from train in xmlDoc.Descendants("Place")
-                    select new
-                    {
-                        ESR = (string) train.Attribute("ESR"),
-                        Data = (string) train.Attribute("Data")
-                    };
+                                 select new
+                                 {
+                                     ESR = (string)train.Attribute("ESR"),
+                                     Data = (string)train.Attribute("Data")
+                                 };
+
+                // сверить идентификатор (для нужной станции расписания)
+                var identAnonym = identQuery.FirstOrDefault();
+                if (identAnonym != null && identAnonym.ESR != stationValid.EcpCode.ToString())
+                    return null;
+
 
 
                 var listRegShQuery =
                     from train in xmlDoc.Descendants("Train")
                     select new
                     {
-                        TrainNumber = (string) train.Attribute("TrainNumber"),
-                        Name = (string) train.Attribute("Name"),
-                        ESRDeparture = (string) train.Attribute("ESRDeparture"),
-                        ESRArrival = (string) train.Attribute("ESRArrival"),
-                        TimeDeparture = (string) train.Attribute("TimeDeparture"),
-                        TimeArrival = (string) train.Attribute("TimeArrival"),
-                        DaysTrainType = (string) train.Attribute("DaysTrainType"),
-                        DaysTrain = (string) train.Attribute("DaysTrain"),
+                        TrainNumber = (string)train.Attribute("TrainNumber"),
+                        Name = (string)train.Attribute("Name"),
+                        ESRDeparture = (string)train.Attribute("ESRDeparture"),
+                        ESRArrival = (string)train.Attribute("ESRArrival"),
+                        TimeDeparture = (string)train.Attribute("TimeDeparture"),
+                        TimeArrival = (string)train.Attribute("TimeArrival"),
+                        DaysTrainType = (string)train.Attribute("DaysTrainType"),
+                        DaysTrain = (string)train.Attribute("DaysTrain"),
                         PlacesStop =
                             new List<string>(
                                 train.Element("PlacesStop")?
                                     .Elements("Place")
-                                    .Select(p => p.Attribute("ESR").ToString())
+                                    .Select(p => (string)p.Attribute("ESR"))
                                     .ToList()),
                         PlacesNotStop =
                             new List<string>(
                                 train.Element("PlacesNotStop")?
                                     .Elements("Place")
-                                    .Select(p => p.Attribute("ESR").ToString())
+                                    .Select(p => (string)p.Attribute("ESR"))
                                     .ToList())
                     };
 
 
-                var identAnonym = identQuery.FirstOrDefault();
                 var listRegShAnonym = listRegShQuery.ToList();
+               
 
-                // сверить идентификатор (для нужной станции расписание)
-                // на сонове listRegShAnonym создать список listRegSh.
+                var newRegulatorySchedules = listRegShAnonym.Select(anonym =>
+                {
+                       return new RegulatorySchedule
+                       {
+                           NumberOfTrain = anonym.TrainNumber,
+                           ArrivalTime = DateTimeConverter(anonym.TimeArrival),
+                           DepartureTime = DateTimeConverter(anonym.TimeDeparture),
+                           DaysFollowings = DaysFollowingsConverter(anonym.DaysTrain, anonym.DaysTrainType),
+                           RouteName = anonym.Name,
+                           DestinationStation = new Station { EcpCode = int.Parse(anonym.ESRDeparture), Name = ""},
+                           DispatchStation = new Station { EcpCode = int.Parse(anonym.ESRArrival), Name = "" },
+                           ListOfStops = new ObservableCollection<Station>(anonym.PlacesStop.Select(stStr => new Station { EcpCode = int.Parse(stStr), Name = "" })),
+                           ListWithoutStops = new ObservableCollection<Station>(anonym.PlacesNotStop.Select(stStr => new Station { EcpCode = int.Parse(stStr), Name = "" }))
+                       };
+                   }).ToList();
+
+                //ListOfStops = new ObservableCollection<Station>(anonym.PlacesStop.Select(stStr => new Station { EcpCode = int.Parse(stStr), Name = "" })),
+                //ListWithoutStops = new ObservableCollection<Station>(anonym.PlacesNotStop.Select(stStr => new Station { EcpCode = int.Parse(stStr), Name = "" }))
+
+                return newRegulatorySchedules;
 
             }
             catch (Exception ex)
-            {      
-              throw new XmlException($"Ошибка парсинга XML: {xmlDoc.BaseUri}. ОШИБКА: {ex}");
+            {
+                throw new XmlException($"Ошибка парсинга XML: {xmlDoc.BaseUri}. ОШИБКА: {ex}");
             }
-
-
-
-
-            return null;
         }
+
+
+
+
+        private DateTime DateTimeConverter(string date)
+        {
+            if (string.IsNullOrEmpty(date))
+                return DateTime.MinValue;
+
+            try
+            {
+                return DateTime.ParseExact(date, "yyyy.MM.dd HH:mm:ss", null);
+            }
+            catch (Exception)
+            {
+                return DateTime.MinValue;
+            }
+        }
+
+
+        private string DaysFollowingsConverter(string daysTrain, string daysTrainType)
+        {
+            return daysTrain;
+        }
+
+
+
+
+
+
+
+
+
+
     }
 }

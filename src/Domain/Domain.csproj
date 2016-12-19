@@ -61,7 +61,6 @@
     <Compile Include="Entities\RailwayStation.cs" />
     <Compile Include="Entities\RegulatorySchedule.cs" />
     <Compile Include="Entities\Station.cs" />
-    <Compile Include="FactoryEntities\OperativeScheduleFromXmlFactory.cs" />
     <Compile Include="Migrations\201610221730154_Test1.cs" />
     <Compile Include="Migrations\201610221730154_Test1.Designer.cs">
       <DependentUpon>201610221730154_Test1.cs</DependentUpon>
