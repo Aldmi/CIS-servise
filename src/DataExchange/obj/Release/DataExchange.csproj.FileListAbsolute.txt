@@ -1,0 +1,15 @@
+D:\Git\CIS\src\DataExchange\bin\Release\DataExchange.dll
+D:\Git\CIS\src\DataExchange\bin\Release\DataExchange.pdb
+D:\Git\CIS\src\DataExchange\bin\Release\Caliburn.Micro.dll
+D:\Git\CIS\src\DataExchange\bin\Release\Castle.Windsor.dll
+D:\Git\CIS\src\DataExchange\bin\Release\Domain.dll
+D:\Git\CIS\src\DataExchange\bin\Release\EntityFramework.dll
+D:\Git\CIS\src\DataExchange\bin\Release\Library.dll
+D:\Git\CIS\src\DataExchange\bin\Release\Domain.pdb
+D:\Git\CIS\src\DataExchange\bin\Release\Library.pdb
+D:\Git\CIS\src\DataExchange\bin\Release\Caliburn.Micro.xml
+D:\Git\CIS\src\DataExchange\bin\Release\Castle.Windsor.xml
+D:\Git\CIS\src\DataExchange\bin\Release\EntityFramework.xml
+D:\Git\CIS\src\DataExchange\obj\Release\DataExchange.csprojResolveAssemblyReference.cache
+D:\Git\CIS\src\DataExchange\obj\Release\DataExchange.dll
+D:\Git\CIS\src\DataExchange\obj\Release\DataExchange.pdb

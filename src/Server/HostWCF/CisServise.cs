@@ -74,34 +74,55 @@ namespace Server.HostWCF
                     throw new FaultException<ArgumentNullException>(ex, $"Вокзал с таким именем не найден \"{nameRailwayStation}\"");
                 }
 
-                var regularSchedules = (count != null) ? railwayStation.RegulatorySchedules.Take(count.Value) : railwayStation.RegulatorySchedules;
+                var regularSchedules = (count != null && count.Value > 0) ? railwayStation.RegulatorySchedules.Take(count.Value).ToList() : railwayStation.RegulatorySchedules.ToList();
 
-                return
-                    regularSchedules.Select(op => new RegulatoryScheduleData
-                    {
-                        Id = op.Id,
-                        RouteName = op.RouteName,
-                        ArrivalTime = op.ArrivalTime,
-                        DepartureTime = op.DepartureTime,
-                        NumberOfTrain = op.NumberOfTrain,
-                        DispatchStation =
-                            new StationsData
-                            {
-                                Id = op.DispatchStation.Id,
-                                Name = op.DispatchStation.Name,
-                                Description = op.DispatchStation.Description,
-                                EcpCode = op.DispatchStation.EcpCode
-                            },
-                        DestinationStation =
-                            new StationsData
-                            {
-                                Id = op.DestinationStation.Id,
-                                Name = op.DestinationStation.Name,
-                                Description = op.DestinationStation.Description,
-                                EcpCode = op.DestinationStation.EcpCode
-                            },
-                        DaysFollowing = op.DaysFollowings
-                    }).ToList();
+
+                var sendingData = regularSchedules.Select(reg => new RegulatoryScheduleData
+                {
+                    Id = reg.Id,
+                    RouteName = reg.RouteName,
+                    ArrivalTime = reg.ArrivalTime,
+                    DepartureTime = reg.DepartureTime,
+                    NumberOfTrain = reg.NumberOfTrain,
+                    DispatchStation =
+                           new StationsData
+                           {
+                               Id = reg.DispatchStation.Id,
+                               Name = reg.DispatchStation.Name,
+                               Description = reg.DispatchStation.Description,
+                               EcpCode = reg.DispatchStation.EcpCode
+                           },
+                    DestinationStation =
+                           new StationsData
+                           {
+                               Id = reg.DestinationStation.Id,
+                               Name = reg.DestinationStation.Name,
+                               Description = reg.DestinationStation.Description,
+                               EcpCode = reg.DestinationStation.EcpCode
+                           },
+                    ListOfStops = ((reg.ListOfStops != null) ? new List<StationsData>(
+                                       reg.ListOfStops.Select(st => new StationsData                         
+                                        {
+                                            Id = st.Id,
+                                            Name = st.Name,
+                                            EcpCode = st.EcpCode,
+                                            Description = st.Description
+                                        })) : new List<StationsData>()),
+
+                    ListWithoutStops = ((reg.ListWithoutStops != null) ? new List<StationsData>(
+                                       reg.ListWithoutStops.Select(st => new StationsData
+                                       {
+                                           Id = st.Id,
+                                           Name = st.Name,
+                                           EcpCode = st.EcpCode,
+                                           Description = st.Description
+                                       })) : new List<StationsData>()),
+                    DaysFollowing = reg.DaysFollowings
+                }).ToList();
+
+
+                return sendingData;
+
             }
             catch (Exception ex)
             {
@@ -174,28 +195,23 @@ namespace Server.HostWCF
                                 Description = op.DestinationStation.Description,
                                 EcpCode = op.DestinationStation.EcpCode
                             },
-                        ListOfStops =
-                            new List<StationsData>(
-                                op.ListOfStops.Select(
-                                    st =>
-                                        new StationsData
-                                        {
-                                            Id = st.Id,
-                                            Name = st.Name,
-                                            EcpCode = st.EcpCode,
-                                            Description = st.Description
-                                        })),
-                        ListWithoutStops =
-                            new List<StationsData>(
-                                op.ListWithoutStops.Select(
-                                    st =>
-                                        new StationsData
-                                        {
-                                            Id = st.Id,
-                                            Name = st.Name,
-                                            EcpCode = st.EcpCode,
-                                            Description = st.Description
-                                        }))
+                        ListOfStops = ((op.ListOfStops != null) ? new List<StationsData>(
+                                       op.ListOfStops.Select(st => new StationsData
+                                       {
+                                           Id = st.Id,
+                                           Name = st.Name,
+                                           EcpCode = st.EcpCode,
+                                           Description = st.Description
+                                       })) : new List<StationsData>()),
+
+                        ListWithoutStops = ((op.ListWithoutStops != null) ? new List<StationsData>(
+                                       op.ListWithoutStops.Select(st => new StationsData
+                                       {
+                                           Id = st.Id,
+                                           Name = st.Name,
+                                           EcpCode = st.EcpCode,
+                                           Description = st.Description
+                                       })) : new List<StationsData>()),
                     }).ToList();
             }
             catch (Exception ex)

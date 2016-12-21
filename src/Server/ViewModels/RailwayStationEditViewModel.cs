@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Core.Metadata.Edm;
+using System.Data.Entity.Validation;
 using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
@@ -10,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Documents;
 using Caliburn.Micro;
 using Domain.Abstract;
 using Domain.Entities;
@@ -33,9 +35,8 @@ namespace Server.ViewModels
 
     public class RailwayStationEditViewModel : Screen
     {
-        public string NameRailwayStation { get; set; }
-
         private readonly IWindsorContainer _windsorContainer;
+        private readonly Station _stationOwner;
         private IUnitOfWork _unitOfWork;
 
         public RailwayStation RailwayStation { get; set; }
@@ -132,55 +133,111 @@ namespace Server.ViewModels
                     _unitOfWork = _windsorContainer.Resolve<IUnitOfWork>();
                     _currentOption = value;
 
-                    switch (CurrentOption)
-                    {
-                        case Options.Station:
-                            ShowBusyIndicator(true, "Идет загрузка списка станций из БД");
-                            GetRailwayStation().ContinueWith(task =>
-                            {       
-                                var railwayStation = task.Result;
-                                if (railwayStation != null)
+                
+                        switch (CurrentOption)
+                        {
+                            case Options.Station:
+                                ShowBusyIndicator(true, "Идет загрузка списка станций из БД");
+                                GetRailwayStation().ContinueWith(task =>
                                 {
-                                    RailwayStation = railwayStation;
-                                    Stations = new ObservableCollection<Station>(railwayStation.Stations);
-                                    ShowBusyIndicator(false);
-                                }
-                            });
-                            break;
+                                    try
+                                    {
+                                        var railwayStation = task.Result;
+                                        if (railwayStation != null)
+                                        {
+                                            RailwayStation = railwayStation;
+                                            Stations = new ObservableCollection<Station>(railwayStation.Stations);
+                                            CountLine = Stations.Count;
+                                            ShowBusyIndicator(false);
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        MessageBox.Show($"Ошибка работы с БД.");
+                                        ShowBusyIndicator(false);
+                                    }
+
+                                });
+                                break;
 
 
-                        case Options.RegulatorySchedule:
-                            ShowBusyIndicator(true, "Идет загрузка регулярного расписания из БД");
-                            GetRailwayStation().ContinueWith(task =>
-                            {
-                                var railwayStation = task.Result;
-                                if (railwayStation != null)
+                            case Options.RegulatorySchedule:
+                                ShowBusyIndicator(true, "Идет загрузка регулярного расписания из БД");
+                                GetRailwayStation().ContinueWith(task =>
                                 {
-                                    RailwayStation = railwayStation;
-                                    Stations = new ObservableCollection<Station>(railwayStation.Stations);
-                                    RegulatorySchedules = new ObservableCollection<RegulatorySchedule>(railwayStation.RegulatorySchedules);
-                                    ShowBusyIndicator(false);
-                                }
-                            });
-                            break;
+                                    try
+                                    {
+                                        var railwayStation = task.Result;
+                                        if (railwayStation != null)
+                                        {
+                                            RailwayStation = railwayStation;
+                                            Stations = new ObservableCollection<Station>(railwayStation.Stations);
+                                            RegulatorySchedules = new ObservableCollection<RegulatorySchedule>(railwayStation.RegulatorySchedules);
+                                            CountLine = RegulatorySchedules.Count;
+                                            ShowBusyIndicator(false);
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        MessageBox.Show($"Ошибка работы с БД.");
+                                        ShowBusyIndicator(false);
+                                    }
+                                });
+                                break;
 
 
-                        case Options.OperativeSchedule:
-                            ShowBusyIndicator(true, "Идет загрузка оперативного расписания из БД");
-                            GetRailwayStation().ContinueWith(task =>
-                            {
-                                var railwayStation = task.Result;
-                                if (railwayStation != null)
+                            case Options.OperativeSchedule:
+                                ShowBusyIndicator(true, "Идет загрузка оперативного расписания из БД");
+                                GetRailwayStation().ContinueWith(task =>
                                 {
-                                    RailwayStation = railwayStation;
-                                    Stations = new ObservableCollection<Station>(railwayStation.Stations);
-                                    OperativeSchedules = new ObservableCollection<OperativeSchedule>(railwayStation.OperativeSchedules);
-                                    ShowBusyIndicator(false);
-                                }
-                            });
-                            break;
-                    }
+                                    try
+                                    {
+                                        var railwayStation = task.Result;
+                                        if (railwayStation != null)
+                                        {
+                                            RailwayStation = railwayStation;
+                                            Stations = new ObservableCollection<Station>(railwayStation.Stations);
+                                            OperativeSchedules = new ObservableCollection<OperativeSchedule>(railwayStation.OperativeSchedules);
+                                            CountLine = OperativeSchedules.Count;
+                                            ShowBusyIndicator(false);
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        MessageBox.Show($"Ошибка работы с БД.");
+                                        ShowBusyIndicator(false);
+                                    }
+                             
+                                });
+                                break;
+                        }
+
+
                 }
+            }
+        }
+
+
+        private int _countLine;
+        public int CountLine
+        {
+            get { return _countLine; }
+            set
+            {
+                _countLine = value;
+                NotifyOfPropertyChange(() => CountLine);
+            }
+        }
+
+
+        private DateTime _datFormation;
+        public DateTime DatFormation
+        {
+            get { return _datFormation; }
+            set
+            {
+                _datFormation = value;
+                NotifyOfPropertyChange(() => DatFormation);
             }
         }
 
@@ -189,10 +246,10 @@ namespace Server.ViewModels
 
         #region ctor
 
-        public RailwayStationEditViewModel(string nameRailwayStation, IWindsorContainer windsorContainer)
+        public RailwayStationEditViewModel(IWindsorContainer windsorContainer, Station stationOwner)
         {
-            NameRailwayStation = nameRailwayStation;
             _windsorContainer = windsorContainer;
+            _stationOwner = stationOwner;
 
             CurrentOption = Options.OperativeSchedule;
         }
@@ -209,7 +266,7 @@ namespace Server.ViewModels
         {
             return await await Task.Factory.StartNew(async () =>
             {
-                var query = _unitOfWork.RailwayStationRepository.Search(r => r.Name == NameRailwayStation)
+                var query = _unitOfWork.RailwayStationRepository.Search(r => r.Name == _stationOwner.Name)
                 .Include(s => s.Stations)
                 .Include(op => op.OperativeSchedules)
                 .Include(reg => reg.RegulatorySchedules);
@@ -225,16 +282,19 @@ namespace Server.ViewModels
                 case Options.Station:
                     var newStation = new Station { Name = string.Empty, Description = string.Empty, EcpCode = 0, RailwayStations = new List<RailwayStation> { RailwayStation } };
                     Stations.Add(newStation);
+                    CountLine = Stations.Count;
                     break;
 
                 case Options.OperativeSchedule:
                     var newOperSh = new OperativeSchedule {ArrivalTime= DateTime.Now, DepartureTime= DateTime.Now, RouteName = string.Empty, NumberOfTrain = string.Empty, ListOfStops = new ObservableCollection<Station>(), ListWithoutStops = new ObservableCollection<Station>()};
                     OperativeSchedules.Add(newOperSh);
+                    CountLine = OperativeSchedules.Count;
                     break;
 
                 case Options.RegulatorySchedule:
                     var newRegSh = new RegulatorySchedule { ArrivalTime = DateTime.Now, DepartureTime = DateTime.Now, RouteName = string.Empty, NumberOfTrain = string.Empty, DaysFollowings = null, ListOfStops = new ObservableCollection<Station>(), ListWithoutStops = new ObservableCollection<Station>() };
                     RegulatorySchedules.Add(newRegSh);
+                    CountLine = RegulatorySchedules.Count;
                     break;
             }
         }
@@ -247,14 +307,17 @@ namespace Server.ViewModels
             {
                 case Options.Station:
                     Stations.Remove(SelectedItemStation);
+                    CountLine = Stations.Count;
                     break;
 
                 case Options.OperativeSchedule:
-                      OperativeSchedules.Remove(SelectedItemOperativeSchedule);
+                    OperativeSchedules.Remove(SelectedItemOperativeSchedule);
+                    CountLine = OperativeSchedules.Count;
                     break;
 
                 case Options.RegulatorySchedule:
                     RegulatorySchedules.Remove(SelectedItemRegulatorySchedule);
+                    CountLine = RegulatorySchedules.Count;
                     break;
             }
 

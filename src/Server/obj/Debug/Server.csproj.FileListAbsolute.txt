@@ -483,5 +483,7 @@ D:\Git\CIS_SSD\src\Server\obj\Debug\Views\RailwayStationEditView.baml
 D:\Git\CIS_SSD\src\Server\obj\Debug\Server.g.resources
 D:\Git\CIS_SSD\src\Server\obj\Debug\Server.Properties.Resources.resources
 D:\Git\CIS_SSD\src\Server\obj\Debug\Server.csproj.GenerateResource.Cache
-D:\Git\CIS\src\Server\obj\Debug\ViewModels\DiagnosticView.g.cs
-D:\Git\CIS\src\Server\obj\Debug\ViewModels\DiagnosticView.baml
+D:\Git\CIS\src\Server\obj\Debug\Views\DiagnosticView.g.cs
+D:\Git\CIS\src\Server\obj\Debug\Views\DiagnosticView.baml
+D:\Git\CIS\src\Server\bin\Debug\DataExchange.dll
+D:\Git\CIS\src\Server\bin\Debug\DataExchange.pdb

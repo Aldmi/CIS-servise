@@ -153,6 +153,7 @@
     </Compile>
     <Compile Include="Bootstrapper\WindsorConfig.cs" />
     <Compile Include="ClientSOAP\ApkDk.cs" />
+    <Compile Include="ClientSOAP\Transaction\XmlTransaction.cs" />
     <Compile Include="ClientSOAP\XmlServices\XmlRegularityShService.cs" />
     <Compile Include="Event\AutodictorDiagnosticEvent.cs" />
     <Compile Include="HostWCF\CisServise.cs" />
@@ -167,7 +168,7 @@
     <Compile Include="Views\AppView.xaml.cs">
       <DependentUpon>AppView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\DiagnosticView.xaml.cs">
+    <Compile Include="Views\DiagnosticView.xaml.cs">
       <DependentUpon>DiagnosticView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DialogView.xaml.cs">
@@ -217,7 +218,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewModels\DiagnosticView.xaml">
+    <Page Include="Views\DiagnosticView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -231,6 +232,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataExchange\DataExchange.csproj">
+      <Project>{659fae6f-0f25-4949-9f2e-9c2f7f6ff172}</Project>
+      <Name>DataExchange</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain\Domain.csproj">
       <Project>{04a093c7-370e-497c-a70e-474379229f84}</Project>
       <Name>Domain</Name>

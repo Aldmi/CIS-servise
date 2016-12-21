@@ -15,6 +15,6 @@ namespace WCFCis2AvtodictorContract.DataContract
         public int Status { get; set; }        //Код общего статуса технического состояния устройства: исправен - неисправен
 
         [DataMember]
-        public string Fault { get; set; }      //Строковый Описание ошибки по устройству, 
+        public string Fault { get; set; }      //Строковый Описание ошибки по устройству
     }
 }

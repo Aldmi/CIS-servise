@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using Castle.Windsor;
 using Domain.Abstract;
 using Domain.Entities;
+using Server.ClientSOAP.Transaction;
 using Server.ClientSOAP.XmlServices;
 
 
@@ -42,6 +43,8 @@ namespace Server.ClientSOAP
 
         public Status StatusRegSh { get; set; }
 
+        public XmlTransaction XmlTransaction { get; set; }
+
         #endregion
 
 
@@ -52,6 +55,8 @@ namespace Server.ClientSOAP
         public ApkDk(IWindsorContainer windsorContainer)
         {
             _windsorContainer = windsorContainer;
+
+            XmlTransaction = new XmlTransaction();
         }
 
         #endregion
@@ -66,62 +71,27 @@ namespace Server.ClientSOAP
 
             //DEBUG-- ЗАПРОС
             XmlRegularityShService xmlRegShService = new XmlRegularityShService();
-            var station = new Station { EcpCode = 34567 };
-            var xmlDoc = xmlRegShService.GetRequest(station);
-            //xmlDoc.Save(Path.Combine(Environment.CurrentDirectory, "doc.xml"));
+            var station = new Station { EcpCode = 19600 };
+            var xmlRequest = xmlRegShService.GetRequest(station);
 
-            await Task.Delay(1000);//Имитация отправки запроса и получения ответа
+
+
+            string address = "http://10.17.224.85:810";
+            string intetfaces = "GetScheduleNormative4Place";
+            // string intetfaces = "GetScheduleDynamic4Place"; 
+            //string intetfaces = "GetTrainInfo";
+            string uri = $"{address}/{intetfaces}";
+            var xmlResp = await XmlTransaction.PostXmlTransaction(uri, xmlRequest);
+
+
 
             //DEBUG-- ОТВЕТ
-            var doc = XDocument.Load(Path.Combine(Environment.CurrentDirectory, "xmlRespRegSh.xml"));
-            var newRegSh= xmlRegShService.SetResponse(doc, station);
+            //var doc = XDocument.Load(Path.Combine(Environment.CurrentDirectory, "xmlRespRegSh.xml"));
+            var newRegSh = xmlRegShService.SetResponse(xmlResp, station);
 
-
-            // Выполнили запрос и получили список Регулярноного расписания.
-
-            //var newRegSh = new List<RegulatorySchedule>
-            //{
-            //    new RegulatorySchedule
-            //    {
-            //        ArrivalTime = DateTime.Now,
-            //        DepartureTime = DateTime.Today,
-            //        RouteName = "Маршурт новый 000",
-            //        NumberOfTrain = "34Ф",
-            //        DestinationStation = new Station {EcpCode = 851, Name = ""},        //создаем фейковую станцию и заполняем EcpCode из ответа.
-            //        DispatchStation = new Station {EcpCode = 741, Name = ""},
-            //        DaysFollowings = "qwert",
-            //        ListOfStops = new ObservableCollection<Station> {new Station {EcpCode = 851, Name = ""}, new Station {EcpCode = 741, Name = ""}},
-            //        ListWithoutStops = new ObservableCollection<Station>()
-            //    },
-            //    new RegulatorySchedule
-            //    {
-            //        ArrivalTime = DateTime.Now,
-            //        DepartureTime = DateTime.Today,
-            //        RouteName = "Маршурт новый 001",
-            //        NumberOfTrain = "45",
-            //        DestinationStation = new Station {EcpCode = 452, Name = ""},
-            //        DispatchStation = new Station {EcpCode = 963, Name = ""},
-            //        DaysFollowings = "mjb,jb",
-            //        ListOfStops = new ObservableCollection<Station>(),
-            //        ListWithoutStops = new ObservableCollection<Station> {new Station {EcpCode = 888, Name = ""}, new Station {EcpCode = 777, Name = ""}}
-            //    },
-            //    new RegulatorySchedule
-            //    {
-            //        ArrivalTime = DateTime.Now,
-            //        DepartureTime = DateTime.Today,
-            //        RouteName = "Маршурт новый 002",
-            //        NumberOfTrain = "89",
-            //        DestinationStation = new Station {EcpCode = 756, Name = ""},
-            //        DispatchStation = new Station {EcpCode = 996, Name = ""},
-            //        DaysFollowings = "fzck",
-            //        ListOfStops = new ObservableCollection<Station>(),
-            //        ListWithoutStops = new ObservableCollection<Station>()
-            //    }
-            //};
 
             StatusRegSh = Status.ProcessingRegSh;
-
-            await DbAcsessRegSh(newRegSh);
+            await DbAcsessRegSh(newRegSh, uri);
 
 
 
@@ -132,13 +102,13 @@ namespace Server.ClientSOAP
         }
 
 
-        public async Task DbAcsessRegSh(IEnumerable<RegulatorySchedule> newRegSh)
+        private async Task DbAcsessRegSh(IEnumerable<RegulatorySchedule> newRegSh, string uri)
         {
             const string railwayStationName = "Вокзал 1";
 
 
             using (_unitOfWork = _windsorContainer.Resolve<IUnitOfWork>())
-            {            
+            {
                 var railwayStation = await await Task.Factory.StartNew(async () =>
                  {
                      var query = _unitOfWork.RailwayStationRepository.Search(r => r.Name == railwayStationName)
@@ -147,13 +117,13 @@ namespace Server.ClientSOAP
                      return await query.FirstOrDefaultAsync();
                  });
 
-                if(railwayStation == null)
+                if (railwayStation == null)
                     return;
 
 
                 //Все зарегистрированные станции в БД
                 var allStations = _unitOfWork.StationRepository.Get().ToList();
-  
+
 
                 //Нашли станции в БД или создали новые
                 foreach (var regSh in newRegSh)
@@ -178,7 +148,7 @@ namespace Server.ClientSOAP
                         allStations.Add(regSh.DispatchStation);
                     }
 
-                    for (int i=0; i < regSh.ListOfStops.Count; i++)
+                    for (int i = 0; i < regSh.ListOfStops.Count; i++)
                     {
                         var findStDb = allStations.FirstOrDefault(st => st.EcpCode == regSh.ListOfStops[i].EcpCode);
                         if (findStDb != null)
@@ -203,47 +173,49 @@ namespace Server.ClientSOAP
                             allStations.Add(regSh.ListWithoutStops[i]);
                         }
                     }
-
-                    //Повторить для списка станций остановчных и проездых.
                 }
 
                 //вычислим добавленные станции данного вокзала
                 var addedStations = allStations.Except(railwayStation.Stations).ToList();
 
+
                 //выполним запрос для получения имен добавленных станиций к сервису
+                //await RequestFillNameStation(addedStations);
                 foreach (var needAddStation in addedStations)
                 {
                     needAddStation.Name = $"Скоректированное имя {needAddStation.EcpCode}";
-                    needAddStation.RailwayStations= new List<RailwayStation> {railwayStation};
-                }
-
-                //Новые станции добавим в БД.
-                if (addedStations.Any())
-                {
-                    _unitOfWork.StationRepository.InsertRange(addedStations);
-                    await _unitOfWork.SaveAsync();
-                }
-
-
-                //Удалим старое расписание.
-                var currentRegSh = railwayStation.RegulatorySchedules.ToList();
-                foreach (var regSh in currentRegSh)
-                {
-                    _unitOfWork.RegulatoryScheduleRepository.Remove(regSh);
-                }
-
-
-                //Добавим новое расписание.
-                railwayStation.RegulatorySchedules.Clear();
-                foreach (var regSh in newRegSh)
-                {
-                    railwayStation.RegulatorySchedules.Add(regSh);
+                    needAddStation.RailwayStations = new List<RailwayStation> { railwayStation };
                 }
 
 
                 //Сохраним изменения
                 try
                 {
+                    //Новые станции добавим в БД.
+                    if (addedStations.Any())
+                    {
+                        _unitOfWork.StationRepository.InsertRange(addedStations);
+                        await _unitOfWork.SaveAsync();
+                    }
+
+
+                    //Удалим старое расписание.
+                    var currentRegSh = railwayStation.RegulatorySchedules.ToList();
+                    foreach (var regSh in currentRegSh)
+                    {
+                        _unitOfWork.RegulatoryScheduleRepository.Remove(regSh);
+                    }
+
+
+                    //Добавим новое расписание.
+                    railwayStation.RegulatorySchedules.Clear();
+                    foreach (var regSh in newRegSh)
+                    {
+                        railwayStation.RegulatorySchedules.Add(regSh);
+                    }
+
+
+                    //Сохраним изменения
                     _unitOfWork.RailwayStationRepository.Update(railwayStation);
                     await _unitOfWork.SaveAsync();
                 }
@@ -263,8 +235,33 @@ namespace Server.ClientSOAP
                     // Throw a new DbEntityValidationException with the improved exception message.
                     throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
                 }
-
             }
+        }
+
+
+
+       private async Task RequestFillNameStation(IEnumerable<Station> stations)
+        {
+            //DEBUG-- ЗАПРОС
+            XmlRegularityShService xmlRegShService = new XmlRegularityShService();
+            var station = new Station { EcpCode = 19600 };
+            var xmlRequest = xmlRegShService.GetRequestStationsName(stations);
+
+            xmlRequest.Save(Path.Combine(Environment.CurrentDirectory, $"doc_{1111}.xml")); //DEBUG
+
+
+
+            string address = "http://10.17.224.85:810";
+            string intetfaces = "GetPlacesInfo";
+            // string intetfaces = "GetScheduleDynamic4Place"; 
+            //string intetfaces = "GetTrainInfo";
+            string uri = $"{address}/{intetfaces}";
+            var xmlResp = await XmlTransaction.PostXmlTransaction(uri, xmlRequest);
+            xmlResp.Save(Path.Combine(Environment.CurrentDirectory, $"doc_{2222}.xml")); //DEBUG
+
+
+            ////DEBUG-- ОТВЕТ
+            //var newRegSh = xmlRegShService.SetResponseStationsName(xmlResp, stations);
 
         }
     }

@@ -101,10 +101,7 @@ namespace Domain.Concrete
 
         public virtual void RemoveRange(List<TEntity> entitys)
         {
-            for (int i = 0; i < entitys.Count(); i++)
-            {
-                Remove(entitys[i]);
-            }
+            DbSet.RemoveRange(entitys);
         }
     }
 }

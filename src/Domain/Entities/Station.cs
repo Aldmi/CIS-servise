@@ -15,7 +15,7 @@ namespace Domain.Entities
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Введите Ecp код станции")]
-        [Range(1, Int32.MaxValue)]
+        //[Range(1, Int32.MaxValue)]
         public int EcpCode { get; set; }
 
         [Required(ErrorMessage = "Введите название станции")]

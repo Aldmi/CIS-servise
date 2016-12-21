@@ -16,6 +16,9 @@ using System.Xml.Linq;
 using Castle.Core.Internal;
 using Castle.Facilities.WcfIntegration;
 using Castle.Windsor;
+using DataExchange.Event;
+using DataExchange.InitDb;
+using DataExchange.XmlGetter;
 using Domain.Concrete;
 using Library.Xml;
 using Server.ClientSOAP;
@@ -29,7 +32,7 @@ using Screen = Caliburn.Micro.Screen;
 
 namespace Server.ViewModels
 {
-    public class AppViewModel : Conductor<object>, IHandle<AutodictorDiagnosticEvent>
+    public class AppViewModel : Conductor<object>, IHandle<InitDbFromXmlStatus>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IWindowManager _windowManager;
@@ -79,7 +82,7 @@ namespace Server.ViewModels
             _eventAggregator = events;
             events.Subscribe(this);
 
-            DiagnosticVm1 = new DiagnosticViewModel("Вокзал 1", _eventAggregator);
+            DiagnosticVm1 = new DiagnosticViewModel("Курский", _eventAggregator);
             DiagnosticVm2 = new DiagnosticViewModel("Вокзал 2", _eventAggregator);
 
             _serviceHost = new DefaultServiceHostFactory().CreateServiceHost("CisServiceResolver", new Uri[0]);
@@ -91,36 +94,86 @@ namespace Server.ViewModels
 
 
 
-        public async void RailwayStation1()
-        {
-            const string railwayStationName = "Вокзал 1";
+        #region RibbonButtonHandler
 
-            var editViewModel = new RailwayStationEditViewModel(railwayStationName, _windsorContainer);
-            var result = _windowManager.ShowDialog(editViewModel);
+        public async void ShowRailwayStation(string railwayStationName, int ecpCode)
+        {
+            var stationOwner = new Station {Name = railwayStationName, EcpCode = ecpCode};
+
+            var editViewModel = new RailwayStationEditViewModel(_windsorContainer, stationOwner);
+            _windowManager.ShowDialog(editViewModel);
         }
 
+        #endregion
 
-        public async void RailwayStation2()
+
+
+
+
+
+        #region BackstageMenuHandler
+
+        public async void LoadXmlDataInDb(string tableName, string railwayStationName, int ecpCode)
         {
-           await ApkDk.RequestRegulatorySchedule();//DEBUG
-        }
+            string pathShedule = null;
+            string pathStations = null;
 
 
-        public void LoadXmlDataInDb(string nameRailwayStations)
-        {
-            var fbd = new OpenFileDialog { Filter = @"XML Files (.xml)|*.xml|All Files (*.*)|*.*" };
+            var fbd = new OpenFileDialog
+            {
+                Filter = @"XML Files (.xml)|*.xml|All Files (*.*)|*.*",
+                Title = "Файл регулярного расписания"
+            };
             var result = fbd.ShowDialog();
             if ((result == DialogResult.OK) && (!string.IsNullOrWhiteSpace(fbd.FileName)))
             {
-                var x = XElement.Load(fbd.FileName);
+                pathShedule = fbd.FileName;
+
+                fbd = new OpenFileDialog
+                {
+                    Filter = @"XML Files (.xml)|*.xml|All Files (*.*)|*.*",
+                    Title = "Файл со станциями"
+                };
+                result = fbd.ShowDialog();
+                if ((result == DialogResult.OK) && (!string.IsNullOrWhiteSpace(fbd.FileName)))
+                {
+                    pathStations = fbd.FileName;
+                }
             }
 
-            //var newStationDisp= new Station {Description = "новая станция назначения", EcpCode = 586, Name = "Станция ууу"};
-            //var newStationArriv = new Station { Description = "новая станция прибытия", EcpCode = 423, Name = "Станция ттт" };
-            //var operSh= new OperativeSchedule {ArrivalTime = DateTime.Now, DepartureTime = DateTime.Today, NumberOfTrain = 10, RouteName = "Новый маршрут", DispatchStation = newStationDisp, DestinationStation = newStationArriv};
-            //_unitOfWork.OperativeScheduleRepository.Insert(operSh);
-            //_unitOfWork.SaveAsync();
+            if (string.IsNullOrEmpty(pathShedule) || string.IsNullOrEmpty(pathStations))
+                return;
+
+
+            var stationOwner = new Station {Name = railwayStationName, EcpCode = ecpCode};
+            var initDb = new InitDbFromXml(_windsorContainer, _eventAggregator, stationOwner);
+
+            try
+            {
+                switch (tableName)
+                {
+                    case "regular":
+                        var sheduleGetter = new GetterXmlFromDisk(pathShedule, stationOwner);
+                        var stationsGetter = new GetterXmlFromDisk(pathStations, stationOwner);
+                        await initDb.InitRegulatorySh(sheduleGetter, stationsGetter);
+                        break;
+
+
+
+                    case "operative":
+                        break;
+                }
+            }
+            catch (Exception)    //TODO: более точно определять тип исключения и выводить его в окно.
+            {
+                MessageBox.Show($"Ошибка работы с БД.");
+            }
+
+
         }
+
+        #endregion
+
 
 
         private void ShowBusyIndicator(bool? isBusy = null, string message = null)
@@ -167,34 +220,13 @@ namespace Server.ViewModels
 
         #region EventHandler
 
-        public async void Handle(AutodictorDiagnosticEvent message)
+        public void Handle(InitDbFromXmlStatus message)
         {
-            using (var unitOfWork = _windsorContainer.Resolve<IUnitOfWork>())
-            {
-                //var railwayStation = await await Task.Factory.StartNew(async () =>
-                //{
-                //    var query = unitOfWork.RailwayStationRepository.Search(r => r.Name == message.NameRailwayStation).Include(r => r.Diagnostics);
-                //    return await query.FirstOrDefaultAsync();
-                //});
-
-                //if (railwayStation != null)
-                //{
-                //    //удалим тек
-                //    unitOfWork.DiagnosticRepository.RemoveRange(railwayStation.Diagnostics.ToList());
-
-
-                //    var diagnosticDatas =   message.DiagnosticData.Select( d => new Diagnostic { DeviceNumber = d.DeviceNumber, DeviceName = d.DeviceName, Fault = d.Fault, Status = d.Status, Date = DateTime.Now });
-                //    diagnosticDatas.ForEach(d => railwayStation.Diagnostics.Add(d));
- 
-       
-
-
-                //    await unitOfWork.SaveAsync();
-                //}
-            }
-
-            #endregion
-
+            MessageBox.Show(message.Status);//DEBUG
         }
+
+        #endregion
+
+
     }
 }

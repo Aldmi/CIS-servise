@@ -153,6 +153,10 @@
     <Compile Include="Migrations\201612190812404_DateTime set nullable in arrivalTime and DepartureTime.Designer.cs">
       <DependentUpon>201612190812404_DateTime set nullable in arrivalTime and DepartureTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201612191318005_StationTable EcpCode mayBe negtive.cs" />
+    <Compile Include="Migrations\201612191318005_StationTable EcpCode mayBe negtive.Designer.cs">
+      <DependentUpon>201612191318005_StationTable EcpCode mayBe negtive.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -229,6 +233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612190812404_DateTime set nullable in arrivalTime and DepartureTime.resx">
       <DependentUpon>201612190812404_DateTime set nullable in arrivalTime and DepartureTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612191318005_StationTable EcpCode mayBe negtive.resx">
+      <DependentUpon>201612191318005_StationTable EcpCode mayBe negtive.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -305,6 +305,24 @@
                         IsChecked="{Binding Path=CurrentOption, Mode=TwoWay, Converter={StaticResource EnumConverter}, ConverterParameter=Station}"
                         Style="{StaticResource RadioButtonStyle}"
                         Template="{DynamicResource ToggleButtonRight}" />
+
+
+                    <TextBlock
+                        Margin="160,0,0,0"
+                        Padding="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontSize="25"
+                        Text="{Binding Path=CountLine, Mode=OneWay, StringFormat=Кол-во: {0}}" />
+
+                    <TextBlock
+                        Margin="0"
+                        Padding="10"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontSize="25"
+                        Text="{Binding Path=DatFormation, Mode=OneWay, StringFormat=Дата: {0:d}}" />
+
                 </StackPanel>
             </GroupBox>
 

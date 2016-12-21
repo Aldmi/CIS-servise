@@ -1,0 +1,4 @@
+D:\Git\CIS\src\Library\bin\Release\Library.dll
+D:\Git\CIS\src\Library\bin\Release\Library.pdb
+D:\Git\CIS\src\Library\obj\Release\Library.dll
+D:\Git\CIS\src\Library\obj\Release\Library.pdb

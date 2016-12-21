@@ -105,26 +105,22 @@ namespace Server.ClientSOAP.XmlServices
 
 
                 var listRegShAnonym = listRegShQuery.ToList();
-               
 
                 var newRegulatorySchedules = listRegShAnonym.Select(anonym =>
                 {
-                       return new RegulatorySchedule
-                       {
-                           NumberOfTrain = anonym.TrainNumber,
-                           ArrivalTime = DateTimeConverter(anonym.TimeArrival),
-                           DepartureTime = DateTimeConverter(anonym.TimeDeparture),
-                           DaysFollowings = DaysFollowingsConverter(anonym.DaysTrain, anonym.DaysTrainType),
-                           RouteName = anonym.Name,
-                           DestinationStation = new Station { EcpCode = int.Parse(anonym.ESRDeparture), Name = ""},
-                           DispatchStation = new Station { EcpCode = int.Parse(anonym.ESRArrival), Name = "" },
-                           ListOfStops = new ObservableCollection<Station>(anonym.PlacesStop.Select(stStr => new Station { EcpCode = int.Parse(stStr), Name = "" })),
-                           ListWithoutStops = new ObservableCollection<Station>(anonym.PlacesNotStop.Select(stStr => new Station { EcpCode = int.Parse(stStr), Name = "" }))
-                       };
-                   }).ToList();
-
-                //ListOfStops = new ObservableCollection<Station>(anonym.PlacesStop.Select(stStr => new Station { EcpCode = int.Parse(stStr), Name = "" })),
-                //ListWithoutStops = new ObservableCollection<Station>(anonym.PlacesNotStop.Select(stStr => new Station { EcpCode = int.Parse(stStr), Name = "" }))
+                    return new RegulatorySchedule
+                    {
+                        NumberOfTrain = anonym.TrainNumber,
+                        ArrivalTime = DateTimeConverter(anonym.TimeArrival),
+                        DepartureTime = DateTimeConverter(anonym.TimeDeparture),
+                        DaysFollowings = DaysFollowingsConverter(anonym.DaysTrain, anonym.DaysTrainType),
+                        RouteName = anonym.Name,
+                        DestinationStation = new Station { EcpCode = int.Parse(anonym.ESRDeparture), Name = "" },
+                        DispatchStation = new Station { EcpCode = int.Parse(anonym.ESRArrival), Name = "" },
+                        ListOfStops = new ObservableCollection<Station>(anonym.PlacesStop.Select(stStr => new Station { EcpCode = int.Parse(stStr), Name = "" })),
+                        ListWithoutStops = new ObservableCollection<Station>(anonym.PlacesNotStop.Select(stStr => new Station { EcpCode = int.Parse(stStr), Name = "" }))
+                    };
+                }).ToList();
 
                 return newRegulatorySchedules;
 
@@ -138,6 +134,66 @@ namespace Server.ClientSOAP.XmlServices
 
 
 
+        /* ЗАПРОС получение Имен станций
+           <?xmlversion="1.0" encoding="utf-8" ?>
+           <root>
+             <AuthenticationUser=’ddd’ Password=’rumba’/>
+             <Place ESR=’11111’/>
+             <Place ESR=’22222’/>
+                    …
+             <PlaceESR=’99999’/>
+           </root>
+       */
+        public XDocument GetRequestStationsName(IEnumerable<Station> stations)
+        {
+            if (stations == null || !stations.Any())
+                return null;
+
+            var user = "ddd";
+            var password = "samba";
+            XDocument xDoc = new XDocument(new XDeclaration("1.0", "UTF-8", "yes"),
+                new XElement("root",
+                new XElement("Authentication", new XAttribute("User", user), new XAttribute("Password", password))
+                ));
+
+            foreach (var st in stations)
+            {
+                xDoc.Root?.Add(new XElement("Place", new XAttribute("ESR", st.EcpCode)));
+            }
+
+            return xDoc;
+        }
+
+
+
+        public IEnumerable<Station> SetResponseStationsName(XDocument xmlDoc, IEnumerable<Station> stationValid)
+        {
+            try
+            {
+                var listStationsNameQuery =
+                from train in xmlDoc.Descendants("Place")
+                select new
+                {
+                    Esr = (string)train.Attribute("ESR"),
+                    Name = (string)train.Attribute("Name"),
+                };
+
+                var listStationsNameAnonym = listStationsNameQuery.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new XmlException($"Ошибка парсинга XML: {xmlDoc.BaseUri}. ОШИБКА: {ex}");
+            }
+
+
+          
+
+            return null;
+        }
+
+
+
+
         private DateTime? DateTimeConverter(string date)
         {
             if (string.IsNullOrEmpty(date))
@@ -145,7 +201,9 @@ namespace Server.ClientSOAP.XmlServices
 
             try
             {
-                return DateTime.ParseExact(date, "yyyy.MM.dd HH:mm:ss", null);
+                return DateTime.ParseExact(date, "HH:mm:ss", null);
+
+                //return DateTime.ParseExact(date, "yyyy.MM.dd HH:mm:ss", null);
             }
             catch (Exception)
             {
@@ -158,15 +216,5 @@ namespace Server.ClientSOAP.XmlServices
         {
             return daysTrain;
         }
-
-
-
-
-
-
-
-
-
-
     }
 }

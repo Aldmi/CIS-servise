@@ -39,7 +39,7 @@
                 <fluent:Ribbon.Menu>
                     <fluent:Backstage>
                         <fluent:BackstageTabControl>
-                            <fluent:BackstageTabItem Header="Загрузить данных вокзала 1">
+                            <fluent:BackstageTabItem FontSize="25" Header="Загрузить данные Курского вокзала">
                                 <StackPanel
                                     VerticalAlignment="Top"
                                     Background="LightCyan"
@@ -49,7 +49,7 @@
                                         Padding="10"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('operative')]"
+                                        micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('operative', 'Курский', '19155')]"
                                         Background="LightBlue"
                                         FontSize="20"
                                         Header="Оперативное расписание XML">
@@ -66,7 +66,7 @@
                                         Padding="10"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('regular')]"
+                                        micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('regular', 'Курский', '19155')]"
                                         Background="LightBlue"
                                         FontSize="20"
                                         Header="Регулярное расписание XML">
@@ -77,9 +77,135 @@
                                                 Text="Эта команда загружает в базу данных сервера регулярное расписание" />
                                         </fluent:Button.ToolTip>
                                     </fluent:Button>
-
                                 </StackPanel>
                             </fluent:BackstageTabItem>
+
+
+                            <fluent:BackstageTabItem FontSize="25" Header="Загрузить данные Павелецкого вокзала">
+                                <StackPanel
+                                    VerticalAlignment="Top"
+                                    Background="LightCyan"
+                                    Orientation="Vertical">
+                                    <fluent:Button
+                                        Margin="10"
+                                        Padding="10"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('operative', 'Павелецкий', '19351')]"
+                                        Background="LightBlue"
+                                        FontSize="20"
+                                        Header="Оперативное расписание XML">
+                                        <fluent:Button.ToolTip>
+                                            <fluent:ScreenTip
+                                                Title="Загрузить из XML файла"
+                                                Width="250"
+                                                Text="Эта команда загружает в базу данных сервера оперативное расписание" />
+                                        </fluent:Button.ToolTip>
+                                    </fluent:Button>
+
+                                    <fluent:Button
+                                        Margin="10"
+                                        Padding="10"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('regular', 'Павелецкий', '19351')]"
+                                        Background="LightBlue"
+                                        FontSize="20"
+                                        Header="Регулярное расписание XML">
+                                        <fluent:Button.ToolTip>
+                                            <fluent:ScreenTip
+                                                Title="Загрузить из XML файла"
+                                                Width="250"
+                                                Text="Эта команда загружает в базу данных сервера регулярное расписание" />
+                                        </fluent:Button.ToolTip>
+                                    </fluent:Button>
+                                </StackPanel>
+                            </fluent:BackstageTabItem>
+
+
+                            <fluent:BackstageTabItem FontSize="25" Header="Загрузить данные Савеловского вокзала">
+                                <StackPanel
+                                    VerticalAlignment="Top"
+                                    Background="LightCyan"
+                                    Orientation="Vertical">
+                                    <fluent:Button
+                                        Margin="10"
+                                        Padding="10"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('operative', 'Савеловский', '19600')]"
+                                        Background="LightBlue"
+                                        FontSize="20"
+                                        Header="Оперативное расписание XML">
+                                        <fluent:Button.ToolTip>
+                                            <fluent:ScreenTip
+                                                Title="Загрузить из XML файла"
+                                                Width="250"
+                                                Text="Эта команда загружает в базу данных сервера оперативное расписание" />
+                                        </fluent:Button.ToolTip>
+                                    </fluent:Button>
+
+                                    <fluent:Button
+                                        Margin="10"
+                                        Padding="10"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('regular', 'Савеловский', '19600')]"
+                                        Background="LightBlue"
+                                        FontSize="20"
+                                        Header="Регулярное расписание XML">
+                                        <fluent:Button.ToolTip>
+                                            <fluent:ScreenTip
+                                                Title="Загрузить из XML файла"
+                                                Width="250"
+                                                Text="Эта команда загружает в базу данных сервера регулярное расписание" />
+                                        </fluent:Button.ToolTip>
+                                    </fluent:Button>
+                                </StackPanel>
+                            </fluent:BackstageTabItem>
+
+
+                            <fluent:BackstageTabItem FontSize="25" Header="Загрузить данные Рижского вокзала">
+                                <StackPanel
+                                    VerticalAlignment="Top"
+                                    Background="LightCyan"
+                                    Orientation="Vertical">
+                                    <fluent:Button
+                                        Margin="10"
+                                        Padding="10"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('operative', 'Рижский', '19612')]"
+                                        Background="LightBlue"
+                                        FontSize="20"
+                                        Header="Оперативное расписание XML">
+                                        <fluent:Button.ToolTip>
+                                            <fluent:ScreenTip
+                                                Title="Загрузить из XML файла"
+                                                Width="250"
+                                                Text="Эта команда загружает в базу данных сервера оперативное расписание" />
+                                        </fluent:Button.ToolTip>
+                                    </fluent:Button>
+
+                                    <fluent:Button
+                                        Margin="10"
+                                        Padding="10"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        micro:Message.Attach="[Event Click] = [Action LoadXmlDataInDb('regular', 'Рижский', '19612')]"
+                                        Background="LightBlue"
+                                        FontSize="20"
+                                        Header="Регулярное расписание XML">
+                                        <fluent:Button.ToolTip>
+                                            <fluent:ScreenTip
+                                                Title="Загрузить из XML файла"
+                                                Width="250"
+                                                Text="Эта команда загружает в базу данных сервера регулярное расписание" />
+                                        </fluent:Button.ToolTip>
+                                    </fluent:Button>
+                                </StackPanel>
+                            </fluent:BackstageTabItem>
+
                         </fluent:BackstageTabControl>
                     </fluent:Backstage>
                 </fluent:Ribbon.Menu>
@@ -88,64 +214,64 @@
                 <fluent:RibbonTabItem Header="ВОКЗАЛЫ">
                     <fluent:RibbonGroupBox>
                         <fluent:Button
-                            micro:Message.Attach="[Event Click] = [Action RailwayStation1]"
-                            Header="ВОКЗАЛ 1"
+                            micro:Message.Attach="[Event Click] = [Action ShowRailwayStation('Курский', '19155')]"
+                            Header="КУРСКИЙ"
                             LargeIcon="../Components/Images/train_icon.png"
                             Size="Large" />
                     </fluent:RibbonGroupBox>
 
                     <fluent:RibbonGroupBox>
                         <fluent:Button
-                            micro:Message.Attach="[Event Click] = [Action RailwayStation2]"
-                            Header="ВОКЗАЛ 2"
+                            micro:Message.Attach="[Event Click] = [Action ShowRailwayStation('Павелецкий', '19351')]"
+                            Header="ПАВЕЛЕЦКИЙ"
                             LargeIcon="../Components/Images/train_icon.png"
                             Size="Large" />
                     </fluent:RibbonGroupBox>
 
                     <fluent:RibbonGroupBox>
                         <fluent:Button
-                            micro:Message.Attach="[Event Click] = [Action RailwayStation3]"
-                            Header="ВОКЗАЛ 3"
+                            micro:Message.Attach="[Event Click] = [Action ShowRailwayStation('Казанский', '19390')]"
+                            Header="КАЗАНСКИЙ"
                             LargeIcon="../Components/Images/train_icon.png"
                             Size="Large" />
                     </fluent:RibbonGroupBox>
 
                     <fluent:RibbonGroupBox>
                         <fluent:Button
-                            micro:Message.Attach="[Event Click] = [Action RailwayStation4]"
-                            Header="ВОКЗАЛ 4"
+                            micro:Message.Attach="[Event Click] = [Action ShowRailwayStation('Ярославский', '19550')]"
+                            Header="ЯРОСЛАВСКИЙ"
                             LargeIcon="../Components/Images/train_icon.png"
                             Size="Large" />
                     </fluent:RibbonGroupBox>
 
                     <fluent:RibbonGroupBox>
                         <fluent:Button
-                            micro:Message.Attach="[Event Click] = [Action RailwayStation5]"
-                            Header="ВОКЗАЛ 5"
+                            micro:Message.Attach="[Event Click] = [Action ShowRailwayStation('Савеловский', '19600')]"
+                            Header="САВЕЛОВСКИЙ"
                             LargeIcon="../Components/Images/train_icon.png"
                             Size="Large" />
                     </fluent:RibbonGroupBox>
 
                     <fluent:RibbonGroupBox>
                         <fluent:Button
-                            micro:Message.Attach="[Event Click] = [Action RailwayStation6]"
-                            Header="ВОКЗАЛ 6"
+                            micro:Message.Attach="[Event Click] = [Action ShowRailwayStation('Рижский', '19612')]"
+                            Header="РИЖСКИЙ"
                             LargeIcon="../Components/Images/train_icon.png"
                             Size="Large" />
                     </fluent:RibbonGroupBox>
 
                     <fluent:RibbonGroupBox>
                         <fluent:Button
-                            micro:Message.Attach="[Event Click] = [Action RailwayStation7]"
-                            Header="ВОКЗАЛ 7"
+                            micro:Message.Attach="[Event Click] = [Action ShowRailwayStation('Киевский', '19810')]"
+                            Header="КИЕВСКИЙ"
                             LargeIcon="../Components/Images/train_icon.png"
                             Size="Large" />
                     </fluent:RibbonGroupBox>
 
                     <fluent:RibbonGroupBox>
                         <fluent:Button
-                            micro:Message.Attach="[Event Click] = [Action RailwayStation8]"
-                            Header="ВОКЗАЛ 8"
+                            micro:Message.Attach="[Event Click] = [Action ShowRailwayStation('Смоленский', '19823')]"
+                            Header="СМОЛЕНСКИЙ"
                             LargeIcon="../Components/Images/train_icon.png"
                             Size="Large" />
                     </fluent:RibbonGroupBox>
