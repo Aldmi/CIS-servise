@@ -17,6 +17,19 @@ namespace Server.Bootstrapper
 {
     public class WindsorConfig : IWindsorInstaller
     {
+        #region ctor
+
+        public WindsorConfig()
+        {
+
+        }
+
+        #endregion
+
+
+
+
+
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container

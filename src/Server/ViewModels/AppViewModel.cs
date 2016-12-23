@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using Caliburn.Micro;
 using Domain.Abstract;
 using Domain.DbContext;
@@ -32,7 +33,7 @@ using Screen = Caliburn.Micro.Screen;
 
 namespace Server.ViewModels
 {
-    public class AppViewModel : Conductor<object>, IHandle<InitDbFromXmlStatus>
+    public sealed class AppViewModel : Conductor<object>, IHandle<InitDbFromXmlStatus>
     {
         private readonly IEventAggregator _eventAggregator;
         private readonly IWindowManager _windowManager;
@@ -88,6 +89,8 @@ namespace Server.ViewModels
             _serviceHost = new DefaultServiceHostFactory().CreateServiceHost("CisServiceResolver", new Uri[0]);
 
             ApkDk= new ApkDk(_windsorContainer);
+
+            DisplayName = "Главное окно ЦИС";
         }
 
 

@@ -33,7 +33,7 @@ namespace Server.ViewModels
     }
 
 
-    public class RailwayStationEditViewModel : Screen
+    public sealed class RailwayStationEditViewModel : Screen
     {
         private readonly IWindsorContainer _windsorContainer;
         private readonly Station _stationOwner;
@@ -202,12 +202,11 @@ namespace Server.ViewModels
                                             ShowBusyIndicator(false);
                                         }
                                     }
-                                    catch (Exception)
+                                    catch (Exception ex)
                                     {
                                         MessageBox.Show($"Ошибка работы с БД.");
                                         ShowBusyIndicator(false);
                                     }
-                             
                                 });
                                 break;
                         }
@@ -252,6 +251,8 @@ namespace Server.ViewModels
             _stationOwner = stationOwner;
 
             CurrentOption = Options.OperativeSchedule;
+
+            DisplayName = stationOwner.Name.ToUpper() + " ВОКЗАЛ";
         }
 
         #endregion

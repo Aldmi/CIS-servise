@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using Domain.Entities;
 
@@ -6,7 +7,7 @@ namespace Domain.DbContext
 {
     public class CisDbContext : System.Data.Entity.DbContext
     {
-        public CisDbContext() : base("CisDbContext")
+        public CisDbContext() : base("CisDbContext")  //"CisDbContext"
         {
             //Database.SetInitializer(new DropCreateDatabaseAlways<CisDbContext>());
         }

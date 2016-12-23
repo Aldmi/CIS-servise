@@ -20,8 +20,7 @@ namespace Server.HostWCF
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEventAggregator _events;
 
-        private int test = 0;
-
+  
 
         public CisServise(IUnitOfWork unitOfWork, IEventAggregator events)
         {
@@ -223,7 +222,7 @@ namespace Server.HostWCF
 
         public Task<ICollection<DiagnosticData>> GetDiagnostics(string nameRailwayStation, int? count = null)
         {
-            throw new NotImplementedException();
+            throw new FaultException<Exception>(new Exception(), $"НЕТ реализации на сревере");
         }
 
 
@@ -247,7 +246,7 @@ namespace Server.HostWCF
 
         public Task<ICollection<InfoData>> GetInfos(string nameRailwayStation, int? count = null)
         {
-            throw new NotImplementedException();
+            throw new FaultException<Exception>(new Exception(), $"НЕТ реализации на сревере");
         }
 
         #endregion

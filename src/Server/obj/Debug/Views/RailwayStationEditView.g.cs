@@ -161,7 +161,7 @@ namespace Server.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Server;component/views/railwaystationeditview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/CisServer;component/views/railwaystationeditview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\Views\RailwayStationEditView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

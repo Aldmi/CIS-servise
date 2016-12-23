@@ -75,7 +75,7 @@ namespace Server.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Server;component/views/dialogview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/CisServer;component/views/dialogview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\Views\DialogView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

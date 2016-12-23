@@ -1,9 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using System.IO;
+using System.ServiceModel;
 using System.Windows;
 using Caliburn.Micro;
 using Castle.Windsor;
 using Castle.Facilities.WcfIntegration;
+using Library.Xml;
 using Server.HostWCF;
 using Server.ViewModels;
 using WCFCis2AvtodictorContract.Contract;
@@ -14,11 +17,18 @@ namespace Server.Bootstrapper
     public class AppBootstrapper : BootstrapperBase
     {
         private readonly IWindsorContainer _container = new WindsorContainer();
+     
+
+
 
         public AppBootstrapper()
         {
             Initialize();
         }
+
+
+
+
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
@@ -28,7 +38,7 @@ namespace Server.Bootstrapper
 
         protected override void Configure()
         {
-            _container.Install(new WindsorConfig());
+          _container.Install(new WindsorConfig());            
         }
 
 
@@ -44,9 +54,6 @@ namespace Server.Bootstrapper
                     ? _container.Resolve(key, service)
                     : base.GetInstance(service, key);
         }
-
-
-
     }
 
 }
