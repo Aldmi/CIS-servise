@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Threading.Tasks;
+using System.Xml.Linq;
 using Domain.Entities;
 
 namespace DataExchange.XmlGetter
@@ -7,6 +8,6 @@ namespace DataExchange.XmlGetter
     {
         Station OwnerStation { get; } 
 
-        XDocument Get(XDocument request = null);
+        Task<XDocument> Get(XDocument request = null);
     }
 }

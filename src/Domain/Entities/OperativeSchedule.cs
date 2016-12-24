@@ -25,10 +25,8 @@ namespace Domain.Entities
         [MaxLength(100)]
         public string RouteName { get; set; }                                          //Станция отправления и станция назначения, а также фирменное название поезда, если есть.
 
-        //[Required]
         public virtual Station DispatchStation { get; set; }                           //Станция отправления
 
-        //[Required]
         public virtual Station DestinationStation { get; set; }                        //Станция назначения
 
         [Column(TypeName = "datetime2")]

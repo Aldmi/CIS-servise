@@ -1,0 +1,76 @@
+﻿<Window
+    x:Class="Server.Views.ProcessView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Server.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:Server.ViewModels"
+    Title="ProcessView"
+    Width="600"
+    Height="400"
+    MaxHeight="600"
+    ResizeMode="NoResize"
+    mc:Ignorable="d">
+
+
+    <Window.Resources>
+        <Style TargetType="ListViewItem">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Status, Mode=OneWay}" Value="Error">
+                    <Setter Property="Background" Value="Red" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Path=Status, Mode=OneWay}" Value="CorrectionStationNamesError">
+                    <Setter Property="Background" Value="Red" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+
+
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" Margin="20">
+            <ProgressBar
+                Name="pbStatus"
+                Height="25"
+                Padding="2"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Center"
+                Maximum="{Binding Path=MaxProcess, Mode=OneTime}"
+                Minimum="{Binding Path=MinProcess, Mode=OneTime}"
+                Value="{Binding Path=ValueProcess, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" />
+        </Grid>
+
+        <ListView Grid.Row="2" ItemsSource="{Binding Path=ImportantMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn
+                            Width="100"
+                            DisplayMemberBinding="{Binding Path=Time, StringFormat={}{0:HH:mm:ss}}"
+                            Header="Время" />
+                        <GridViewColumn
+                            Width="500"
+                            DisplayMemberBinding="{Binding Path=StatusString}"
+                            Header="Cообщения" />
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>

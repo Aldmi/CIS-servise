@@ -1,5 +1,8 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Linq;
+using Caliburn.Micro;
+using Castle.Windsor;
 using Domain.Entities;
 
 namespace DataExchange.XmlGetter
@@ -23,12 +26,12 @@ namespace DataExchange.XmlGetter
 
      
 
-        public XDocument Get(XDocument request = null)
+        public async Task<XDocument> Get(XDocument request = null)
         {
             var extension = Path.GetExtension(_path);
             if (extension != null && (File.Exists(_path) && extension.ToLower() == ".xml"))
             {
-                return XDocument.Load(_path);
+                return await Task.Factory.StartNew(() => XDocument.Load(_path));
             }
 
             return null;

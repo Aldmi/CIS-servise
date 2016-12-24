@@ -9,19 +9,24 @@ namespace Server.ViewModels
 {
     public class DiagnosticViewModel : Screen, IHandle<AutodictorDiagnosticEvent>       //TODO: попробовать IHandleWithTask<>
     {
-        public string Name { get; set; }
+        private readonly IEventAggregator _eventAggregator;
+        public string Name { get; set; }  //TODO: заменить на StationOwner
         public BindableCollection<DiagnosticData> Diagnostics { get; set; } = new BindableCollection<DiagnosticData>();
+
 
 
 
         public DiagnosticViewModel(string name, IEventAggregator events)
         {
             Name = name;
+            _eventAggregator = events;
             events.Subscribe(this);
         }
 
 
 
+
+        #region EventHandler
 
         public void Handle(AutodictorDiagnosticEvent message)
         {
@@ -30,6 +35,18 @@ namespace Server.ViewModels
                 Diagnostics.Clear();
                 Diagnostics.AddRange(message.DiagnosticData);
             }
+        }
+
+        #endregion
+
+
+
+
+        protected override void OnDeactivate(bool close)
+        {
+            _eventAggregator?.Unsubscribe(this);
+
+            base.OnDeactivate(close);
         }
     }
 }

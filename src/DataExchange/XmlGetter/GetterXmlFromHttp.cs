@@ -1,4 +1,8 @@
-﻿using System.Xml.Linq;
+﻿using System.Threading.Tasks;
+using System.Xml.Linq;
+using Caliburn.Micro;
+using Castle.Windsor;
+using DataExchange.Transaction;
 using Domain.Entities;
 
 namespace DataExchange.XmlGetter
@@ -17,9 +21,12 @@ namespace DataExchange.XmlGetter
         }
 
 
-        public XDocument Get(XDocument request = null)
+        public async Task<XDocument> Get(XDocument request = null)
         {
-            throw new System.NotImplementedException();
+            var xmlTransaction = new XmlTransaction();
+            var xmlResp = await xmlTransaction.PostXmlTransaction(_uri, request);
+
+            return xmlResp;
         }
     }
 }

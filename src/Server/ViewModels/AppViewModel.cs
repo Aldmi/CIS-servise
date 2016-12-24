@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -151,6 +152,9 @@ namespace Server.ViewModels
             var stationOwner = new Station {Name = railwayStationName, EcpCode = ecpCode};
             var initDb = new InitDbFromXml(_windsorContainer, _eventAggregator, stationOwner);
 
+            var processViewModel = new ProcessViewModel(_eventAggregator, stationOwner);
+            _windowManager.ShowWindow(processViewModel);
+
             try
             {
                 switch (tableName)
@@ -171,9 +175,47 @@ namespace Server.ViewModels
             {
                 MessageBox.Show($"Ошибка работы с БД.");
             }
-
-
         }
+
+
+
+
+        public async void LoadHttpDataInDb(string tableName, string railwayStationName, int ecpCode)
+        {
+           var httpAdr = ConfigurationManager.AppSettings.Get("httpAddress");
+           var intetfacesRegSh = ConfigurationManager.AppSettings.Get("Regular");
+           var uriRegSh = $"{httpAdr}/{intetfacesRegSh}";
+           var intetfacesStations = ConfigurationManager.AppSettings.Get("Stations");
+           var uriStations = $"{httpAdr}/{intetfacesStations}";
+
+            var stationOwner = new Station { Name = railwayStationName, EcpCode = ecpCode };
+            var initDb = new InitDbFromXml(_windsorContainer, _eventAggregator, stationOwner);
+
+            var processViewModel = new ProcessViewModel(_eventAggregator, stationOwner);
+            _windowManager.ShowWindow(processViewModel);
+
+            try
+            {
+                switch (tableName)
+                {
+                    case "regular":
+                        var sheduleGetter = new GetterXmlFromHttp(uriRegSh, stationOwner);
+                        var stationsGetter = new GetterXmlFromDisk(uriStations, stationOwner);
+                        await initDb.InitRegulatorySh(sheduleGetter, stationsGetter);
+                        break;
+
+
+
+                    case "operative":
+                        break;
+                }
+            }
+            catch (Exception ex)    //TODO: более точно определять тип исключения и выводить его в окно.
+            {
+                MessageBox.Show($"ОШИБКА: {ex}");
+            }
+        }
+
 
         #endregion
 
@@ -225,7 +267,7 @@ namespace Server.ViewModels
 
         public void Handle(InitDbFromXmlStatus message)
         {
-            MessageBox.Show(message.Status);//DEBUG
+           // MessageBox.Show(message.Status);//DEBUG
         }
 
         #endregion

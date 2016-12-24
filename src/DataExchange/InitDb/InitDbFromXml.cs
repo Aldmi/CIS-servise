@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using Castle.Windsor;
 using DataExchange.Event;
@@ -18,11 +19,16 @@ namespace DataExchange.InitDb
 {
     public enum Status
     {
-        LoadRegSh,
-        ProcessingRegSh,
+        Load,
+        Processing,
         SaveDbRegSh,
-        OkRegSh,
-        NotFoundStation
+        Error,
+        SucsessReadOnDb,
+        FindNewStations,
+        CorrectionStationNamesSucsess,
+        CorrectionStationNamesError,
+        SaveNewStationInDb,
+        Ok
     }
 
 
@@ -60,7 +66,9 @@ namespace DataExchange.InitDb
 
                 var eventData = new InitDbFromXmlStatus
                 {
-                    Status = StatusString
+                    OwnerStation = _stationOwner,
+                    StatusString = StatusString,
+                    Status = Status
                 };
                 _events.Publish(eventData,
                     action =>
@@ -70,7 +78,7 @@ namespace DataExchange.InitDb
             }
         }
 
-        public Status StatusRegSh { get; set; }
+        public Status Status { get; set; }
 
         #endregion
 
@@ -98,22 +106,48 @@ namespace DataExchange.InitDb
 
         public async Task<bool> InitRegulatorySh(IGetterXml sheduleGetter, IGetterXml stationGetter)
         {
-            StatusRegSh = Status.LoadRegSh;
+            Status = Status.Load;
+            StatusString = "Загрузка регулярного расписания";
+            
+            //ЗАПРОС РЕГУЛЯРНОГО РАСПИСАНИЯ
 
-            var regShProt = new XmlRegulatoryShProtokol();
-            var xmlDocResp = sheduleGetter.Get();
-            var newRegSh = regShProt.SetResponse(xmlDocResp, _stationOwner);
-
-            if (newRegSh == null)
+            IEnumerable<RegulatorySchedule> newRegSh;
+            try
             {
-                StatusString = $"ECP код станци в загруженном документе не совпадает с кодом нужной станции: {_stationOwner.EcpCode}";
+                var regShProt = new XmlRegulatoryShProtokol();
+                var xmlDocResp= await sheduleGetter.Get(regShProt.GetRequest(new List<Station> { _stationOwner }));
+                if (xmlDocResp == null)
+                {
+                    Status = Status.Error;
+                    StatusString = $"XML файл ответа регулярного расписания для станции: {_stationOwner.Name} не получен";
+
+                    return false;
+                }
+
+                newRegSh = regShProt.SetResponse(xmlDocResp, _stationOwner);
+                if (newRegSh == null)
+                {
+                    Status = Status.Error;
+                    StatusString = $"ECP код станци в загруженном документе не совпадает с кодом нужной станции: {_stationOwner.EcpCode}";
+
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Status = Status.Error;
+                StatusString = $"Ошибка получения XML ответа регулярного расписания {ex}";
                 return false;
             }
 
 
-            StatusRegSh = Status.SaveDbRegSh;
+            Status = Status.SaveDbRegSh;
+            StatusString = "Загрузка данных в БД";
+            
             await DbAcsessRegSh(newRegSh, stationGetter);
-            StatusRegSh = Status.OkRegSh;
+
+            Status = Status.Ok;
+            StatusString = "Загрузка данных в БД завершенна успешно";
 
             return true;
         }
@@ -140,6 +174,9 @@ namespace DataExchange.InitDb
                 //Все зарегистрированные станции в БД
                 var allStations = _unitOfWork.StationRepository.Get().ToList();
 
+                Status = Status.SucsessReadOnDb;
+                StatusString = "Считанно с БД регулярное расписание и все станции данного вокзала";
+                
 
                 //Нашли станции в БД или создали новые
                 foreach (var regSh in newRegSh)
@@ -199,40 +236,60 @@ namespace DataExchange.InitDb
 
 
 
-                //выполним запрос для получения имен добавленных станций к сервису
-                var xmlStationProt = new XmlStationProtokol();
-                var xmlDocResp = stationGetter.Get(xmlStationProt.GetRequest(addedStations));
-                var newCorrectNameStation = xmlStationProt.SetResponse(xmlDocResp, addedStations).ToList();
-
-
-                //Скорректируем имена
-                List<Station> notFoundStations = null;
-                foreach (var addStation in addedStations)
+                
+                if (addedStations.Any())
                 {
-                    var station = newCorrectNameStation.FirstOrDefault(s => s.EcpCode == addStation.EcpCode);
-                    if (station != null)
+                    Status = Status.FindNewStations;
+                    StatusString = "Найденны новые станции";
+                   
+
+                    //выполним запрос для получения имен добавленных станций к сервису
+                    IEnumerable<Station> newCorrectNameStation = null;
+                    try
                     {
-                        addStation.Name = station.Name;
-                        addStation.RailwayStations = new List<RailwayStation> { railwayStation };
+                        var xmlStationProt = new XmlStationProtokol();
+                        var xmlDocResp = stationGetter.Get(xmlStationProt.GetRequest(addedStations));
+                        newCorrectNameStation = xmlStationProt.SetResponse(await xmlDocResp, addedStations).ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        Status = Status.Error;
+                        StatusString = $"Ошибка получения XML ответа названий станций {ex}";
+                        return;
+                    }
+            
+
+
+                    //Скорректируем имена
+                    List<Station> notFoundStations = null;
+                    foreach (var addStation in addedStations)
+                    {
+                        var station = newCorrectNameStation.FirstOrDefault(s => s.EcpCode == addStation.EcpCode);
+                        if (station != null)
+                        {
+                            addStation.Name = station.Name;
+                            addStation.RailwayStations = new List<RailwayStation> {railwayStation};
+                        }
+                        else
+                        {
+                            notFoundStations = notFoundStations ?? new List<Station>();
+                            notFoundStations.Add(addStation);
+                        }
+                    }
+
+                    //удалим не найденные станции из списка добавленных
+                    if (notFoundStations == null)
+                    {
+                        Status = Status.CorrectionStationNamesSucsess;
+                        StatusString = "Корректировка имен станций прошла успешно";
                     }
                     else
                     {
-                        notFoundStations = notFoundStations ?? new List<Station>();
-                        notFoundStations.Add(addStation);
-                        StatusRegSh = Status.NotFoundStation;
+                        Status = Status.CorrectionStationNamesError;
+                        StatusString = "Выявленны станции для которых не удалось скорректировать имя";
+                        
+                        addedStations = addedStations.Except(notFoundStations).ToList();
                     }
-                }
-
-
-                //удалим не найденные станции из списка добавленных
-                if (StatusRegSh != Status.NotFoundStation)
-                {
-                    StatusString = "Корректировка имен станций прошла успешно";
-                }
-                else
-                {
-                    StatusString = "Выявленны станции для которых не удалось скорректировать имя";
-                    addedStations = addedStations.Except(notFoundStations).ToList();
                 }
 
 
@@ -242,9 +299,11 @@ namespace DataExchange.InitDb
                     //Новые станции добавим в БД.
                     if (addedStations.Any())
                     {
-                        var find3 = addedStations.Where(st => st.Name.Length < 1).ToList();//DEBUG
                         _unitOfWork.StationRepository.InsertRange(addedStations);
                         await _unitOfWork.SaveAsync();
+
+                        Status = Status.SaveNewStationInDb;
+                        StatusString = "Новые станции сохраненны в БД";
                     }
 
 
@@ -264,6 +323,9 @@ namespace DataExchange.InitDb
                     //Сохраним изменения
                     _unitOfWork.RailwayStationRepository.Update(railwayStation);
                     await _unitOfWork.SaveAsync();
+
+                    Status = Status.SaveNewStationInDb;
+                    StatusString = "Успешно заменено старое регулярное расписание на новое в БД";
                 }
                 catch (DbEntityValidationException ex)
                 {
@@ -277,13 +339,15 @@ namespace DataExchange.InitDb
 
                     var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
 
+                    Status = Status.Error;
                     StatusString = $"ОШИБКА при сохранении в БД: \"{exceptionMessage}\"";
 
-                    throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
+                    throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors); //TODO: ???
                 }
                 catch (Exception)
                 {
-                    StatusString = $"Ошибка работы с БД.";
+                    Status = Status.Error;
+                    StatusString = $"Неизвестная Ошибка работы с БД.";
                 }
             }
         }

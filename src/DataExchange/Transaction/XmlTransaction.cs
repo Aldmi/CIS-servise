@@ -4,6 +4,8 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using Caliburn.Micro;
+using Castle.Windsor;
 
 namespace DataExchange.Transaction
 {
@@ -96,12 +98,12 @@ namespace DataExchange.Transaction
             catch (WebException we)
             {
                 Status = we.ToString();
-                //throw new Exception(we.Message);
+                throw new Exception(we.Message);
             }
             catch (Exception ex)
             {
                 Status = $"Неизвестное Исключение: {ex.ToString()}";
-                //throw new Exception(ex.Message);
+                throw new Exception(ex.Message);
             }
             finally
             {
