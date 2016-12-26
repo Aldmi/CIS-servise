@@ -20,6 +20,7 @@ using Castle.Facilities.WcfIntegration;
 using Castle.Windsor;
 using DataExchange.Event;
 using DataExchange.InitDb;
+using DataExchange.WebClient;
 using DataExchange.XmlGetter;
 using Domain.Concrete;
 using Library.Xml;
@@ -43,8 +44,7 @@ namespace Server.ViewModels
 
 
 
-
-        public ApkDk ApkDk { get; set; }
+        public ApkDkWebClient ApkDk { get; set; }
 
         private bool _isBusy;
         public bool IsBusy
@@ -69,29 +69,52 @@ namespace Server.ViewModels
         }
 
 
+        ReadOnlyCollection<Station> OwnerRailwayStations { get; set; } = new ReadOnlyCollection<Station>(new List<Station>
+        {
+            new Station {Name = "Курский", EcpCode = 19155},
+            new Station {Name = "Павелецкий", EcpCode = 19351},
+            new Station {Name = "Казанский", EcpCode = 19390},
+            new Station {Name = "Ярославский", EcpCode = 19550},
+            new Station {Name = "Савеловский", EcpCode = 19600},
+            new Station {Name = "Рижский", EcpCode = 19612},
+            new Station {Name = "Киевский", EcpCode = 19810},
+            new Station {Name = "Смоленский", EcpCode = 19823}
+        });
 
+        public DiagnosticViewModel DiagnosticVmKurskiy { get; set; }
+        public DiagnosticViewModel DiagnosticVmPavel { get; set; }
+        public DiagnosticViewModel DiagnosticVmKazan { get; set; }
+        public DiagnosticViewModel DiagnosticVmYaroslav { get; set; }
+        public DiagnosticViewModel DiagnosticVmSavelov { get; set; }
+        public DiagnosticViewModel DiagnosticVmRigskii { get; set; }
+        public DiagnosticViewModel DiagnosticVmKievskii { get; set; }
+        public DiagnosticViewModel DiagnosticVmSmolensk { get; set; }
 
-        public DiagnosticViewModel DiagnosticVm1 { get; set; }
-        public DiagnosticViewModel DiagnosticVm2 { get; set; }
 
 
 
 
         public AppViewModel(IEventAggregator events, IWindowManager windowManager, IWindsorContainer windsorContainer)
         {
+            DisplayName = "Главное окно ЦИС";
+
             _windowManager = windowManager;
             _windsorContainer = windsorContainer;
             _eventAggregator = events;
             events.Subscribe(this);
 
-            DiagnosticVm1 = new DiagnosticViewModel("Курский", _eventAggregator);
-            DiagnosticVm2 = new DiagnosticViewModel("Вокзал 2", _eventAggregator);
+            DiagnosticVmKurskiy = new DiagnosticViewModel(OwnerRailwayStations.FirstOrDefault(st => st.Name == "Курский"), _eventAggregator);
+            DiagnosticVmPavel = new DiagnosticViewModel(OwnerRailwayStations.FirstOrDefault(st => st.Name == "Павелецкий"), _eventAggregator);
+            DiagnosticVmKazan = new DiagnosticViewModel(OwnerRailwayStations.FirstOrDefault(st => st.Name == "Казанский"), _eventAggregator);
+            DiagnosticVmYaroslav = new DiagnosticViewModel(OwnerRailwayStations.FirstOrDefault(st => st.Name == "Ярославский"), _eventAggregator);
+            DiagnosticVmSavelov = new DiagnosticViewModel(OwnerRailwayStations.FirstOrDefault(st => st.Name == "Савеловский"), _eventAggregator);
+            DiagnosticVmRigskii = new DiagnosticViewModel(OwnerRailwayStations.FirstOrDefault(st => st.Name == "Рижский"), _eventAggregator);
+            DiagnosticVmKievskii = new DiagnosticViewModel(OwnerRailwayStations.FirstOrDefault(st => st.Name == "Киевский"), _eventAggregator);
+            DiagnosticVmSmolensk = new DiagnosticViewModel(OwnerRailwayStations.FirstOrDefault(st => st.Name == "Смоленский"), _eventAggregator);
 
             _serviceHost = new DefaultServiceHostFactory().CreateServiceHost("CisServiceResolver", new Uri[0]);
 
-            ApkDk= new ApkDk(_windsorContainer);
-
-            DisplayName = "Главное окно ЦИС";
+            ApkDk = new ApkDkWebClient(_windsorContainer, _eventAggregator, OwnerRailwayStations);
         }
 
 
@@ -102,7 +125,7 @@ namespace Server.ViewModels
 
         public async void ShowRailwayStation(string railwayStationName, int ecpCode)
         {
-            var stationOwner = new Station {Name = railwayStationName, EcpCode = ecpCode};
+            var stationOwner = new Station { Name = railwayStationName, EcpCode = ecpCode };
 
             var editViewModel = new RailwayStationEditViewModel(_windsorContainer, stationOwner);
             _windowManager.ShowDialog(editViewModel);
@@ -114,14 +137,15 @@ namespace Server.ViewModels
 
 
 
-
         #region BackstageMenuHandler
 
+        /// <summary>
+        /// Загрузка расписания и станций из XML файла с диска.
+        /// </summary>
         public async void LoadXmlDataInDb(string tableName, string railwayStationName, int ecpCode)
         {
             string pathShedule = null;
             string pathStations = null;
-
 
             var fbd = new OpenFileDialog
             {
@@ -148,74 +172,59 @@ namespace Server.ViewModels
             if (string.IsNullOrEmpty(pathShedule) || string.IsNullOrEmpty(pathStations))
                 return;
 
-
-            var stationOwner = new Station {Name = railwayStationName, EcpCode = ecpCode};
-            var initDb = new InitDbFromXml(_windsorContainer, _eventAggregator, stationOwner);
+            var stationOwner = new Station { Name = railwayStationName, EcpCode = ecpCode };
 
             var processViewModel = new ProcessViewModel(_eventAggregator, stationOwner);
             _windowManager.ShowWindow(processViewModel);
 
-            try
-            {
-                switch (tableName)
-                {
-                    case "regular":
-                        var sheduleGetter = new GetterXmlFromDisk(pathShedule, stationOwner);
-                        var stationsGetter = new GetterXmlFromDisk(pathStations, stationOwner);
-                        await initDb.InitRegulatorySh(sheduleGetter, stationsGetter);
-                        break;
-
-
-
-                    case "operative":
-                        break;
-                }
-            }
-            catch (Exception)    //TODO: более точно определять тип исключения и выводить его в окно.
-            {
-                MessageBox.Show($"Ошибка работы с БД.");
-            }
+            await ApkDk.LoadXmlDataInDb(pathShedule, pathStations, tableName, stationOwner);
         }
 
 
-
-
+        /// <summary>
+        /// Загрузка расписания и станций по http.
+        /// </summary>
         public async void LoadHttpDataInDb(string tableName, string railwayStationName, int ecpCode)
         {
-           var httpAdr = ConfigurationManager.AppSettings.Get("httpAddress");
-           var intetfacesRegSh = ConfigurationManager.AppSettings.Get("Regular");
-           var uriRegSh = $"{httpAdr}/{intetfacesRegSh}";
-           var intetfacesStations = ConfigurationManager.AppSettings.Get("Stations");
-           var uriStations = $"{httpAdr}/{intetfacesStations}";
-
             var stationOwner = new Station { Name = railwayStationName, EcpCode = ecpCode };
-            var initDb = new InitDbFromXml(_windsorContainer, _eventAggregator, stationOwner);
 
             var processViewModel = new ProcessViewModel(_eventAggregator, stationOwner);
             _windowManager.ShowWindow(processViewModel);
 
-            try
-            {
-                switch (tableName)
-                {
-                    case "regular":
-                        var sheduleGetter = new GetterXmlFromHttp(uriRegSh, stationOwner);
-                        var stationsGetter = new GetterXmlFromDisk(uriStations, stationOwner);
-                        await initDb.InitRegulatorySh(sheduleGetter, stationsGetter);
-                        break;
-
-
-
-                    case "operative":
-                        break;
-                }
-            }
-            catch (Exception ex)    //TODO: более точно определять тип исключения и выводить его в окно.
-            {
-                MessageBox.Show($"ОШИБКА: {ex}");
-            }
+            await ApkDk.LoadHttpDataInDb(tableName, stationOwner);
         }
 
+
+        /// <summary>
+        /// Загрузка расписания по http.
+        /// Загрузка станций из XML файла.
+        /// </summary>
+        public async void LoadHttpSheduleAndLoadXmlStationsInDb(string tableName, string railwayStationName, int ecpCode)
+        {
+            string pathStations = null;
+
+            var fbd = new OpenFileDialog
+            {
+                Filter = @"XML Files (.xml)|*.xml|All Files (*.*)|*.*",
+                Title = "Файл со станциями"
+            };
+            var result = fbd.ShowDialog();
+            if ((result == DialogResult.OK) && (!string.IsNullOrWhiteSpace(fbd.FileName)))
+            {
+                pathStations = fbd.FileName;
+            }
+
+            if (string.IsNullOrEmpty(pathStations))
+                return;
+
+
+            var stationOwner = new Station { Name = railwayStationName, EcpCode = ecpCode };
+
+            var processViewModel = new ProcessViewModel(_eventAggregator, stationOwner);
+            _windowManager.ShowWindow(processViewModel);
+
+             await ApkDk.LoadHttpSheduleAndLoadXmlStationsInDb(pathStations, tableName, stationOwner);
+        }
 
         #endregion
 
@@ -267,7 +276,7 @@ namespace Server.ViewModels
 
         public void Handle(InitDbFromXmlStatus message)
         {
-           // MessageBox.Show(message.Status);//DEBUG
+            // MessageBox.Show(message.Status);//DEBUG
         }
 
         #endregion

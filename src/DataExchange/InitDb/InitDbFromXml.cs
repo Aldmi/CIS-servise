@@ -101,9 +101,6 @@ namespace DataExchange.InitDb
 
 
 
-
-
-
         public async Task<bool> InitRegulatorySh(IGetterXml sheduleGetter, IGetterXml stationGetter)
         {
             Status = Status.Load;
@@ -120,8 +117,17 @@ namespace DataExchange.InitDb
                 {
                     Status = Status.Error;
                     StatusString = $"XML файл ответа регулярного расписания для станции: {_stationOwner.Name} не получен";
-
                     return false;
+                }
+                else
+                {
+                    var errorString = regShProt.CheckNotAllowedResponse(xmlDocResp);
+                    if (errorString != null)
+                    {
+                        Status = Status.Error;
+                        StatusString = $"XML файл ответа регулярного расписания для станции: {_stationOwner.Name} получен \nи он содержит описание ошибки.Ответ: {errorString}";
+                        return false;
+                    }               
                 }
 
                 newRegSh = regShProt.SetResponse(xmlDocResp, _stationOwner);
@@ -180,7 +186,7 @@ namespace DataExchange.InitDb
 
                 //Нашли станции в БД или создали новые
                 foreach (var regSh in newRegSh)
-                {
+                {                  
                     var stationOfDestinationDb = allStations.FirstOrDefault(st => st.EcpCode == regSh.DestinationStation.EcpCode);
                     if (stationOfDestinationDb != null)
                     {
@@ -289,8 +295,44 @@ namespace DataExchange.InitDb
                         StatusString = "Выявленны станции для которых не удалось скорректировать имя";
                         
                         addedStations = addedStations.Except(notFoundStations).ToList();
+
+                        // Заменим в расписании все станции для которых не удалось скорректирвоать имя на errorStation (ECP = 0)
+                        var errorStation = _unitOfWork.StationRepository.Search(station => station.EcpCode == 0).FirstOrDefault();  //если станция не найденна EF сам создает такую.
+                        foreach (var regSh in newRegSh)
+                        {
+                            var stationOfDestinationDb = notFoundStations.FirstOrDefault(st => st.EcpCode == regSh.DestinationStation.EcpCode);             
+                            if (stationOfDestinationDb != null)
+                            {
+                                regSh.DestinationStation = errorStation;
+                            }
+
+                            var dispatchStationDb = notFoundStations.FirstOrDefault(st => st.EcpCode == regSh.DispatchStation.EcpCode);
+                            if (dispatchStationDb != null)
+                            {
+                                regSh.DispatchStation = errorStation;
+                            }
+
+                            for (int i = 0; i < regSh.ListOfStops.Count; i++)
+                            {
+                                var findStDb = notFoundStations.FirstOrDefault(st => st.EcpCode == regSh.ListOfStops[i].EcpCode);
+                                if (findStDb != null)
+                                {
+                                    regSh.ListOfStops[i] = errorStation;
+                                }
+                            }
+
+                            for (int i = 0; i < regSh.ListWithoutStops.Count; i++)
+                            {
+                                var findStDb = notFoundStations.FirstOrDefault(st => st.EcpCode == regSh.ListWithoutStops[i].EcpCode);
+                                if (findStDb != null)
+                                {
+                                    regSh.ListWithoutStops[i] = findStDb;
+                                }
+                            }
+                        }
                     }
                 }
+
 
 
                 //СОХРАНИМ ИЗМЕНЕНИЯ

@@ -115,6 +115,42 @@
                                         </fluent:Button.ToolTip>
                                     </fluent:Button>
 
+                                    <Separator />
+
+                                    <fluent:Button
+                                        Margin="10"
+                                        Padding="10"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        micro:Message.Attach="[Event Click] = [Action LoadHttpSheduleAndLoadXmlStationsInDb('regular', 'Курский', '19155')]"
+                                        Background="LightBlue"
+                                        FontSize="20"
+                                        Header="Регулярное расписание по http с АПКДК. Список станциий из локального XML файла">
+                                        <fluent:Button.ToolTip>
+                                            <fluent:ScreenTip
+                                                Title="Загрузить из XML файла"
+                                                Width="250"
+                                                Text="Эта команда загружает в базу данных сервера регулярное расписание" />
+                                        </fluent:Button.ToolTip>
+                                    </fluent:Button>
+
+                                    <fluent:Button
+                                        Margin="10"
+                                        Padding="10"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        micro:Message.Attach="[Event Click] = [Action LoadHttpSheduleAndLoadXmlStationsInDb('operative', 'Курский', '19155')]"
+                                        Background="LightBlue"
+                                        FontSize="20"
+                                        Header="Оперативное расписание по http с АПКДК. Список станциий из локального XML файла">
+                                        <fluent:Button.ToolTip>
+                                            <fluent:ScreenTip
+                                                Title="Загрузить из XML файла"
+                                                Width="250"
+                                                Text="Эта команда загружает в базу данных сервера регулярное расписание" />
+                                        </fluent:Button.ToolTip>
+                                    </fluent:Button>
+
                                 </StackPanel>
                             </fluent:BackstageTabItem>
 
@@ -335,13 +371,49 @@
                     Grid.Row="0"
                     Grid.Column="0"
                     Margin="10"
-                    Content="{Binding Path=DiagnosticVm1, Mode=OneWay}" />
+                    Content="{Binding Path=DiagnosticVmKurskiy, Mode=OneWay}" />
 
                 <UserControl
                     Grid.Row="0"
                     Grid.Column="1"
                     Margin="10"
-                    Content="{Binding Path=DiagnosticVm2, Mode=OneWay}" />
+                    Content="{Binding Path=DiagnosticVmPavel, Mode=OneWay}" />
+
+                <UserControl
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Margin="10"
+                    Content="{Binding Path=DiagnosticVmKazan, Mode=OneWay}" />
+
+                <UserControl
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    Margin="10"
+                    Content="{Binding Path=DiagnosticVmYaroslav, Mode=OneWay}" />
+
+                <UserControl
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="10"
+                    Content="{Binding Path=DiagnosticVmSavelov, Mode=OneWay}" />
+
+                <UserControl
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="10"
+                    Content="{Binding Path=DiagnosticVmRigskii, Mode=OneWay}" />
+
+                <UserControl
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Margin="10"
+                    Content="{Binding Path=DiagnosticVmKievskii, Mode=OneWay}" />
+
+                <UserControl
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Margin="10"
+                    Content="{Binding Path=DiagnosticVmSmolensk, Mode=OneWay}" />
 
             </Grid>
         </Grid>

@@ -42,7 +42,7 @@
             HorizontalContentAlignment="Center"
             BorderBrush="Black"
             BorderThickness="5"
-            Content="{Binding Path=Name, Mode=OneTime}"
+            Content="{Binding Path=StationOwner.Name, Mode=OneTime}"
             FontSize="15" />
 
 

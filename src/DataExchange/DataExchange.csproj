@@ -41,6 +41,7 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -54,6 +55,7 @@
     <Compile Include="InitDb\InitDbFromXml.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Transaction\XmlTransaction.cs" />
+    <Compile Include="WebClient\ApkDkWebClient.cs" />
     <Compile Include="XmlApkDkProtokol\XmlAbstractProtokol.cs" />
     <Compile Include="XmlApkDkProtokol\XmlInfoShProtokol.cs" />
     <Compile Include="XmlApkDkProtokol\XmlOperativeShProtokol.cs" />

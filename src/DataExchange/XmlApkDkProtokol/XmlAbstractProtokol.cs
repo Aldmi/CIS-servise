@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Xml.Linq;
 using Domain.Entities;
@@ -8,20 +9,19 @@ namespace DataExchange.XmlApkDkProtokol
 {
     public abstract class XmlAbstractProtokol
     {
-
         /* ЗАПРОС
- <?xmlversion="1.0" encoding=" utf-8" ?>
-   <root>
-    <Authentication User=’ddd’ Password=’samba’/>
-    <Place ESR=’34567’/>
-   </root>
- */
+         <?xmlversion="1.0" encoding=" utf-8" ?>
+          <root>
+             <Authentication User=’ddd’ Password=’samba’/>
+             <Place ESR=’34567’/>
+          </root>
+       */
         public virtual XDocument GetRequest(IEnumerable<Station> stations)
         {
             var station = stations.FirstOrDefault();
 
-            var user = "ddd";
-            var password = "samba";
+            var user = ConfigurationManager.AppSettings.Get("User");
+            var password = ConfigurationManager.AppSettings.Get("Password");
 
             XDocument xDoc = new XDocument(new XDeclaration("1.0", "UTF-8", "yes"),
                 new XElement("root",
@@ -34,6 +34,13 @@ namespace DataExchange.XmlApkDkProtokol
 
 
 
+        // <root>
+        //    <error>Place 19823 not allowed</error>
+        // </root>
+        public virtual string CheckNotAllowedResponse(XDocument xmlDoc)
+        {
+           return xmlDoc.Descendants("error").FirstOrDefault()?.Value;
+        }
 
 
         #region Methode

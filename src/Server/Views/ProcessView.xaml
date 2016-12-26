@@ -7,10 +7,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Server.ViewModels"
     Title="ProcessView"
-    Width="600"
+    Width="1000"
     Height="400"
     MaxHeight="600"
-    ResizeMode="NoResize"
+    ResizeMode="CanResizeWithGrip"
     mc:Ignorable="d">
 
 
@@ -65,7 +65,7 @@
                             DisplayMemberBinding="{Binding Path=Time, StringFormat={}{0:HH:mm:ss}}"
                             Header="Время" />
                         <GridViewColumn
-                            Width="500"
+                            Width="900"
                             DisplayMemberBinding="{Binding Path=StatusString}"
                             Header="Cообщения" />
                     </GridView.Columns>
