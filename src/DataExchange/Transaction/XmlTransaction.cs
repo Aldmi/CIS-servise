@@ -6,11 +6,15 @@ using System.Xml;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Castle.Windsor;
+using Library.Extensions;
 
 namespace DataExchange.Transaction
 {
     public class XmlTransaction
     {
+        private const int RequestTimeout = 5000;
+        private const int ResponseTimeout = 7000;
+
         public string Status { get; set; }
 
 
@@ -48,10 +52,12 @@ namespace DataExchange.Transaction
                 objHttpWebRequest.ContentType = "text/xml; encoding='utf-8'";
 
 
+
                 Status = $"Отправка запроса.... на \"{uri}\"";
 
+
                 //Get Stream object 
-                objRequestStream = await objHttpWebRequest.GetRequestStreamAsync();         //блокирующий вызов
+                objRequestStream = await objHttpWebRequest.GetRequestStreamAsync().WithTimeout(RequestTimeout);         //блокирующий вызов
 
                 //Writes a sequence of bytes to the current stream 
                 await objRequestStream.WriteAsync(bytes, 0, bytes.Length);
@@ -65,7 +71,7 @@ namespace DataExchange.Transaction
                 //---------- End HttpRequest
 
                 //Sends the HttpWebRequest, and waits for a response.
-                objHttpWebResponse = (HttpWebResponse)await objHttpWebRequest.GetResponseAsync();
+                objHttpWebResponse = (HttpWebResponse)await objHttpWebRequest.GetResponseAsync().WithTimeout(ResponseTimeout);
 
                 //---------- Start HttpResponse
                 if (objHttpWebResponse.StatusCode == HttpStatusCode.OK)
@@ -110,6 +116,10 @@ namespace DataExchange.Transaction
                 objRequestStream?.Close();
                 objResponseStream?.Close();
                 objHttpWebResponse?.Close();
+
+                objRequestStream?.Dispose();
+                objResponseStream?.Dispose();
+                objHttpWebResponse?.Dispose();
             }
 
             return XResponse;

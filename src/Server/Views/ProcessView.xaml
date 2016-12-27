@@ -35,11 +35,10 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" Margin="20">
+        <Grid Grid.Row="0" Margin="20">
             <ProgressBar
                 Name="pbStatus"
                 Height="25"
@@ -56,7 +55,7 @@
                 Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" />
         </Grid>
 
-        <ListView Grid.Row="2" ItemsSource="{Binding Path=ImportantMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=ImportantMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>

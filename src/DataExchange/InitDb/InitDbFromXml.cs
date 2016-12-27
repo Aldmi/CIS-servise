@@ -142,13 +142,13 @@ namespace DataExchange.InitDb
             catch (Exception ex)
             {
                 Status = Status.Error;
-                StatusString = $"Ошибка получения XML ответа регулярного расписания {ex}";
+                StatusString = $" Вокзал: {_stationOwner.Name}. Ошибка получения XML ответа регулярного расписания {ex}";
                 return false;
             }
 
 
             Status = Status.SaveDbRegSh;
-            StatusString = "Загрузка данных в БД";
+            StatusString = "Начата загрузка данных в БД ...";
             
             await DbAcsessRegSh(newRegSh, stationGetter);
 
@@ -191,6 +191,12 @@ namespace DataExchange.InitDb
                     if (stationOfDestinationDb != null)
                     {
                         regSh.DestinationStation = stationOfDestinationDb;
+
+                        var doubleStation= railwayStation.Stations.FirstOrDefault(st=> st.EcpCode == stationOfDestinationDb.EcpCode);
+                        if (doubleStation == null)
+                        {
+                            railwayStation.Stations.Add(stationOfDestinationDb);
+                        }
                     }
                     else
                     {
@@ -201,6 +207,12 @@ namespace DataExchange.InitDb
                     if (dispatchStationDb != null)
                     {
                         regSh.DispatchStation = dispatchStationDb;
+
+                        var doubleStation = railwayStation.Stations.FirstOrDefault(st => st.EcpCode == dispatchStationDb.EcpCode);
+                        if (doubleStation == null)
+                        {
+                            railwayStation.Stations.Add(dispatchStationDb);
+                        }
                     }
                     else
                     {
@@ -213,6 +225,12 @@ namespace DataExchange.InitDb
                         if (findStDb != null)
                         {
                             regSh.ListOfStops[i] = findStDb;
+
+                            var doubleStation = railwayStation.Stations.FirstOrDefault(st => st.EcpCode == findStDb.EcpCode);
+                            if (doubleStation == null)
+                            {
+                                railwayStation.Stations.Add(findStDb);
+                            }
                         }
                         else
                         {
@@ -226,6 +244,12 @@ namespace DataExchange.InitDb
                         if (findStDb != null)
                         {
                             regSh.ListWithoutStops[i] = findStDb;
+
+                            var doubleStation = railwayStation.Stations.FirstOrDefault(st => st.EcpCode == findStDb.EcpCode);
+                            if (doubleStation == null)
+                            {
+                                railwayStation.Stations.Add(findStDb);
+                            }
                         }
                         else
                         {

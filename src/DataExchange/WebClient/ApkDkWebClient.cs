@@ -17,7 +17,7 @@ namespace DataExchange.WebClient
 
         private readonly IWindsorContainer _windsorContainer;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IEnumerable<Station> _stationsOwner;
+
 
         #endregion
 
@@ -27,11 +27,10 @@ namespace DataExchange.WebClient
 
         #region ctor
 
-        public ApkDkWebClient(IWindsorContainer windsorContainer, IEventAggregator eventAggregator, IEnumerable<Station> stationsOwner )   
+        public ApkDkWebClient(IWindsorContainer windsorContainer, IEventAggregator eventAggregator)   
         {
             _windsorContainer = windsorContainer;
             _eventAggregator = eventAggregator;
-            _stationsOwner = stationsOwner;
         }
 
         #endregion

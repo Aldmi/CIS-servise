@@ -370,49 +370,49 @@
                 <UserControl
                     Grid.Row="0"
                     Grid.Column="0"
-                    Margin="10"
+                    Margin="3"
                     Content="{Binding Path=DiagnosticVmKurskiy, Mode=OneWay}" />
 
                 <UserControl
                     Grid.Row="0"
                     Grid.Column="1"
-                    Margin="10"
+                    Margin="3"
                     Content="{Binding Path=DiagnosticVmPavel, Mode=OneWay}" />
 
                 <UserControl
                     Grid.Row="0"
                     Grid.Column="2"
-                    Margin="10"
+                    Margin="3"
                     Content="{Binding Path=DiagnosticVmKazan, Mode=OneWay}" />
 
                 <UserControl
                     Grid.Row="0"
                     Grid.Column="3"
-                    Margin="10"
+                    Margin="3"
                     Content="{Binding Path=DiagnosticVmYaroslav, Mode=OneWay}" />
 
                 <UserControl
                     Grid.Row="1"
                     Grid.Column="0"
-                    Margin="10"
+                    Margin="3"
                     Content="{Binding Path=DiagnosticVmSavelov, Mode=OneWay}" />
 
                 <UserControl
                     Grid.Row="1"
                     Grid.Column="1"
-                    Margin="10"
+                    Margin="5"
                     Content="{Binding Path=DiagnosticVmRigskii, Mode=OneWay}" />
 
                 <UserControl
                     Grid.Row="1"
                     Grid.Column="2"
-                    Margin="10"
+                    Margin="3"
                     Content="{Binding Path=DiagnosticVmKievskii, Mode=OneWay}" />
 
                 <UserControl
                     Grid.Row="1"
                     Grid.Column="3"
-                    Margin="10"
+                    Margin="3"
                     Content="{Binding Path=DiagnosticVmSmolensk, Mode=OneWay}" />
 
             </Grid>

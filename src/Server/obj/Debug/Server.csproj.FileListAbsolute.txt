@@ -489,3 +489,12 @@ D:\Git\CIS\src\Server\obj\Debug\Server.Properties.Resources.resources
 D:\Git\CIS\src\Server\obj\Debug\Server.csproj.GenerateResource.Cache
 D:\Git\CIS\src\Server\obj\Debug\CisServer.exe
 D:\Git\CIS\src\Server\obj\Debug\CisServer.pdb
+D:\Git\CIS\src\Server\bin\Debug\Quartz.dll
+D:\Git\CIS\src\Server\bin\Debug\Common.Logging.Core.dll
+D:\Git\CIS\src\Server\bin\Debug\Common.Logging.dll
+D:\Git\CIS\src\Server\bin\Debug\Quartz.pdb
+D:\Git\CIS\src\Server\bin\Debug\Quartz.xml
+D:\Git\CIS\src\Server\bin\Debug\Common.Logging.Core.pdb
+D:\Git\CIS\src\Server\bin\Debug\Common.Logging.Core.xml
+D:\Git\CIS\src\Server\bin\Debug\Common.Logging.pdb
+D:\Git\CIS\src\Server\bin\Debug\Common.Logging.xml

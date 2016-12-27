@@ -33,19 +33,6 @@ namespace Server.ViewModels
 
         #region prop
 
-        private string _statusString;
-
-        public string StatusString
-        {
-            get { return _statusString; }
-            set
-            {
-                _statusString = value;
-                NotifyOfPropertyChange(() => StatusString);
-            }
-        }
-
-
         private int _maxProcess;
 
         public int MaxProcess
@@ -98,7 +85,6 @@ namespace Server.ViewModels
         {
             if (ReferenceEquals(_stationOwner, message.OwnerStation))
             {
-                StatusString = message.StatusString;
                 ValueProcess = message.Status == Status.Ok ? 100: (int)message.Status * 10;
                 ImportantMessage.Add(message);
             }

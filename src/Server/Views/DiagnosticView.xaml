@@ -8,28 +8,45 @@
     d:DesignHeight="300"
     d:DesignWidth="300"
     Background="Beige"
+    BorderBrush="DarkBlue"
+    BorderThickness="2"
     mc:Ignorable="d">
-
 
 
     <UserControl.Resources>
         <Style x:Key="GridViewColumnHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Background" Value="DarkGoldenrod" />
-            <Setter Property="FontSize" Value="12" />
-
+            <Setter Property="FontSize" Value="10" />
         </Style>
+
+        <Style TargetType="ListViewItem">
+
+            <Setter Property="FontSize" Value="10" />
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Status, Mode=OneWay}" Value="Error">
+                    <Setter Property="Background" Value="Red" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Path=Status, Mode=OneWay}" Value="CorrectionStationNamesError">
+                    <Setter Property="Background" Value="Red" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
 
 
 
-    <Grid Grid.Row="1">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -37,45 +54,148 @@
             Grid.Row="0"
             Grid.Column="0"
             Grid.ColumnSpan="2"
+            Padding="1"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Top"
             HorizontalContentAlignment="Center"
             BorderBrush="Black"
-            BorderThickness="5"
+            BorderThickness="2"
             Content="{Binding Path=StationOwner.Name, Mode=OneTime}"
-            FontSize="15" />
+            FontSize="12" />
+
+        <!--  ОТ АВТОДИКТОРА ДИАГНОСТИКА  -->
+        <Grid
+            Grid.Row="1"
+            Grid.Column="0"
+            MinHeight="150"
+            MaxHeight="150"
+            Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label
+                Grid.Row="0"
+                Content="От клиента"
+                FontSize="7" />
+            <TextBlock
+                Grid.Row="1"
+                FontSize="7"
+                Text="21.05.16 12:45:02" />
+
+            <ListView
+                Grid.Row="2"
+                Margin="1"
+                Padding="1"
+                ItemsSource="{Binding Path=Diagnostics, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn
+                                DisplayMemberBinding="{Binding Path=Id, Mode=OneWay}"
+                                Header="Id устр."
+                                HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
+                            <GridViewColumn
+                                DisplayMemberBinding="{Binding Path=DeviceNumber, Mode=OneWay}"
+                                Header="Название"
+                                HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
+                            <GridViewColumn
+                                DisplayMemberBinding="{Binding Path=Status, Mode=OneWay}"
+                                Header="Код"
+                                HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
+                            <GridViewColumn
+                                DisplayMemberBinding="{Binding Path=Fault, Mode=OneWay}"
+                                Header="Статус"
+                                HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
 
 
-
-        <ListView
+        <!--  АВТОДИКТОР СЧИТАЛ  -->
+        <Grid
             Grid.Row="1"
             Grid.Column="1"
-            Margin="1"
-            Padding="1"
-            ItemsSource="{Binding Path=Diagnostics, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
-            <ListView.View>
-                <GridView>
-                    <GridView.Columns>
-                        <GridViewColumn
-                            DisplayMemberBinding="{Binding Path=Id, Mode=OneWay}"
-                            Header="Id устр."
-                            HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
-                        <GridViewColumn
-                            DisplayMemberBinding="{Binding Path=DeviceNumber, Mode=OneWay}"
-                            Header="Название"
-                            HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
-                        <GridViewColumn
-                            DisplayMemberBinding="{Binding Path=Status, Mode=OneWay}"
-                            Header="Код"
-                            HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
-                        <GridViewColumn
-                            DisplayMemberBinding="{Binding Path=Fault, Mode=OneWay}"
-                            Header="Статус"
-                            HeaderContainerStyle="{StaticResource GridViewColumnHeaderStyle}" />
-                    </GridView.Columns>
-                </GridView>
-            </ListView.View>
-        </ListView>
+            MinHeight="150"
+            MaxHeight="150"
+            Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label
+                Grid.Row="0"
+                Content="Клиент считал"
+                FontSize="7" />
+
+        </Grid>
+
+
+
+        <!--  ЦИС СЧИТАЛ С АПК ДК  -->
+        <Grid
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            MinHeight="150"
+            MaxHeight="150"
+            Visibility="Visible">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Label
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="От АПК ДК"
+                FontSize="7" />
+
+            <Grid Grid.Row="1" Margin="1">
+                <ProgressBar
+                    Name="pbStatus"
+                    Height="10"
+                    Padding="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center"
+                    Maximum="{Binding Path=MaxProcess, Mode=OneTime}"
+                    Minimum="{Binding Path=MinProcess, Mode=OneTime}"
+                    Value="{Binding Path=ValueProcess, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Text="{Binding ElementName=pbStatus, Path=Value, StringFormat={}{0:0}%}" />
+            </Grid>
+
+            <ListView
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                ItemsSource="{Binding Path=ImportantMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView.View>
+                    <GridView>
+                        <GridView.Columns>
+                            <GridViewColumn
+                                Width="80"
+                                DisplayMemberBinding="{Binding Path=Time, StringFormat={}{0:HH:mm:ss}}"
+                                Header="Время" />
+                            <GridViewColumn
+                                Width="700"
+                                DisplayMemberBinding="{Binding Path=StatusString}"
+                                Header="Cообщения" />
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
 
 
     </Grid>

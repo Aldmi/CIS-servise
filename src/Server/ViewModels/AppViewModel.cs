@@ -1,36 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Data.Entity;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using Caliburn.Micro;
-using Domain.Abstract;
-using Domain.DbContext;
 using Domain.Entities;
 using System.ServiceModel;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using Castle.Core.Internal;
 using Castle.Facilities.WcfIntegration;
 using Castle.Windsor;
 using DataExchange.Event;
-using DataExchange.InitDb;
+using DataExchange.Quartz.Shedules;
 using DataExchange.WebClient;
-using DataExchange.XmlGetter;
-using Domain.Concrete;
-using Library.Xml;
-using Server.ClientSOAP;
-using Server.Event;
-using Server.HostWCF;
-using WCFCis2AvtodictorContract.Contract;
 using MessageBox = System.Windows.MessageBox;
-using Screen = Caliburn.Micro.Screen;
-
 
 
 namespace Server.ViewModels
@@ -114,7 +95,7 @@ namespace Server.ViewModels
 
             _serviceHost = new DefaultServiceHostFactory().CreateServiceHost("CisServiceResolver", new Uri[0]);
 
-            ApkDk = new ApkDkWebClient(_windsorContainer, _eventAggregator, OwnerRailwayStations);
+            ApkDk = new ApkDkWebClient(_windsorContainer, _eventAggregator);
         }
 
 
@@ -248,6 +229,8 @@ namespace Server.ViewModels
             try
             {
                 _serviceHost?.Open();
+
+                QuartzApkDkReglamentRegSh.Start(ApkDk, OwnerRailwayStations);
             }
             catch (Exception ex)
             {
@@ -266,6 +249,8 @@ namespace Server.ViewModels
 
             if (_serviceHost?.State == CommunicationState.Opened)
                 _serviceHost.Close();
+
+            QuartzApkDkReglamentRegSh.Shutdown();
 
             base.OnDeactivate(close);
         }
