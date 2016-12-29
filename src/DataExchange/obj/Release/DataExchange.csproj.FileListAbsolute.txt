@@ -13,3 +13,12 @@ D:\Git\CIS\src\DataExchange\bin\Release\EntityFramework.xml
 D:\Git\CIS\src\DataExchange\obj\Release\DataExchange.csprojResolveAssemblyReference.cache
 D:\Git\CIS\src\DataExchange\obj\Release\DataExchange.dll
 D:\Git\CIS\src\DataExchange\obj\Release\DataExchange.pdb
+D:\Git\CIS\src\DataExchange\bin\Release\Common.Logging.Core.dll
+D:\Git\CIS\src\DataExchange\bin\Release\Common.Logging.dll
+D:\Git\CIS\src\DataExchange\bin\Release\Quartz.dll
+D:\Git\CIS\src\DataExchange\bin\Release\Common.Logging.pdb
+D:\Git\CIS\src\DataExchange\bin\Release\Common.Logging.xml
+D:\Git\CIS\src\DataExchange\bin\Release\Common.Logging.Core.pdb
+D:\Git\CIS\src\DataExchange\bin\Release\Common.Logging.Core.xml
+D:\Git\CIS\src\DataExchange\bin\Release\Quartz.pdb
+D:\Git\CIS\src\DataExchange\bin\Release\Quartz.xml

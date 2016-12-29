@@ -50,6 +50,8 @@ namespace DataExchange.WebClient
                         var sheduleGetter = new GetterXmlFromDisk(pathShedule, stationOwner);
                         var stationsGetter = new GetterXmlFromDisk(pathStations, stationOwner);
                         await initDb.InitRegulatorySh(sheduleGetter, stationsGetter);
+
+                        // await TestLeekMemory();//DEBUG
                         break;
 
 
@@ -66,6 +68,26 @@ namespace DataExchange.WebClient
                // MessageBox.Show($"Ошибка работы с БД.");
             }
         }
+
+
+        //---------------DEBUG
+
+        //public async Task<bool> TestLeekMemory()
+        //{
+        //    List<Station> stations= new List<Station>();
+
+        //    for (int i = 0; i < 10000000; i++)
+        //    {
+        //        stations.Add(new Station {Description = "fdsfs", Name = "dsfsdfasgs", EcpCode = 4352,});
+
+        //    }
+
+
+        //    return true;
+        //}
+
+
+        //-----------------
 
 
         public async Task LoadHttpDataInDb(string tableName, Station stationOwner)

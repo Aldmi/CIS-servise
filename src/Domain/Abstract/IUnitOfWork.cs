@@ -19,7 +19,7 @@ namespace Domain.Abstract
         IRepository<Info> InfoRepository { get; }                                       //Оперативная информация про поезда
 
 
-
+        int Save();
         Task<int> SaveAsync();
 
         void UndoChanges();

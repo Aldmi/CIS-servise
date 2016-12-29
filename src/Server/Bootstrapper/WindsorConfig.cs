@@ -37,8 +37,8 @@ namespace Server.Bootstrapper
                 .Register(Component.For<AppViewModel>().LifeStyle.Singleton)
                 .Register(Component.For<IWindowManager>().ImplementedBy<WindowManager>().LifeStyle.Singleton)
                 .Register(Component.For<IEventAggregator>().ImplementedBy<EventAggregator>().LifeStyle.Singleton)
-                .Register(Component.For<IUnitOfWork>().ImplementedBy<UnitOfWork>().LifestyleTransient())
-                .Register(Component.For<CisDbContext>().ImplementedBy<CisDbContext>().LifestyleTransient());      
+                .Register(Component.For<IUnitOfWork>().ImplementedBy<UnitOfWork>().LifestyleTransient())  //LifestyleTransient()
+                .Register(Component.For<CisDbContext>().ImplementedBy<CisDbContext>().LifestyleTransient());      //LifestyleTransient()
 
             container.AddFacility<WcfFacility>()
                 .Register(Component.For<IServerContract>().ImplementedBy<CisServise>().Named("CisServiceResolver"));

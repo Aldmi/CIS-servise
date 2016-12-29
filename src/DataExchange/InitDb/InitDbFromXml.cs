@@ -70,11 +70,9 @@ namespace DataExchange.InitDb
                     StatusString = StatusString,
                     Status = Status
                 };
-                _events.Publish(eventData,
-                    action =>
-                    {
-                        Task.Factory.StartNew(action);
-                    });
+
+                _events.PublishOnUIThread(eventData);
+
             }
         }
 
@@ -149,19 +147,22 @@ namespace DataExchange.InitDb
 
             Status = Status.SaveDbRegSh;
             StatusString = "Начата загрузка данных в БД ...";
-            
-            await DbAcsessRegSh(newRegSh, stationGetter);
 
-            Status = Status.Ok;
-            StatusString = "Загрузка данных в БД завершенна успешно";
+            var res = await DbAcsessRegSh(newRegSh, stationGetter);
+            if (res)
+            {
+                Status = Status.Ok;
+                StatusString = "Загрузка данных в БД завершенна успешно";
+                return true;
+            }
 
-            return true;
+            return false;
         }
 
 
 
 
-        private async Task DbAcsessRegSh(IEnumerable<RegulatorySchedule> newRegSh, IGetterXml stationGetter)
+        private async Task<bool> DbAcsessRegSh(IEnumerable<RegulatorySchedule> newRegSh, IGetterXml stationGetter)
         {
             using (_unitOfWork = _windsorContainer.Resolve<IUnitOfWork>())
             {
@@ -173,8 +174,9 @@ namespace DataExchange.InitDb
                     return await query.FirstOrDefaultAsync();
                 });
 
+             
                 if (railwayStation == null)
-                    return;
+                    return false;
 
 
                 //Все зарегистрированные станции в БД
@@ -182,17 +184,17 @@ namespace DataExchange.InitDb
 
                 Status = Status.SucsessReadOnDb;
                 StatusString = "Считанно с БД регулярное расписание и все станции данного вокзала";
-                
+
 
                 //Нашли станции в БД или создали новые
                 foreach (var regSh in newRegSh)
-                {                  
+                {
                     var stationOfDestinationDb = allStations.FirstOrDefault(st => st.EcpCode == regSh.DestinationStation.EcpCode);
                     if (stationOfDestinationDb != null)
                     {
                         regSh.DestinationStation = stationOfDestinationDb;
 
-                        var doubleStation= railwayStation.Stations.FirstOrDefault(st=> st.EcpCode == stationOfDestinationDb.EcpCode);
+                        var doubleStation = railwayStation.Stations.FirstOrDefault(st => st.EcpCode == stationOfDestinationDb.EcpCode);
                         if (doubleStation == null)
                         {
                             railwayStation.Stations.Add(stationOfDestinationDb);
@@ -266,12 +268,12 @@ namespace DataExchange.InitDb
 
 
 
-                
+
                 if (addedStations.Any())
                 {
                     Status = Status.FindNewStations;
                     StatusString = "Найденны новые станции";
-                   
+
 
                     //выполним запрос для получения имен добавленных станций к сервису
                     IEnumerable<Station> newCorrectNameStation = null;
@@ -285,9 +287,9 @@ namespace DataExchange.InitDb
                     {
                         Status = Status.Error;
                         StatusString = $"Ошибка получения XML ответа названий станций {ex}";
-                        return;
+                        return false;
                     }
-            
+
 
 
                     //Скорректируем имена
@@ -298,7 +300,7 @@ namespace DataExchange.InitDb
                         if (station != null)
                         {
                             addStation.Name = station.Name;
-                            addStation.RailwayStations = new List<RailwayStation> {railwayStation};
+                            addStation.RailwayStations = new List<RailwayStation> { railwayStation };
                         }
                         else
                         {
@@ -317,14 +319,14 @@ namespace DataExchange.InitDb
                     {
                         Status = Status.CorrectionStationNamesError;
                         StatusString = "Выявленны станции для которых не удалось скорректировать имя";
-                        
+
                         addedStations = addedStations.Except(notFoundStations).ToList();
 
                         // Заменим в расписании все станции для которых не удалось скорректирвоать имя на errorStation (ECP = 0)
                         var errorStation = _unitOfWork.StationRepository.Search(station => station.EcpCode == 0).FirstOrDefault();  //если станция не найденна EF сам создает такую.
                         foreach (var regSh in newRegSh)
                         {
-                            var stationOfDestinationDb = notFoundStations.FirstOrDefault(st => st.EcpCode == regSh.DestinationStation.EcpCode);             
+                            var stationOfDestinationDb = notFoundStations.FirstOrDefault(st => st.EcpCode == regSh.DestinationStation.EcpCode);
                             if (stationOfDestinationDb != null)
                             {
                                 regSh.DestinationStation = errorStation;
@@ -388,16 +390,19 @@ namespace DataExchange.InitDb
 
                     //Сохраним изменения
                     _unitOfWork.RailwayStationRepository.Update(railwayStation);
-                    await _unitOfWork.SaveAsync();
+                    //await _unitOfWork.SaveAsync();//DEBUG
+                    //_unitOfWork.Save();
 
                     Status = Status.SaveNewStationInDb;
                     StatusString = "Успешно заменено старое регулярное расписание на новое в БД";
+
+                    return true;
                 }
                 catch (DbEntityValidationException ex)
                 {
                     var errorMessages = ex.EntityValidationErrors
-                            .SelectMany(x => x.ValidationErrors)
-                            .Select(x => x.ErrorMessage);
+                        .SelectMany(x => x.ValidationErrors)
+                        .Select(x => x.ErrorMessage);
 
 
                     var fullErrorMessage = string.Join("; ", errorMessages);
@@ -410,10 +415,16 @@ namespace DataExchange.InitDb
 
                     throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors); //TODO: ???
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     Status = Status.Error;
-                    StatusString = $"Неизвестная Ошибка работы с БД.";
+                    StatusString = $"Неизвестная Ошибка работы с БД. ОШИБКА: \"{ex}\"";
+
+                    throw new Exception(StatusString);
+                }
+                finally
+                {
+                    _windsorContainer.Release(_unitOfWork);         //обязательно вручную чистить, т.к. время жизни в DI контейнере заданно как LifestyleTransient
                 }
             }
         }

@@ -34,27 +34,23 @@ namespace DataExchange.Quartz.Jobs
             string pathShed = @"G:\XML файлы\Нормативное\doc_19155_Курская.xml";
             string pathStat = @"G:\XML файлы\ESRList.xml";
             var stat = stationsOwner.FirstOrDefault(st => st.Name == "Курский");
-            apkDk.LoadXmlDataInDb(pathShed, pathStat,"regular", stat);
+            await apkDk.LoadXmlDataInDb(pathShed, pathStat,"regular", stat);
 
 
             pathShed = @"G:\XML файлы\Нормативное\doc_19612_Рижская.xml";
             stat = stationsOwner.FirstOrDefault(st => st.Name == "Рижский");
-            apkDk.LoadXmlDataInDb(pathShed, pathStat, "regular", stat);
+            await apkDk.LoadXmlDataInDb(pathShed, pathStat, "regular", stat);
 
 
             pathShed = @"G:\XML файлы\Нормативное\doc_19351_Павелецкая.xml";
             stat = stationsOwner.FirstOrDefault(st => st.Name == "Павелецкий");
-            apkDk.LoadXmlDataInDb(pathShed, pathStat, "regular", stat);
+            await apkDk.LoadXmlDataInDb(pathShed, pathStat, "regular", stat);
 
 
             pathShed = @"G:\XML файлы\Нормативное\doc_19600_Савельевский.xml";
             stat = stationsOwner.FirstOrDefault(st => st.Name == "Савеловский");
-            apkDk.LoadXmlDataInDb(pathShed, pathStat, "regular", stat);
+            await apkDk.LoadXmlDataInDb(pathShed, pathStat, "regular", stat);
 
-
-            pathShed = @"G:\XML файлы\Нормативное\doc_19390_Казанская.xml";
-            stat = stationsOwner.FirstOrDefault(st => st.Name == "Казанский");
-            apkDk.LoadXmlDataInDb(pathShed, pathStat, "regular", stat);
 
 
 

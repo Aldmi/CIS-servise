@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Infrastructure;
 using System.Threading.Tasks;
@@ -40,6 +41,13 @@ namespace Domain.Concrete
         {
             return await _context.SaveChangesAsync();
         }
+
+
+        public int Save()
+        {
+           return _context.SaveChanges();
+        }
+
 
 
         public void UndoChanges()

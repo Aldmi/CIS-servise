@@ -35,8 +35,8 @@ namespace DataExchange.Quartz.Shedules
                 .WithIdentity("triggerReg1", "group1")                 // идентифицируем триггер с именем и группой
                 .StartAt(DateTimeOffset.Now.AddSeconds(5))             //старт тригера и первый вызов через 5 сек
                 .WithSimpleSchedule(x => x                             // далее 5 вызовов с интервалом 5 сек
-                    .WithIntervalInSeconds(30)                         // 
-                    .WithRepeatCount(100))
+                    .WithIntervalInSeconds(20)                         // 
+                    .WithRepeatCount(500))
                .ForJob(job)
                .Build(); // создаем триггер 
 

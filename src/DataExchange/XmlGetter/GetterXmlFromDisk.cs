@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Castle.Windsor;
