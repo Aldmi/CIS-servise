@@ -129,7 +129,12 @@ namespace Server.ViewModels
 
 
                     // переоткрыли контекст
-                    _unitOfWork?.Dispose();
+                    if (_windsorContainer != null && _unitOfWork != null)
+                    {
+                        _unitOfWork.Dispose();
+                        _windsorContainer.Release(_unitOfWork);
+                    }
+
                     _unitOfWork = _windsorContainer.Resolve<IUnitOfWork>();
                     _currentOption = value;
 
@@ -326,6 +331,7 @@ namespace Server.ViewModels
         }
 
 
+
         public async void Save()
         {
             ShowBusyIndicator(true, "Идет сохранение в БД");
@@ -446,10 +452,12 @@ namespace Server.ViewModels
         }
 
 
+
         public void Clouse()
         {
             TryClose(false);
         }
+
 
 
         //TODO:вынести все что касается BusyIndicator в базовый класс ViewModel. Наследовать от него все VM.
@@ -492,5 +500,23 @@ namespace Server.ViewModels
         }
 
         #endregion
+
+
+
+        #region OvverrideMembers
+
+        protected override void OnDeactivate(bool close)
+        {
+            if (_windsorContainer != null && _unitOfWork != null)
+            {
+                _unitOfWork.Dispose();
+                _windsorContainer.Release(_unitOfWork);
+            }
+
+            base.OnDeactivate(close);
+        }
+
+        #endregion
+
     }
 }
